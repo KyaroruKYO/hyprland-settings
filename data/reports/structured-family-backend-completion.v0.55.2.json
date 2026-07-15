@@ -1,0 +1,68 @@
+{
+  "report": "structured-family-backend-completion",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "scope": "Scope F — classify and, where safe, integrate structured-family editing into the unified pending ledger.",
+  "unifiedPendingLedger": {
+    "sources": ["LivePreview", "SaveOnlyDraft", "DeadManKept"],
+    "note": "The pending ledger now merges three entry kinds behind one snapshot interface. Scalar dead-man-kept changes (which include the supervised input rows) participate directly. hl.animation/hl.curve keep their own supervised Preview/Keep/Revert/Save flow with auto-revert, which is a different lifecycle than applied-live-until-discarded; they are reported here rather than force-fit into the ledger."
+  },
+  "families": [
+    {
+      "family": "hl.animation",
+      "status": "editable-supervised",
+      "editableShapes": "enabled toggle and bezier-curve reference are proven and wired through the supervised record preview (Preview/Keep/Revert/Save with auto-revert)",
+      "blockedShapes": "animation STYLE values (slide/popin/slidefade/...) remain blocked — no trusted style-grammar evidence (see style-editing-evidence report)",
+      "pendingLedger": "supervised flow, outside the applied-live ledger by design; Save uses the family gated persistence path",
+      "reason": "record semantics differ from scalar apply-live; the supervised countdown is the safe model"
+    },
+    {
+      "family": "hl.curve",
+      "status": "editable-supervised",
+      "editableShapes": "existing bezier curve control points via the Bezier Curve Editor (existing curves only), gated Save",
+      "blockedShapes": "creating brand-new named curves beyond proven shapes",
+      "pendingLedger": "supervised flow, outside the applied-live ledger by design",
+      "reason": "same supervised model as hl.animation"
+    },
+    {
+      "family": "hl.monitor",
+      "status": "blocked",
+      "reason": "high-risk display recovery not proven (see high-risk-recovery-backend). The Monitors page shows the monitor line read-only. Editability stays blocked until a display-specific dead-man rollback is proven.",
+      "proofRequirement": "capture monitor name/resolution/refresh/position/scale/transform/enabled + original rule; apply temporary; verify; revert-verify; fail closed if verification impossible"
+    },
+    {
+      "family": "hl.bind",
+      "status": "blocked",
+      "reason": "read-only source-entry view; no edit/preview/save path. Keybind editing needs conflict detection, duplicate-bind detection, reserved-bind warnings, and parser/write/reread + rollback proof that do not yet exist.",
+      "proofRequirement": "bind grammar validator + conflict/duplicate/reserved detection + write/reread + safe-save/rollback proof, then pending-ledger integration"
+    },
+    {
+      "family": "hl.gesture",
+      "status": "blocked",
+      "reason": "no trusted runtime readback listing exists on this compositor version, so no original state can be captured; no edit path. Not guessed.",
+      "proofRequirement": "a trusted gesture readback mechanism (or a source-backed schema) before any edit path"
+    },
+    {
+      "family": "hl.device",
+      "status": "blocked-hardware-gated",
+      "reason": "device records reconfigure input hardware; per-device rows are hardware-gated. Only devices actually present could be proven, and their edits would need dead-man rollback or save-only staging by risk.",
+      "proofRequirement": "real device present + per-device rollback or save-only proof"
+    },
+    {
+      "family": "hl.permission",
+      "status": "blocked",
+      "reason": "high-risk policy editing; needs strict source-backed validators and parser/write/reread + rollback/safe-save proof that do not yet exist. A wrong permission line can silently grant or deny privileged protocol access.",
+      "proofRequirement": "source-backed permission grammar + validator + write/reread + rollback proof"
+    }
+  ],
+  "editableFamilies": 2,
+  "blockedFamilies": 5,
+  "tests": [
+    "tests/structured_family_unified.rs and the structured_family_* suite (pre-existing) remain green",
+    "the DeadManKept ledger source is covered by the live GUI proof (input.repeat_rate kept -> pending -> discard reverts) and by dead_man_rollback_dialog.rs"
+  ],
+  "guiEvidence": {
+    "monitorBlocked": "e-monitors-page.png (monitor line read-only; render options Blocked)",
+    "animationsPage": "e-animations-page.png"
+  }
+}

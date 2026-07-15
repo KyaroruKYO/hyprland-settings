@@ -22,10 +22,42 @@ use crate::runtime_preview_executor::{
 };
 use crate::write_classification::{ScalarWriteValueKind, SAFE_WRITABLE_ROWS};
 
-pub const DEAD_MAN_COUNTDOWN_SECONDS: u64 = 10;
+/// Countdown length shown to the user and enforced by the modal rollback
+/// dialog. Bound to the executor's actual auto-revert timeout so the
+/// displayed seconds and the real revert can never drift apart.
+pub const DEAD_MAN_COUNTDOWN_SECONDS: u64 =
+    crate::runtime_preview_executor::RUNTIME_PREVIEW_DEAD_MAN_TIMEOUT_MS / 1000;
 
 pub const DEAD_MAN_RECOVERY_INSTRUCTION: &str =
     "If this app exits during an unconfirmed supervised preview, the change was runtime-only: restart Hyprland or re-apply the recorded original value; your config file was never modified.";
+
+/// Title of the in-window modal rollback dialog. Display/monitor changes
+/// get the plural "these display settings" phrasing from the reference;
+/// every other supervised setting gets the singular form.
+pub fn dead_man_dialog_title(is_display: bool) -> &'static str {
+    if is_display {
+        "Keep these display settings?"
+    } else {
+        "Keep this setting?"
+    }
+}
+
+/// Counting-down body of the modal rollback dialog. The seconds are the
+/// live remaining count, so callers re-render this each tick. Matches the
+/// reference wording ("Reverting to previous display settings in N
+/// seconds." / "Reverting to the previous setting in N seconds.").
+pub fn dead_man_dialog_message(is_display: bool, remaining_seconds: u64) -> String {
+    let unit = if remaining_seconds == 1 {
+        "second"
+    } else {
+        "seconds"
+    };
+    if is_display {
+        format!("Reverting to previous display settings in {remaining_seconds} {unit}.")
+    } else {
+        format!("Reverting to the previous setting in {remaining_seconds} {unit}.")
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub enum RuntimePreviewDeadManClassification {

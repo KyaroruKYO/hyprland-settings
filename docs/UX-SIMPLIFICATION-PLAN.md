@@ -245,6 +245,26 @@ defaults instead of the edit projection's flip-suggestion. Guards:
   Selection interface instead); consider gtk::DropDown for better
   accessibility.
 
+## Backend completion follow-ups (2026-07-14)
+
+- **Dead-man kept page badge**: a kept dead-man change resolves its sidebar
+  badge via `page_for_official_setting`, which put `input.repeat_rate`'s
+  badge on General instead of Devices. Cosmetic (chip + row accent + bar are
+  correct); align the resolver with the model tab so the badge lands on the
+  row's actual page.
+- **Save-only text-entry commit**: save-only `Entry` controls (kb layout,
+  fonts, swallow regexes) stage on Enter/activate only; consider staging on
+  focus-leave too for parity with switches/spinners.
+- **Monitor/display rollback**: the display-variant dead-man dialog text is
+  built and unit-tested but has no live trigger until a proven monitor
+  capture/apply/verify/revert flow exists — the gate to unblocking
+  `hl.monitor`.
+- **Profiles**: still disabled; needs create-from-current + load-into-pending
+  + whole-config write/reread/rollback before enabling apply.
+- **Structured-family ledger**: hl.animation/hl.curve stay on the supervised
+  Preview/Keep/Revert/Save flow; unifying them with the applied-live ledger
+  would need their record lifecycle reconciled with DeadManKept semantics.
+
 ## Safety boundaries (unchanged)
 
 Safe Live Save Mode still gates every Save; scalar and structured-family

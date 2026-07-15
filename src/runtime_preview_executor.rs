@@ -675,7 +675,7 @@ pub fn mark_runtime_preview_session_saved(
     Ok("persist the final value once through the existing backup/write/reread config path")
 }
 
-pub const RUNTIME_PREVIEW_DEAD_MAN_TIMEOUT_MS: u64 = 10_000;
+pub const RUNTIME_PREVIEW_DEAD_MAN_TIMEOUT_MS: u64 = 15_000;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub enum RuntimePreviewDeadManVerdict {

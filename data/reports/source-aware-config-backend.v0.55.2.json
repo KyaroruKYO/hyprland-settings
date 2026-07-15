@@ -1,0 +1,42 @@
+{
+  "report": "source-aware-config-backend",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "scope": "Scope H — source/include/Lua-aware config handling.",
+  "sourceIncludeGraph": {
+    "status": "PROVEN",
+    "module": "src/config_graph.rs",
+    "capabilities": [
+      "parses source/include references with a depth limit and cycle detection (canonicalized keys)",
+      "records source_depth per file and the reference kind (ConfigSourceKind)",
+      "detects symlinks (is_symlink + symlink_target) and canonicalizes resolved paths",
+      "emits management hints (ConfigManagementHintKind, including SymlinkManaged) with a detection confidence",
+      "collects unsupported-source issues instead of failing"
+    ],
+    "tests": "tests/config_graph.rs (pre-existing) remains green"
+  },
+  "writeTargetSelection": {
+    "status": "PROVEN_SAFE",
+    "rule": "every gated scalar save writes the ConfigDiscovery-resolved active config; the pending diff shows that exact path so the user sees the real target before saving",
+    "guiProof": "b-03-saveonly-pending-page.png shows the diff header 'hyprland.conf' and the unified diff against /home/kyo/.config/hypr/hyprland.conf with the added line +binds:pass_mouse_when_bound = true",
+    "unexpectedTargetPrevented": "the save path never chooses an alternate/symlinked target implicitly; it writes the discovered active config only"
+  },
+  "duplicateSettingHandling": {
+    "status": "DETECTED_AND_SURFACED",
+    "evidence": "the dashboard 'Needs attention' card reads 'Some settings appear more than once in your config. Review them before applying changes.'",
+    "diffContextEvidence": "the save-only diff preview shows neighbouring duplicate context (misc:disable_hyprland_logo appears twice) drawn straight from the live config file",
+    "note": "duplicates are surfaced for review; the app does not blindly write duplicate values"
+  },
+  "luaHandling": {
+    "status": "INVESTIGATED_HONEST_LIMITATION",
+    "finding": "this machine runs a lua-configured Hyprland fork. Options set only through lua (not the parsed .conf) are invisible to the .conf parser. The app treats runtime-only lua values honestly: it never turns a runtime-only value into a fake config write.",
+    "saveOnlyImplication": "save-only staged drafts write a real .conf line through the gate; they do not claim to reflect or override lua-side state. If a lua-set value diverges from the .conf, the diff shows the .conf change truthfully.",
+    "notGuessed": "no lua parsing/rewriting is attempted; lua config remains out of scope until a trusted, safe lua read/write path exists"
+  },
+  "safeFallback": "when a source cannot be safely modified (symlinked, generated, or lua-only), the app does not write it silently; scalar saves are confined to the discovered active config through the gate",
+  "safety": {
+    "gatedSaveBypassed": false,
+    "wroteUnexpectedTarget": false,
+    "fakeLuaConfigWrite": false
+  }
+}

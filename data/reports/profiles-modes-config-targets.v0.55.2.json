@@ -1,0 +1,37 @@
+{
+  "report": "profiles-modes-config-targets",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "scope": "Scope G — profiles, modes, and symlink-backed config switching.",
+  "profileSaving": {
+    "status": "DISABLED_WITH_REASON",
+    "affordance": "the Profiles page renders a 'No Profiles' empty state with a disabled 'Save Current as Profile' button, and the pending bar's split menu 'Save as new profile' action is registered but disabled",
+    "reason": "a safe profile save/load/apply flow requires: create-from-current, metadata, diff preview, load-into-pending-first, gated apply, discard-of-load, and rollback-on-failed-apply with write/reread verification. Enabling apply without a proven rollback for a whole-config swap could strand the desktop. This marathon did not prove that rollback, so profile save/apply stays disabled rather than shipping an unsafe path.",
+    "screenshot": "e-profiles-page.png",
+    "notFaked": "no profile is written, applied, or switched; the button and menu action are inert by design"
+  },
+  "configTargetDetection": {
+    "status": "AVAILABLE_AND_PROVEN",
+    "activeConfigPath": "resolved by ConfigDiscovery; the pending diff writes to the discovered active config",
+    "guiProof": "the save-only pending diff (b-03-saveonly-pending-page.png) shows the exact write target /home/kyo/.config/hypr/hyprland.conf with the added line, confirming the target is the discovered active config, not a guessed path",
+    "sourceIncludeGraph": "src/config_graph.rs inspects the source/include graph with depth + cycle limits, detects symlinks (is_symlink/symlink_target), canonicalizes paths, and emits management hints (including SymlinkManaged)",
+    "duplicateDetection": "the dashboard 'Needs attention' card surfaces settings that appear more than once in the config (see Scope H)"
+  },
+  "modeSymlinkHandling": {
+    "status": "DETECTION_ONLY",
+    "detected": "symlinked config and source/include graph are detected (config_graph)",
+    "notEnabled": "switching config targets / modes and writing through a resolved symlink target is NOT enabled: it needs backup-before-write + write/reread verify + rollback-on-failure that are not proven for a target swap. The gated scalar save always writes the discovered active target and never an unexpected one.",
+    "reason": "preventing a silent write to an unexpected target is enforced by only ever writing the discovered active config through the gate"
+  },
+  "safety": {
+    "silentOverwrite": false,
+    "userConfigWrittenThisMarathon": false,
+    "gatedSaveBypassed": false
+  },
+  "remainingWork": [
+    "profile create-from-current + metadata + diff preview",
+    "load-profile-into-pending-first + gated apply + discard-of-load",
+    "rollback-on-failed-apply with whole-config write/reread verify",
+    "safe config-target / symlink-mode switching with backup + rollback"
+  ]
+}

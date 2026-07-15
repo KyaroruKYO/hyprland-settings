@@ -1,0 +1,59 @@
+{
+  "report": "high-risk-recovery-backend",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "scope": "Scope E — high-risk rows must not become editable without a real recovery strategy.",
+  "summary": {
+    "recoveryMechanismShipped": "in-window dead-man rollback modal (adw::Dialog): capture original -> apply live -> 15s countdown -> Keep/Revert, with Revert on timeout/Escape/close/default; a Kept change joins the unified pending ledger and Discard reverts it through the same controller",
+    "highRiskRowsEnabledViaRecovery": 38,
+    "highRiskRowsStillBlocked": 82,
+    "hardwareGatedDeferred": 27
+  },
+  "deadManRecoveryEnabled": {
+    "count": 38,
+    "how": "rows classified DeadManPreviewCandidate that passed a per-row live proof (apply+revert verified against the running compositor with a usable fallback input path). The arm control applies the value live, then the modal owns the countdown and resolution.",
+    "guiProven": {
+      "row": "input.repeat_rate",
+      "originalRuntime": "int: 25",
+      "appliedLiveDuringPreview": "int: 0",
+      "countdownObserved": "15s -> 9s (decrements once per second)",
+      "revertRestored": "int: 25 (REVERT_RESTORED_ORIGINAL=true)",
+      "keptJoinedPendingLedger": "chip/bar/discard all appear; runtime stays int:0",
+      "discardOfKeptReverted": "int: 25 (DISCARD_RESTORED=true)",
+      "screenshots": [
+        "d-01-deadman-dialog-15s.png",
+        "d-02-deadman-dialog-midcountdown.png",
+        "d-03-deadman-reverted.png",
+        "d-04-deadman-kept-pending.png"
+      ]
+    },
+    "backendTests": [
+      "tests/dead_man_rollback_dialog.rs: timeout reverts, revert_now reverts, keep prevents timeout revert, close/Escape (revert_if_unconfirmed) reverts, keep then close does not revert, countdown starts at 15 and is bound to the executor timeout, dialog title/message wording matches the reference",
+      "tests/runtime_preview_dead_man.rs (pre-existing, still green with 15s)"
+    ]
+  },
+  "monitorDisplay": {
+    "status": "BLOCKED",
+    "reason": "a display-specific rollback flow (capture monitor name/resolution/refresh/position/scale/transform/enabled + original monitor rule, apply temporary, verify changed, revert-verify) is not proven on this machine; a bad monitor apply can black or mislayout the only display, and this compositor's monitor set is lua-driven with no verified revert path. The Monitors page renders the monitor line and every render/opengl option read-only / Blocked ('Extra care needed').",
+    "displayDialogVariantBuiltAndTested": "dead_man_dialog_title(true)='Keep these display settings?' and dead_man_dialog_message(true, n)='Reverting to previous display settings in n seconds.' are implemented and unit-tested, ready for the day a proven monitor-rollback flow exists; no monitor row is armable today, so the variant has no live trigger.",
+    "screenshot": "e-monitors-page.png"
+  },
+  "screenShader": {
+    "status": "BLOCKED",
+    "reason": "decoration.screen_shader stays high-risk/blocked: a bad shader can black the display with no in-band recovery. Existing screen_shader_advisory scaffolding is non-live/advisory only.",
+    "guiEvidence": "decoration.screen_shader classified Blocked (see scalar matrix)"
+  },
+  "inputSessionLockFocus": {
+    "status": "PARTIAL",
+    "enabled": "input.* pointer/scroll/focus rows that PASSED a per-row live proof are armable through the dead-man modal (38 rows). These are behavioral input changes with a verified fallback path.",
+    "blocked": "input rows without a passed live proof, and session-lock / focus rows that could strand input, remain blocked or hardware-gated. No blind-recovery claim is made without proof."
+  },
+  "safety": {
+    "gatesChanged": false,
+    "gatedSaveBypassed": false,
+    "unsafeReloadAdded": false,
+    "monitorEditingEnabled": false,
+    "styleEditingEnabled": false,
+    "runtimeMutated": "only via the app's own reversible dead-man preview during the live proof; every change reverted and cross-checked with getoption (repeat_rate returned to int:25)"
+  }
+}

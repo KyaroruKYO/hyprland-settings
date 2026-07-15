@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-07-14",
+  "modelVersion": "v0.55.2",
+  "pendingLedgerSources": [
+    "LivePreview",
+    "SaveOnlyDraft",
+    "DeadManKept"
+  ],
+  "report": "backend-completion-final-matrix",
+  "runtimeLive": "133 live-preview + 38 dead-man (applied under 15s supervised rollback)",
+  "saveOnlyNoRuntimeApi": "48 rows persist through the gate; no runtime setter or need relog/restart",
+  "scalar": {
+    "blockedHighRisk": 82,
+    "editableDeadManPending": 38,
+    "editableLivePreviewPending": 133,
+    "editableSaveOnlyPending": 48,
+    "editableTotal": 219,
+    "hardwareGatedDeferred": 27,
+    "notProvenValidationMissing": 11,
+    "upstreamNoOpReadbackBroken": 2,
+    "visible": 341
+  },
+  "structuredFamilies": {
+    "blockedWithReason": [
+      "hl.monitor",
+      "hl.bind",
+      "hl.gesture",
+      "hl.device",
+      "hl.permission"
+    ],
+    "editableSupervised": [
+      "hl.animation",
+      "hl.curve"
+    ],
+    "participatingInPendingLedger": [
+      "(scalar save-only + live-preview + dead-man-kept)"
+    ],
+    "total": 7
+  },
+  "styleEditing": "blocked — no trusted style-grammar evidence in the installed Hyprland package"
+}

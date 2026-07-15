@@ -52,6 +52,7 @@ pub mod runtime_preview_input_proof;
 pub mod runtime_preview_ui_projection;
 pub mod safe_batch_write;
 pub mod safe_live_save_mode;
+pub mod save_only_pending;
 pub mod scalar_write;
 pub mod screen_shader_advisory;
 pub mod search;

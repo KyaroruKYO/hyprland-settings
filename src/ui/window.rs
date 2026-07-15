@@ -200,14 +200,31 @@ struct PendingLedgerEntry {
     controller: Rc<RefCell<RuntimePreviewUiController>>,
 }
 
-/// A snapshot of one pending (previewed-live, not saved) change.
+/// Where a pending change lives: an applied-live preview session that must
+/// be reverted to undo, or a staged save-only config draft that has changed
+/// nothing at runtime and is undone by simply dropping it.
+#[derive(Clone)]
+enum PendingSource {
+    LivePreview(std::rc::Weak<RefCell<RuntimePreviewUiController>>),
+    SaveOnlyDraft,
+    /// A dead-man change the user confirmed with "Keep changes": applied
+    /// live and kept, but not yet saved. Discard reverts it through its
+    /// dead-man controller (looked up in the kept ledger by row id); Save
+    /// persists it through the gate.
+    DeadManKept,
+}
+
+/// A snapshot of one pending change — live-previewed or staged save-only —
+/// as the pending-changes surfaces see it. Both kinds share the same row
+/// identity, proposed value, and gated save; only how they are undone (and
+/// whether anything is applied live) differs, which `source` records.
 #[derive(Clone)]
 struct PendingChangeSnapshot {
     row_id: String,
     official_setting: String,
     page_id: Option<&'static str>,
     current_value: String,
-    controller: std::rc::Weak<RefCell<RuntimePreviewUiController>>,
+    source: PendingSource,
 }
 
 thread_local! {
@@ -221,6 +238,166 @@ thread_local! {
     /// Currently rendered setting rows by row id, for live accent updates.
     static PENDING_ROW_WIDGETS: RefCell<Vec<(String, gtk::glib::WeakRef<gtk::ListBoxRow>)>> =
         const { RefCell::new(Vec::new()) };
+    /// Staged, not-yet-saved config drafts for save-only rows. These have
+    /// changed nothing at runtime; they only exist to be shown in the
+    /// pending surfaces and written by the shared gated save.
+    static SAVE_ONLY_LEDGER: RefCell<crate::save_only_pending::SaveOnlyLedger> =
+        RefCell::new(crate::save_only_pending::SaveOnlyLedger::new());
+    /// Per-row closures that restore a save-only control to its original
+    /// value when its draft is discarded (there is no runtime to revert, so
+    /// the widget itself must be reset).
+    static SAVE_ONLY_RESETTERS: RefCell<Vec<(String, Rc<dyn Fn()>)>> =
+        const { RefCell::new(Vec::new()) };
+    /// Dead-man changes the user chose to Keep but has not yet saved. Each
+    /// is applied live and held by its controller; the pending surfaces show
+    /// it and the gated save persists it.
+    static DEAD_MAN_KEPT_LEDGER: RefCell<Vec<DeadManKeptEntry>> =
+        const { RefCell::new(Vec::new()) };
+}
+
+/// A confirmed-but-unsaved dead-man change tracked in the unified pending
+/// ledger.
+struct DeadManKeptEntry {
+    row_id: String,
+    official_setting: String,
+    page_id: Option<&'static str>,
+    value: String,
+    controller: Rc<RefCell<RuntimePreviewDeadManController>>,
+}
+
+/// Record a dead-man change the user kept (applied live, not saved) so it
+/// shows on every pending surface and can be saved or discarded like any
+/// other pending change.
+fn register_dead_man_kept(
+    row_id: &str,
+    official_setting: &str,
+    page_id: Option<&'static str>,
+    value: &str,
+    controller: &Rc<RefCell<RuntimePreviewDeadManController>>,
+) {
+    DEAD_MAN_KEPT_LEDGER.with(|ledger| {
+        let mut ledger = ledger.borrow_mut();
+        ledger.retain(|entry| entry.row_id != row_id);
+        ledger.push(DeadManKeptEntry {
+            row_id: row_id.to_string(),
+            official_setting: official_setting.to_string(),
+            page_id,
+            value: value.to_string(),
+            controller: Rc::clone(controller),
+        });
+    });
+    notify_pending_changed();
+}
+
+/// Drop a kept dead-man entry after it has been saved (already on disk, no
+/// revert needed).
+fn clear_dead_man_kept(row_id: &str) {
+    DEAD_MAN_KEPT_LEDGER.with(|ledger| {
+        ledger.borrow_mut().retain(|entry| entry.row_id != row_id);
+    });
+}
+
+/// Discard a kept dead-man entry: revert the live change through its
+/// controller, then drop it.
+fn discard_dead_man_kept(row_id: &str) {
+    let controller = DEAD_MAN_KEPT_LEDGER.with(|ledger| {
+        ledger
+            .borrow()
+            .iter()
+            .find(|entry| entry.row_id == row_id)
+            .map(|entry| Rc::clone(&entry.controller))
+    });
+    if let Some(controller) = controller {
+        if let Ok(mut controller) = controller.try_borrow_mut() {
+            let _ = controller.revert_now();
+        }
+    }
+    clear_dead_man_kept(row_id);
+}
+
+/// Revert and drop every kept-but-unsaved dead-man change (window close):
+/// a kept change is applied live and not on disk, so it is reverted like an
+/// active preview.
+fn revert_all_kept_dead_man_previews() {
+    let entries: Vec<Rc<RefCell<RuntimePreviewDeadManController>>> =
+        DEAD_MAN_KEPT_LEDGER.with(|ledger| {
+            ledger
+                .borrow()
+                .iter()
+                .map(|e| Rc::clone(&e.controller))
+                .collect()
+        });
+    for controller in entries {
+        if let Ok(mut controller) = controller.try_borrow_mut() {
+            let _ = controller.revert_now();
+        }
+    }
+    DEAD_MAN_KEPT_LEDGER.with(|ledger| ledger.borrow_mut().clear());
+}
+
+/// Stage (or restage) a save-only row's config draft and refresh every
+/// pending surface. No runtime mutation happens: the value is only written
+/// later, through the gated scalar save, when the user chooses Save now.
+fn stage_save_only_change(
+    row_id: &str,
+    official_setting: &str,
+    page_id: Option<&'static str>,
+    original_value: &str,
+    staged_value: &str,
+    config_has_line: bool,
+) {
+    SAVE_ONLY_LEDGER.with(|ledger| {
+        ledger
+            .borrow_mut()
+            .stage(crate::save_only_pending::SaveOnlyDraft {
+                row_id: row_id.to_string(),
+                official_setting: official_setting.to_string(),
+                page_id: page_id.map(|id| id.to_string()),
+                original_value: original_value.to_string(),
+                staged_value: staged_value.to_string(),
+                config_has_line,
+            });
+    });
+    notify_pending_changed();
+}
+
+/// Drop a save-only row's staged draft and restore its control to the
+/// original value (used by Discard and per-row revert).
+fn discard_save_only_draft(row_id: &str) {
+    SAVE_ONLY_LEDGER.with(|ledger| {
+        ledger.borrow_mut().clear(row_id);
+    });
+    run_save_only_resetter(row_id);
+}
+
+/// Register the closure that resets a save-only control to its original
+/// value, replacing any prior one for the row (controls are rebuilt on page
+/// re-render).
+fn register_save_only_resetter(row_id: &str, reset: Rc<dyn Fn()>) {
+    SAVE_ONLY_RESETTERS.with(|resetters| {
+        let mut resetters = resetters.borrow_mut();
+        resetters.retain(|(id, _)| id != row_id);
+        resetters.push((row_id.to_string(), reset));
+    });
+}
+
+fn run_save_only_resetter(row_id: &str) {
+    let reset = SAVE_ONLY_RESETTERS.with(|resetters| {
+        resetters
+            .borrow()
+            .iter()
+            .find(|(id, _)| id == row_id)
+            .map(|(_, reset)| Rc::clone(reset))
+    });
+    if let Some(reset) = reset {
+        reset();
+    }
+}
+
+/// Drop every staged save-only draft (window close). Nothing was applied
+/// live, so there is no runtime to revert — clearing the ledger suffices.
+fn clear_all_save_only_drafts() {
+    SAVE_ONLY_LEDGER.with(|ledger| ledger.borrow_mut().clear_all());
 }
 
 fn register_pending_controller(
@@ -258,7 +435,7 @@ fn pending_controller_for_row(row_id: &str) -> Option<Rc<RefCell<RuntimePreviewU
 /// Snapshot of every pending change: the session is still previewing live
 /// and the applied value differs from the session's original.
 fn pending_change_snapshots() -> Vec<PendingChangeSnapshot> {
-    PENDING_LEDGER.with(|ledger| {
+    let mut snapshots: Vec<PendingChangeSnapshot> = PENDING_LEDGER.with(|ledger| {
         ledger
             .borrow()
             .iter()
@@ -281,15 +458,64 @@ fn pending_change_snapshots() -> Vec<PendingChangeSnapshot> {
                     official_setting: entry.official_setting.clone(),
                     page_id: entry.page_id,
                     current_value: current,
-                    controller: Rc::downgrade(&entry.controller),
+                    source: PendingSource::LivePreview(Rc::downgrade(&entry.controller)),
                 })
             })
             .collect()
-    })
+    });
+    // Staged save-only drafts join the same pending set: they appear on
+    // every surface and save through the same gate, but nothing has been
+    // applied to the runtime. The stored page id is resolved back to its
+    // interned form so grouping and sidebar counts match live rows.
+    SAVE_ONLY_LEDGER.with(|ledger| {
+        for draft in ledger.borrow().pending() {
+            let page_id = draft
+                .page_id
+                .as_deref()
+                .and_then(|id| crate::ux_presentation::page_spec(id))
+                .map(|spec| spec.id);
+            snapshots.push(PendingChangeSnapshot {
+                row_id: draft.row_id.clone(),
+                official_setting: draft.official_setting.clone(),
+                page_id,
+                current_value: draft.staged_value.clone(),
+                source: PendingSource::SaveOnlyDraft,
+            });
+        }
+    });
+    // Kept-but-unsaved dead-man changes join too: applied live, pending a
+    // gated save.
+    DEAD_MAN_KEPT_LEDGER.with(|ledger| {
+        for entry in ledger.borrow().iter() {
+            snapshots.push(PendingChangeSnapshot {
+                row_id: entry.row_id.clone(),
+                official_setting: entry.official_setting.clone(),
+                page_id: entry.page_id,
+                current_value: entry.value.clone(),
+                source: PendingSource::DeadManKept,
+            });
+        }
+    });
+    snapshots
 }
 
 fn add_pending_listener(listener: Box<dyn Fn()>) {
     PENDING_LISTENERS.with(|listeners| listeners.borrow_mut().push(listener));
+}
+
+/// Honest status line for the unsaved-changes bar: only claims "applied
+/// live" when at least one pending change actually is (a live preview or a
+/// kept dead-man change). When every pending change is a save-only staged
+/// draft, nothing has touched the runtime, so it reads "staged".
+fn pending_status_text() -> &'static str {
+    let any_live = pending_change_snapshots()
+        .iter()
+        .any(|snapshot| !matches!(snapshot.source, PendingSource::SaveOnlyDraft));
+    if any_live {
+        "Unsaved changes — applied live, not saved to disk"
+    } else {
+        "Unsaved changes — staged, not saved to disk"
+    }
 }
 
 /// Run every pending-changes refresher (and refresh row accents). Called
@@ -421,7 +647,11 @@ pub fn show_main_window(
     window.connect_close_request(|_| {
         revert_all_active_previews();
         revert_all_unconfirmed_dead_man_previews();
+        revert_all_kept_dead_man_previews();
         revert_all_unconfirmed_family_previews();
+        // Staged save-only drafts changed nothing at runtime; drop them so a
+        // reopened window starts clean.
+        clear_all_save_only_drafts();
         gtk::glib::Propagation::Proceed
     });
 
@@ -1377,7 +1607,7 @@ fn build_pending_bottom_bar(model: &Rc<UiProjection>) -> (gtk::Revealer, Rc<dyn 
             let count = pending_change_snapshots().len();
             if count > 0 {
                 saved_state.set(false);
-                status_label.set_label("Unsaved changes — applied live, not saved to disk");
+                status_label.set_label(pending_status_text());
                 icon.set_icon_name(Some("dialog-warning-symbolic"));
                 icon.remove_css_class("accent");
                 icon.add_css_class("warning");
@@ -1396,19 +1626,32 @@ fn build_pending_bottom_bar(model: &Rc<UiProjection>) -> (gtk::Revealer, Rc<dyn 
         discard_button.connect_clicked(move |_| {
             saved_state.set(false);
             for snapshot in pending_change_snapshots() {
-                if let Some(controller) = snapshot.controller.upgrade() {
-                    if let Ok(mut controller) = controller.try_borrow_mut() {
-                        let outcome = controller.revert();
-                        if std::env::var("HYPRLAND_SETTINGS_DEBUG_PENDING").is_ok() {
-                            eprintln!(
-                                "pending-debug: discard revert {} -> {:?}",
-                                snapshot.row_id,
-                                outcome.as_ref().map(|_| "ok").map_err(|e| e.user_text())
-                            );
+                match &snapshot.source {
+                    PendingSource::LivePreview(weak) => {
+                        if let Some(controller) = weak.upgrade() {
+                            if let Ok(mut controller) = controller.try_borrow_mut() {
+                                let outcome = controller.revert();
+                                if std::env::var("HYPRLAND_SETTINGS_DEBUG_PENDING").is_ok() {
+                                    eprintln!(
+                                        "pending-debug: discard revert {} -> {:?}",
+                                        snapshot.row_id,
+                                        outcome.as_ref().map(|_| "ok").map_err(|e| e.user_text())
+                                    );
+                                }
+                            } else if std::env::var("HYPRLAND_SETTINGS_DEBUG_PENDING").is_ok() {
+                                eprintln!(
+                                    "pending-debug: discard borrow failed {}",
+                                    snapshot.row_id
+                                );
+                            }
                         }
-                    } else if std::env::var("HYPRLAND_SETTINGS_DEBUG_PENDING").is_ok() {
-                        eprintln!("pending-debug: discard borrow failed {}", snapshot.row_id);
                     }
+                    // Save-only drafts applied nothing live: dropping the
+                    // draft and resetting the control is the whole revert.
+                    PendingSource::SaveOnlyDraft => discard_save_only_draft(&snapshot.row_id),
+                    // Kept dead-man changes are applied live: revert through
+                    // the controller, then drop.
+                    PendingSource::DeadManKept => discard_dead_man_kept(&snapshot.row_id),
                 }
             }
             notify_pending_changed();
@@ -1440,9 +1683,25 @@ fn build_pending_bottom_bar(model: &Rc<UiProjection>) -> (gtk::Revealer, Rc<dyn 
                 ) {
                     Ok(_) => {
                         saved += 1;
-                        if let Some(controller) = snapshot.controller.upgrade() {
-                            if let Ok(mut controller) = controller.try_borrow_mut() {
-                                let _ = controller.mark_saved();
+                        match &snapshot.source {
+                            PendingSource::LivePreview(weak) => {
+                                if let Some(controller) = weak.upgrade() {
+                                    if let Ok(mut controller) = controller.try_borrow_mut() {
+                                        let _ = controller.mark_saved();
+                                    }
+                                }
+                            }
+                            // The staged value is now on disk; drop the draft
+                            // (the control already shows the saved value, so
+                            // no reset).
+                            PendingSource::SaveOnlyDraft => {
+                                SAVE_ONLY_LEDGER
+                                    .with(|ledger| ledger.borrow_mut().clear(&snapshot.row_id));
+                            }
+                            // Kept dead-man change is now on disk; drop the
+                            // ledger entry (the live value stays applied).
+                            PendingSource::DeadManKept => {
+                                clear_dead_man_kept(&snapshot.row_id);
                             }
                         }
                     }
@@ -1684,12 +1943,21 @@ fn build_pending_changes_view(
                     revert
                         .update_property(&[gtk::accessible::Property::Label("Revert this change")]);
                     {
-                        let controller = snapshot.controller.clone();
+                        let source = snapshot.source.clone();
+                        let revert_row_id = snapshot.row_id.clone();
                         revert.connect_clicked(move |_| {
-                            if let Some(controller) = controller.upgrade() {
-                                if let Ok(mut controller) = controller.try_borrow_mut() {
-                                    let _ = controller.revert();
+                            match &source {
+                                PendingSource::LivePreview(weak) => {
+                                    if let Some(controller) = weak.upgrade() {
+                                        if let Ok(mut controller) = controller.try_borrow_mut() {
+                                            let _ = controller.revert();
+                                        }
+                                    }
                                 }
+                                PendingSource::SaveOnlyDraft => {
+                                    discard_save_only_draft(&revert_row_id)
+                                }
+                                PendingSource::DeadManKept => discard_dead_man_kept(&revert_row_id),
                             }
                             notify_pending_changed();
                         });
@@ -7222,6 +7490,178 @@ fn open_bezier_editor_dialog(parent: &impl IsA<gtk::Widget>, discovery: &ConfigD
     dialog.present(Some(parent));
 }
 
+/// The dead-man rollback confirmation: an in-window `adw::Dialog` modal
+/// that appears once a supervised change has been applied live. It counts
+/// down from 15 seconds ("Reverting to … in N seconds.") and offers Keep
+/// changes / Revert. The default action, Escape, closing the dialog, and
+/// the countdown all Revert; only Keep changes confirms. Modal, so it
+/// blocks the rest of the window until resolved, and an in-window dialog, so
+/// a tiling compositor never tiles it as a separate client. The controller
+/// must already be armed and have applied its value; this owns the
+/// countdown and the resolution from here.
+fn open_dead_man_rollback_dialog(
+    parent: &impl IsA<gtk::Widget>,
+    controller: Rc<RefCell<RuntimePreviewDeadManController>>,
+    is_display: bool,
+    row_id: String,
+    official_setting: String,
+    page_id: Option<&'static str>,
+    kept_value: String,
+) {
+    let dialog = adw::Dialog::new();
+    dialog.set_title(crate::runtime_preview_dead_man::dead_man_dialog_title(
+        is_display,
+    ));
+    dialog.set_content_width(440);
+    dialog.set_widget_name("hyprland-settings-dead-man-dialog");
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 16);
+    content.set_margin_top(24);
+    content.set_margin_bottom(20);
+    content.set_margin_start(24);
+    content.set_margin_end(24);
+
+    let title = gtk::Label::new(Some(
+        crate::runtime_preview_dead_man::dead_man_dialog_title(is_display),
+    ));
+    title.set_xalign(0.0);
+    title.set_wrap(true);
+    title.add_css_class("title-2");
+    title.set_widget_name("hyprland-settings-dead-man-dialog-title");
+    content.append(&title);
+
+    let remaining = controller.borrow().remaining_seconds();
+    let message = gtk::Label::new(Some(
+        &crate::runtime_preview_dead_man::dead_man_dialog_message(is_display, remaining),
+    ));
+    message.set_xalign(0.0);
+    message.set_wrap(true);
+    message.add_css_class("body");
+    message.set_widget_name("hyprland-settings-dead-man-dialog-message");
+    content.append(&message);
+
+    let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 10);
+    buttons.set_halign(gtk::Align::End);
+    buttons.set_margin_top(10);
+    let keep_button = gtk::Button::with_label("Keep changes");
+    keep_button.set_widget_name("hyprland-settings-dead-man-dialog-keep");
+    let revert_button = gtk::Button::with_label("Revert");
+    revert_button.add_css_class("suggested-action");
+    revert_button.set_widget_name("hyprland-settings-dead-man-dialog-revert");
+    buttons.append(&keep_button);
+    buttons.append(&revert_button);
+    content.append(&buttons);
+
+    dialog.set_child(Some(&content));
+    // Default action is Revert (the safe outcome): Enter and the dialog's
+    // default activation Revert.
+    dialog.set_default_widget(Some(&revert_button));
+
+    // One resolution only. Set before closing so the close handler (Escape /
+    // titlebar / programmatic) does not double-revert a Keep.
+    let resolved = Rc::new(std::cell::Cell::new(false));
+
+    {
+        let controller = Rc::clone(&controller);
+        let resolved = Rc::clone(&resolved);
+        let dialog = dialog.clone();
+        revert_button.connect_clicked(move |_| {
+            if !resolved.get() {
+                resolved.set(true);
+                if let Ok(mut controller) = controller.try_borrow_mut() {
+                    let _ = controller.revert_now();
+                }
+                notify_pending_changed();
+            }
+            dialog.close();
+        });
+    }
+
+    {
+        let controller = Rc::clone(&controller);
+        let resolved = Rc::clone(&resolved);
+        let dialog = dialog.clone();
+        let row_id = row_id.clone();
+        let official_setting = official_setting.clone();
+        let kept_value = kept_value.clone();
+        keep_button.connect_clicked(move |_| {
+            if !resolved.get() {
+                resolved.set(true);
+                let kept = controller
+                    .try_borrow_mut()
+                    .ok()
+                    .and_then(|mut controller| controller.confirm_keep().ok());
+                if kept.is_some() {
+                    // The kept change is applied live and now joins the
+                    // unified pending ledger so Save persists it and Discard
+                    // reverts it.
+                    register_dead_man_kept(
+                        &row_id,
+                        &official_setting,
+                        page_id,
+                        &kept_value,
+                        &controller,
+                    );
+                }
+            }
+            dialog.close();
+        });
+    }
+
+    {
+        // Escape, the titlebar close, and any programmatic close revert an
+        // unresolved (not kept) change.
+        let controller = Rc::clone(&controller);
+        let resolved = Rc::clone(&resolved);
+        dialog.connect_closed(move |_| {
+            if !resolved.get() {
+                resolved.set(true);
+                if let Ok(mut controller) = controller.try_borrow_mut() {
+                    let _ = controller.revert_now();
+                }
+                notify_pending_changed();
+            }
+        });
+    }
+
+    {
+        // Countdown driver: re-render the message each second; on timeout the
+        // controller auto-reverts and the dialog closes.
+        let controller = Rc::clone(&controller);
+        let resolved = Rc::clone(&resolved);
+        let dialog = dialog.clone();
+        let message = message.clone();
+        gtk::glib::timeout_add_local(std::time::Duration::from_millis(1000), move || {
+            if resolved.get() {
+                return gtk::glib::ControlFlow::Break;
+            }
+            let outcome = match controller.try_borrow_mut() {
+                Ok(mut controller) => controller.tick(1000),
+                Err(_) => return gtk::glib::ControlFlow::Continue,
+            };
+            match outcome {
+                Ok(Some(_timed_out)) => {
+                    // The controller reverted on timeout; close the dialog.
+                    resolved.set(true);
+                    notify_pending_changed();
+                    dialog.close();
+                    gtk::glib::ControlFlow::Break
+                }
+                Ok(None) => {
+                    let remaining = controller.borrow().remaining_seconds();
+                    message.set_label(&crate::runtime_preview_dead_man::dead_man_dialog_message(
+                        is_display, remaining,
+                    ));
+                    gtk::glib::ControlFlow::Continue
+                }
+                Err(_) => gtk::glib::ControlFlow::Break,
+            }
+        });
+    }
+
+    dialog.present(Some(parent));
+}
+
 /// Read-only graph of the existing curves (cubic bezier from each curve's
 /// control points), drawn once when the editor opens.
 fn bezier_graph_area() -> gtk::DrawingArea {
@@ -7578,6 +8018,10 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
         crate::ux_presentation::page_for_row(&setting.tab_id, &setting.official_setting)
             .map(|page| page.id);
     if !row_state.preview_enabled {
+        // Save-only rows (no live preview) still get an inline control that
+        // stages a config draft into the same pending ledger; everything
+        // else keeps its quiet chip and opens details on demand.
+        attach_inline_save_only_control(end_box, setting, &row_state, inline_page_id);
         return;
     }
     let initial_value = runtime_seed_initial_value(&setting.official_setting, setting);
@@ -7736,6 +8180,193 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
             entry.connect_activate(move |entry| {
                 apply(entry.text().to_string());
             });
+            end_box.append(&entry);
+        }
+    }
+}
+
+/// Inline control for a save-only row: the value grammar's natural widget
+/// (switch / dropdown / spinner / entry), whose change STAGES a config
+/// draft into the shared pending ledger instead of previewing live.
+/// Nothing here touches the runtime — the staged value is only written by
+/// the gated Save. A per-row resetter restores the widget to its original
+/// value when the draft is discarded (there is no runtime to revert). The
+/// `suppress` flag stops that reset from re-staging the original as a
+/// change. Only rows `is_save_only_editable` admits get a control; anything
+/// else keeps its quiet chip.
+fn attach_inline_save_only_control(
+    end_box: &gtk::Box,
+    setting: &crate::ui::model::UiSetting,
+    row_state: &crate::runtime_preview_ui_projection::RuntimePreviewUiRowState,
+    page_id: Option<&'static str>,
+) {
+    use crate::save_only_pending::{
+        is_save_only_editable, save_only_control_kind, SaveOnlyControlKind,
+    };
+    if !is_save_only_editable(&setting.row_id) {
+        return;
+    }
+    let Some(kind) = save_only_control_kind(&setting.row_id) else {
+        return;
+    };
+
+    let initial = runtime_seed_initial_value(&setting.official_setting, setting);
+    let config_has_line = setting.current_value.raw_value.is_some();
+    let row_id = setting.row_id.clone();
+    let official = setting.official_setting.clone();
+    let control_name = format!(
+        "hyprland-settings-saveonly-control-{}",
+        safe_widget_name(&setting.row_id)
+    );
+    let suppress = Rc::new(std::cell::Cell::new(false));
+
+    // Shared staging closure: no-op while a resetter is driving the widget.
+    let stage: Rc<dyn Fn(String)> = {
+        let row_id = row_id.clone();
+        let official = official.clone();
+        let initial = initial.clone();
+        let suppress = Rc::clone(&suppress);
+        Rc::new(move |value: String| {
+            if suppress.get() {
+                return;
+            }
+            stage_save_only_change(
+                &row_id,
+                &official,
+                page_id,
+                &initial,
+                &value,
+                config_has_line,
+            );
+        })
+    };
+
+    match kind {
+        SaveOnlyControlKind::Switch => {
+            let on = matches!(
+                initial.trim().to_ascii_lowercase().as_str(),
+                "1" | "true" | "yes" | "on"
+            );
+            let switch = gtk::Switch::new();
+            switch.set_widget_name(&control_name);
+            switch.set_valign(gtk::Align::Center);
+            switch.set_active(on);
+            {
+                let stage = Rc::clone(&stage);
+                switch.connect_state_set(move |_, active| {
+                    stage(if active { "true" } else { "false" }.to_string());
+                    gtk::glib::Propagation::Proceed
+                });
+            }
+            {
+                let switch = switch.clone();
+                let suppress = Rc::clone(&suppress);
+                register_save_only_resetter(
+                    &row_id,
+                    Rc::new(move || {
+                        suppress.set(true);
+                        switch.set_active(on);
+                        suppress.set(false);
+                    }),
+                );
+            }
+            end_box.append(&switch);
+        }
+        SaveOnlyControlKind::Dropdown => {
+            let combo = gtk::ComboBoxText::new();
+            combo.set_widget_name(&control_name);
+            combo.set_valign(gtk::Align::Center);
+            for (raw_value, label) in &row_state.dropdown_choices {
+                combo.append(Some(raw_value), label);
+            }
+            combo.set_active_id(Some(initial.trim()));
+            {
+                let stage = Rc::clone(&stage);
+                combo.connect_changed(move |combo| {
+                    if let Some(active) = combo.active_id() {
+                        stage(active.to_string());
+                    }
+                });
+            }
+            {
+                let combo = combo.clone();
+                let suppress = Rc::clone(&suppress);
+                let initial = initial.clone();
+                register_save_only_resetter(
+                    &row_id,
+                    Rc::new(move || {
+                        suppress.set(true);
+                        combo.set_active_id(Some(initial.trim()));
+                        suppress.set(false);
+                    }),
+                );
+            }
+            end_box.append(&combo);
+        }
+        SaveOnlyControlKind::Spin => {
+            let (minimum, maximum) = row_state.slider_bounds.unwrap_or((-100_000.0, 100_000.0));
+            let initial_num = initial.trim().parse::<f64>().unwrap_or(0.0);
+            let (step, digits) = if initial_num.fract() == 0.0 {
+                (1.0, 0u32)
+            } else {
+                (0.05, 2u32)
+            };
+            let spin = gtk::SpinButton::with_range(minimum, maximum, step);
+            spin.set_widget_name(&control_name);
+            spin.set_digits(digits);
+            spin.set_valign(gtk::Align::Center);
+            spin.set_value(initial_num);
+            {
+                let stage = Rc::clone(&stage);
+                spin.connect_value_changed(move |spin| {
+                    let value = spin.value();
+                    let rendered = if digits == 0 {
+                        format!("{}", value as i64)
+                    } else {
+                        format!("{value}")
+                    };
+                    stage(rendered);
+                });
+            }
+            {
+                let spin = spin.clone();
+                let suppress = Rc::clone(&suppress);
+                register_save_only_resetter(
+                    &row_id,
+                    Rc::new(move || {
+                        suppress.set(true);
+                        spin.set_value(initial_num);
+                        suppress.set(false);
+                    }),
+                );
+            }
+            end_box.append(&spin);
+        }
+        SaveOnlyControlKind::Entry => {
+            let entry = gtk::Entry::new();
+            entry.set_widget_name(&control_name);
+            entry.set_valign(gtk::Align::Center);
+            entry.set_width_chars(12);
+            entry.set_text(initial.trim());
+            {
+                let stage = Rc::clone(&stage);
+                entry.connect_activate(move |entry| {
+                    stage(entry.text().to_string());
+                });
+            }
+            {
+                let entry = entry.clone();
+                let suppress = Rc::clone(&suppress);
+                let initial = initial.clone();
+                register_save_only_resetter(
+                    &row_id,
+                    Rc::new(move || {
+                        suppress.set(true);
+                        entry.set_text(initial.trim());
+                        suppress.set(false);
+                    }),
+                );
+            }
             end_box.append(&entry);
         }
     }
@@ -10146,78 +10777,81 @@ fn append_dead_man_preview_panel(detail: &RowDetailProjection, section: &gtk::Bo
     };
     register_dead_man_controller(&controller);
 
+    let dead_man_is_display =
+        detail.official_setting.starts_with("monitor") || detail.row_id.starts_with("hl.monitor");
+    let dead_man_page_id =
+        crate::ux_presentation::page_for_official_setting(&detail.official_setting).map(|p| p.id);
     {
         let controller = controller.clone();
         let status = status.clone();
         let value_entry = value_entry.clone();
-        let keep_button = keep_button.clone();
-        let revert_button = revert_button.clone();
-        let cancel_button = cancel_button.clone();
+        let section = section.clone();
+        let row_id = detail.row_id.clone();
+        let official_setting = detail.official_setting.clone();
         arm_button.connect_clicked(move |arm_button| {
             let armed = { controller.borrow_mut().arm() };
             match armed {
                 Ok(receipt) => {
                     status.set_label(&receipt.status_text);
-                    revert_button.set_sensitive(true);
-                    cancel_button.set_sensitive(true);
                     arm_button.set_sensitive(false);
-                    let applied = {
-                        let value = value_entry.text().to_string();
-                        controller.borrow_mut().apply(&value)
-                    };
+                    let value = value_entry.text().to_string();
+                    let applied = { controller.borrow_mut().apply(&value) };
                     match applied {
                         Ok(receipt) => {
                             status.set_label(&receipt.status_text);
-                            keep_button.set_sensitive(true);
-                            // Countdown driver: ticks once per second and
-                            // auto-reverts on timeout.
-                            let controller = controller.clone();
-                            let status = status.clone();
-                            let keep_button = keep_button.clone();
-                            let revert_button = revert_button.clone();
-                            let cancel_button = cancel_button.clone();
-                            let arm_button = arm_button.clone();
+                            // The change is applied live: hand off to the
+                            // in-window modal rollback dialog, which owns the
+                            // 15-second countdown and the Keep/Revert
+                            // resolution. Re-enable arming once it resolves.
+                            let arm_button_reenable = arm_button.clone();
+                            let status_after = status.clone();
+                            let controller_after = controller.clone();
+                            let dialog_controller = controller.clone();
+                            // Close the detail popover first so the modal is
+                            // not obscured by it, and present the modal on the
+                            // top-level window so it centers cleanly.
+                            if let Some(popover) = section.ancestor(gtk::Popover::static_type()) {
+                                if let Some(popover) = popover.downcast_ref::<gtk::Popover>() {
+                                    popover.popdown();
+                                }
+                            }
+                            let dialog_parent: gtk::Widget = section
+                                .ancestor(adw::ApplicationWindow::static_type())
+                                .unwrap_or_else(|| section.clone().upcast());
+                            open_dead_man_rollback_dialog(
+                                &dialog_parent,
+                                dialog_controller,
+                                dead_man_is_display,
+                                row_id.clone(),
+                                official_setting.clone(),
+                                dead_man_page_id,
+                                value.clone(),
+                            );
+                            // When the dialog closes, reflect the resolved
+                            // phase in the panel status and re-arm.
                             gtk::glib::timeout_add_local(
-                                std::time::Duration::from_millis(1000),
+                                std::time::Duration::from_millis(250),
                                 move || {
-                                    let outcome = {
-                                        match controller.try_borrow_mut() {
-                                            Ok(mut controller) => controller.tick(1000),
-                                            Err(_) => return gtk::glib::ControlFlow::Continue,
-                                        }
+                                    let phase = match controller_after.try_borrow() {
+                                        Ok(controller) => controller.phase(),
+                                        Err(_) => return gtk::glib::ControlFlow::Continue,
                                     };
-                                    match outcome {
-                                        Ok(Some(receipt)) => {
-                                            status.set_label(&receipt.status_text);
-                                            keep_button.set_sensitive(false);
-                                            revert_button.set_sensitive(false);
-                                            cancel_button.set_sensitive(false);
-                                            arm_button.set_sensitive(true);
-                                            gtk::glib::ControlFlow::Break
-                                        }
-                                        Ok(None) => {
-                                            let phase = controller.borrow().phase();
-                                            if phase
-                                                == RuntimePreviewDeadManUiPhase::CountingDown
-                                            {
-                                                status.set_label(&format!(
-                                                    "Previewing with recovery: auto-revert in {} seconds unless you Keep changes.",
-                                                    controller.borrow().remaining_seconds()
-                                                ));
-                                                gtk::glib::ControlFlow::Continue
-                                            } else {
-                                                gtk::glib::ControlFlow::Break
-                                            }
-                                        }
-                                        Err(error) => {
-                                            status.set_label(&error.user_text());
-                                            gtk::glib::ControlFlow::Break
-                                        }
+                                    if phase == RuntimePreviewDeadManUiPhase::CountingDown {
+                                        return gtk::glib::ControlFlow::Continue;
                                     }
+                                    status_after.set_label(&format!(
+                                        "Supervised preview resolved: {}.",
+                                        phase.as_str()
+                                    ));
+                                    arm_button_reenable.set_sensitive(true);
+                                    gtk::glib::ControlFlow::Break
                                 },
                             );
                         }
-                        Err(error) => status.set_label(&error.user_text()),
+                        Err(error) => {
+                            status.set_label(&error.user_text());
+                            arm_button.set_sensitive(true);
+                        }
                     }
                 }
                 Err(error) => status.set_label(&error.user_text()),

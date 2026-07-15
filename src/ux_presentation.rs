@@ -309,6 +309,15 @@ pub fn page_source_tabs(page: &PageSpec) -> Vec<&'static str> {
     tabs
 }
 
+/// Resolve a row's sidebar page from its official setting alone, for call
+/// sites (detail pane, dead-man ledger) that do not carry the model tab id.
+pub fn page_for_official_setting(official_setting: &str) -> Option<&'static PageSpec> {
+    SIDEBAR_PAGE_LAYOUT
+        .iter()
+        .flat_map(|category| category.pages.iter())
+        .find(|page| page_claims_row(page, official_setting))
+}
+
 /// Back-compat single-tab form used where the row's tab equals the page's
 /// source tab.
 pub fn page_claims_row(page: &PageSpec, official_setting: &str) -> bool {

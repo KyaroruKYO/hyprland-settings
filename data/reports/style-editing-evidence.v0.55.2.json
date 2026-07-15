@@ -3,6 +3,8 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "investigatedDate": "2026-07-13",
+  "reInvestigatedDate": "2026-07-14 (backend-completion marathon, Scope I)",
+  "reInvestigationFinding": "re-verified this pass: /usr/share/hypr/stubs/hl.meta.lua (47788 bytes) and /usr/share/hypr/hyprland.lua still ship, the stub still enumerates NO style values, and the example config still shows style USAGE only ('style = \"popin 87%\"' — leaf-specific AND parameterized). The installed hyprland package still ships only protocol headers, no ConfigManager/AnimationManager source. Conclusion unchanged: style editing stays BLOCKED with no edit control.",
   "styleEditingStatus": "blocked",
   "reason": "no trusted valid-value evidence",
   "styleEvidenceTrusted": false,
