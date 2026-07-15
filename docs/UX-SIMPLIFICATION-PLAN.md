@@ -264,6 +264,17 @@ defaults instead of the edit projection's flip-suggestion. Guards:
 - **Structured-family ledger**: hl.animation/hl.curve stay on the supervised
   Preview/Keep/Revert/Save flow; unifying them with the applied-live ledger
   would need their record lifecycle reconciled with DeadManKept semantics.
+- **Stale status chip on now-editable rows (2026-07-14)**: broadening save-only
+  to 117 rows left the status chip reading "Hardware required" / "Blocked" /
+  "Not Proven Yet" next to a working save-only control (the chip describes live
+  preview, not the save-only editor). Refine `status_chip_for_row` to read
+  "Save Only" when `is_save_only_editable`, without disturbing the reliability
+  matrix classification.
+- **Production-gated rows (51)**: render/debug/cursor/xwayland settings stay
+  uneditable because `apply_setting_change` requires a HighRiskProductionGate
+  recovery-plan proof to save. Making them editable needs that recovery flow
+  wired through save-only (capture original + recovery plan; the backup is the
+  recovery), NOT a gate bypass — a deliberate, separately-reviewed change.
 
 ## Safety boundaries (unchanged)
 

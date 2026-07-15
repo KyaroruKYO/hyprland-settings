@@ -1,0 +1,15 @@
+{
+  "report": "profile-mode-editability",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "scope": "Scope H — profiles, modes, symlink-backed config switching.",
+  "status": "NOT_IMPLEMENTED_THIS_PASS — remains disabled with reason",
+  "honestReason": "A functional profile system (save-current, load-into-pending, apply, diff, rollback-on-failed-apply, symlink-safe target switching, no silent overwrite) is a distinct multi-part subsystem with its own whole-config write/reread/rollback safety surface. It was not built or proven in this pass; shipping a half-built profile apply that can strand the desktop on a failed whole-config swap would violate 'do not weaken safety'. The 'Save Current as Profile' button and 'Save as new profile' menu action stay inert.",
+  "whatIsProven": {
+    "configTargetDetection": "ConfigDiscovery resolves the active config; the pending diff writes to and shows that exact path (b-03 shows /home/kyo/.config/hypr/hyprland.conf)",
+    "symlinkAndIncludeGraph": "src/config_graph.rs detects symlinks, source/include graph, cycles, and management hints",
+    "noSilentOverwrite": "the gated scalar save only ever writes the discovered active config"
+  },
+  "screenshot": "e-profiles-page.png (No Profiles, disabled Save Current as Profile)",
+  "remainingWork": ["create-from-current + metadata", "load-into-pending + gated apply", "diff preview", "rollback-on-failed-apply", "symlink/mode target switching with backup + rollback"]
+}

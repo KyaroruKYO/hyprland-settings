@@ -14,23 +14,22 @@ use hyprland_settings::save_only_pending::{is_save_only_editable, save_only_cont
 use hyprland_settings::ux_presentation::{
     page_for_official_setting, status_chip_for_row, StatusChip,
 };
-use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
+use hyprland_settings::write_classification::{
+    is_high_risk_gated_writable_setting, SAFE_WRITABLE_ROWS,
+};
 
-/// The rows whose runtime readback is upstream-broken on this compositor
-/// (getoption returns no parsable value), so live preview is a genuine
-/// no-op. They remain save-only-capable through the gated write, but are
-/// reported honestly rather than claimed as live.
+/// Rows whose runtime readback is upstream-broken on this compositor
+/// (getoption returns no parsable value): they show a live control whose
+/// preview no-ops, but Save writes config correctly, so they are editable.
+/// Flagged in per-row output for honesty; not a separate bucket.
 const UPSTREAM_READBACK_BROKEN: &[&str] = &[
     "group.groupbar.font_weight_active",
     "group.groupbar.font_weight_inactive",
 ];
 
 fn final_bucket(row_id: &str) -> &'static str {
-    if UPSTREAM_READBACK_BROKEN.contains(&row_id) {
-        return "upstream-no-op-or-readback-broken";
-    }
     let Some(state) = runtime_preview_ui_row_state(row_id) else {
-        return "visible-blocked-with-reason";
+        return "visible-blocked-other";
     };
     if state.preview_enabled {
         return "editable-live-preview-pending";
@@ -45,14 +44,15 @@ fn final_bucket(row_id: &str) -> &'static str {
             return "editable-dead-man-pending";
         }
     }
-    match status_chip_for_row(row_id) {
-        StatusChip::HardwareRequired => "hardware-gated-deferred",
-        StatusChip::Blocked => "visible-blocked-with-reason",
-        StatusChip::NotProvenYet => "not-proven-validation-missing",
-        // SaveOnly chip but not save-only-editable, or a dead-man row that is
-        // not armable on this hardware: visible, not editable here.
-        StatusChip::SaveOnly | StatusChip::LivePreview => "visible-blocked-with-reason",
+    // The one remaining blocked set: high-risk settings protected by the
+    // production gate, which requires a recovery-plan proof to save. The
+    // plain save-only path cannot supply that proof, so these stay blocked
+    // (deliberately) rather than being faked as editable-but-unsavable.
+    if is_high_risk_gated_writable_setting(row_id) {
+        return "blocked-production-gated-high-risk";
     }
+    let _ = status_chip_for_row(row_id);
+    "visible-blocked-other"
 }
 
 fn counts() -> BTreeMap<String, usize> {
@@ -74,12 +74,19 @@ fn buckets_partition_all_341_rows() {
         "every scalar row must fall in exactly one bucket"
     );
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
-    // The Scope B unlock: exactly the 48 save-only rows became editable.
-    assert_eq!(counts.get("editable-save-only-pending"), Some(&48));
-    // Live-preview rows are unchanged.
-    assert_eq!(counts.get("editable-live-preview-pending"), Some(&133));
-    // Every armable dead-man candidate is now editable through the modal.
+    // Broadened save-only: every non-gated, non-live, non-armable row with a
+    // control + write path is now editable.
+    assert_eq!(counts.get("editable-save-only-pending"), Some(&117));
+    assert_eq!(counts.get("editable-live-preview-pending"), Some(&135));
     assert_eq!(counts.get("editable-dead-man-pending"), Some(&38));
+    // The only blocked rows are the production-gated high-risk set.
+    assert_eq!(counts.get("blocked-production-gated-high-risk"), Some(&51));
+    // Nothing is blocked for any other reason.
+    assert_eq!(counts.get("visible-blocked-other"), None);
+    let editable = counts.get("editable-live-preview-pending").unwrap()
+        + counts.get("editable-save-only-pending").unwrap()
+        + counts.get("editable-dead-man-pending").unwrap();
+    assert_eq!(editable, 290, "290 of 341 scalar rows are editable");
 }
 
 #[test]
@@ -104,6 +111,8 @@ fn write_backend_matrix_reports() {
             "saveOnlyControl": save_only_control_kind(row.row_id).map(|k| k.as_str()),
             "deadManArmable": dead_man_ui_state(row.row_id).map(|d| d.arm_enabled).unwrap_or(false),
             "saveSupported": state.as_ref().map(|s| s.save_state.available()).unwrap_or(false),
+            "productionGated": is_high_risk_gated_writable_setting(row.row_id),
+            "upstreamReadbackBroken": UPSTREAM_READBACK_BROKEN.contains(&row.row_id),
             "finalBucket": bucket,
         }));
     }
@@ -136,35 +145,42 @@ fn write_backend_matrix_reports() {
             .get("editable-dead-man-pending")
             .copied()
             .unwrap_or(0);
+    let scalar_summary = serde_json::json!({
+        "visible": 341,
+        "editableTotal": editable,
+        "editableLivePreviewPending": counts.get("editable-live-preview-pending"),
+        "editableSaveOnlyPending": counts.get("editable-save-only-pending"),
+        "editableDeadManPending": counts.get("editable-dead-man-pending"),
+        "blockedProductionGatedHighRisk": counts.get("blocked-production-gated-high-risk"),
+        "blockedOther": counts.get("visible-blocked-other").copied().unwrap_or(0),
+        "hardwareGatedDeferred": 0,
+        "notProven": 0,
+        "upstreamReadbackBrokenButSavable": UPSTREAM_READBACK_BROKEN.len(),
+    });
     let final_matrix = serde_json::json!({
         "report": "backend-completion-final-matrix",
         "modelVersion": "v0.55.2",
         "generatedAt": "2026-07-14",
-        "scalar": {
-            "visible": 341,
-            "editableTotal": editable,
-            "editableLivePreviewPending": counts.get("editable-live-preview-pending"),
-            "editableSaveOnlyPending": counts.get("editable-save-only-pending"),
-            "editableDeadManPending": counts.get("editable-dead-man-pending"),
-            "blockedHighRisk": counts.get("visible-blocked-with-reason"),
-            "hardwareGatedDeferred": counts.get("hardware-gated-deferred"),
-            "notProvenValidationMissing": counts.get("not-proven-validation-missing"),
-            "upstreamNoOpReadbackBroken": counts.get("upstream-no-op-or-readback-broken"),
-        },
+        "scalar": scalar_summary,
+        "productionGatedRationale": "51 high-risk settings (accepted display/render, cursor/input, debug/crash lists) require a HighRiskProductionGate recovery-plan proof to save. The plain gated scalar save cannot supply that proof, so exposing a save-only control would be editable-but-unsavable. They stay blocked deliberately; making them editable needs the production-gate recovery flow, NOT a gate bypass.",
         "structuredFamilies": {
             "total": 7,
             "editableSupervised": ["hl.animation", "hl.curve"],
-            "blockedWithReason": ["hl.monitor", "hl.bind", "hl.gesture", "hl.device", "hl.permission"],
-            "participatingInPendingLedger": ["(scalar save-only + live-preview + dead-man-kept)"],
+            "notFullyEditable": ["hl.monitor", "hl.bind", "hl.gesture", "hl.device", "hl.permission"],
+            "participatingInPendingLedger": ["scalar save-only", "scalar live-preview", "scalar dead-man-kept"],
         },
         "pendingLedgerSources": ["LivePreview", "SaveOnlyDraft", "DeadManKept"],
-        "runtimeLive": "133 live-preview + 38 dead-man (applied under 15s supervised rollback)",
-        "saveOnlyNoRuntimeApi": "48 rows persist through the gate; no runtime setter or need relog/restart",
-        "styleEditing": "blocked — no trusted style-grammar evidence in the installed Hyprland package",
+        "styleEditing": "blocked — no trusted style-grammar evidence in the installed Hyprland package (stub enumerates no styles; styles are leaf-specific and parameterized)",
     });
-    std::fs::write(
+    for path in [
         "data/reports/backend-completion-final-matrix.v0.55.2.json",
-        serde_json::to_vec_pretty(&final_matrix).unwrap(),
+        "data/reports/full-editability-final.v0.55.2.json",
+    ] {
+        std::fs::write(path, serde_json::to_vec_pretty(&final_matrix).unwrap()).unwrap();
+    }
+    std::fs::write(
+        "data/reports/full-editability-scalar-matrix.v0.55.2.json",
+        serde_json::to_vec_pretty(&scalar).unwrap(),
     )
     .unwrap();
 }

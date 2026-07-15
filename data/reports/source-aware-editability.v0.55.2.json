@@ -1,0 +1,15 @@
+{
+  "report": "source-aware-editability",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "scope": "Scope I — source/include/Lua-aware editing.",
+  "sourceIncludeGraph": "PROVEN (src/config_graph.rs): symlink detection, source/include graph with depth+cycle limits, canonicalization, management hints",
+  "writeTarget": "PROVEN: gated scalar save writes only the ConfigDiscovery-resolved active config; the pending diff shows the real target path (b-03-saveonly-pending-page.png)",
+  "duplicateDetection": "PROVEN: dashboard 'Needs attention' card surfaces settings appearing more than once; the save-only diff shows duplicate context drawn from the live file",
+  "luaHandling": {
+    "status": "honest limitation",
+    "finding": "this lua-configured Hyprland fork sets some options outside the parsed .conf. The app never turns a runtime-only lua value into a fake config write; save-only drafts write a real .conf line through the gate and do not claim to edit lua source.",
+    "generatedBlockOwnership": "NOT implemented this pass — save-only writes go to the discovered active .conf, not an owned generated block; owning a generated block to override lua-only values is future work"
+  },
+  "safety": {"wroteUnexpectedTarget": false, "fakeLuaConfigWrite": false, "bypassedGate": false}
+}

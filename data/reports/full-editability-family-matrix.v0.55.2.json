@@ -1,0 +1,17 @@
+{
+  "report": "full-editability-family-matrix",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "scope": "Scope F — structured-family editors.",
+  "summary": {"total": 7, "editable": 2, "notFullyEditable": 5},
+  "families": [
+    {"family": "hl.animation", "status": "editable-supervised", "shapes": "enabled toggle + bezier reference via Preview/Keep/Revert/Save with auto-revert; gated family save", "styleShape": "blocked (no trusted style enumeration — see style-editability)"},
+    {"family": "hl.curve", "status": "editable-supervised", "shapes": "existing bezier control points via the Bezier Curve Editor; gated family save"},
+    {"family": "hl.monitor", "status": "not-editable-this-pass", "reason": "a monitor record editor with a proven display capture/apply/verify/revert flow (and the display rollback dialog) was not built; a bad monitor line can black the only display on reload. Monitor line stays read-only (e-monitors-page.png).", "proofRequirement": "display rollback flow + resolution/refresh/position/scale/transform validation"},
+    {"family": "hl.bind", "status": "not-editable-this-pass", "reason": "a bind editor with duplicate/conflict/reserved detection + parser/write/reread + rollback was not built; keybinds are safety-relevant (a bad bind can lock out input).", "proofRequirement": "bind grammar + conflict detection + gated family write/reread"},
+    {"family": "hl.gesture", "status": "not-editable-this-pass", "reason": "no trusted runtime readback listing exists on this compositor version to capture original state; grammar-only save-only editor was not built this pass.", "proofRequirement": "trusted gesture grammar + gated family write"},
+    {"family": "hl.device", "status": "not-editable-this-pass", "reason": "per-device record editor + save-only staging for unavailable hardware was not built; device records reconfigure input hardware.", "proofRequirement": "device grammar + per-device save-only staging"},
+    {"family": "hl.permission", "status": "not-editable-this-pass", "reason": "a permission editor with strict source-backed validators + parser/write/reread was not built; a wrong permission line silently grants/denies privileged protocol access.", "proofRequirement": "source-backed permission grammar + validator + gated family write/reread"}
+  ],
+  "honestNote": "Building five new structured-family editors (each with grammar, validation, add/edit/remove, gated family write/reread, and live GUI proof) is a large multi-subsystem effort that was not completed or proven in this pass. They are reported as not-editable-this-pass with concrete proof requirements rather than claimed as done. hl.animation/hl.curve remain editable-supervised as before."
+}

@@ -1,0 +1,16 @@
+{
+  "report": "style-editability",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "scope": "Scope J — animation/window style editing.",
+  "status": "BLOCKED — re-investigated 2026-07-14, still insufficient trusted grammar",
+  "sourcesReSearchedThisPass": [
+    "/usr/include/hyprland — only protocol headers, no ConfigManager/AnimationManager source",
+    "/usr/share/hypr/stubs/hl.meta.lua (47788 bytes) — documents hl.animation but enumerates NO style values",
+    "/usr/share/hypr/hyprland.lua — style USAGE only ('style = \"popin 87%\"'), confirming styles are leaf-specific AND parameterized (a global dropdown would be wrong in shape)",
+    "data/exports/hyprland-0.55.4/hyprctl-descriptions.v0.55.4.json — no style enumeration"
+  ],
+  "conservativeSubsetConsidered": "example configs show only 'popin <pct>%' and 'fade' in USE; these are usage instances, not an enumeration, and are parameterized. Building an editable subset from two usage examples would be guessing the grammar's shape (which values take a parameter, which leaves accept which styles). That is exactly the 'no guessing / trusted sources only' line. Style value stays preserved as raw text; no edit control is exposed.",
+  "reEnableCriteria": "an authoritative per-leaf style enumeration (future descriptions export, typed stub, or installed source) + validator + parser/write/reread + save proof",
+  "note": "the style FIELD's row is not among the 341 scalar rows; it is a structured-family (hl.animation) record field, tracked in the family matrix"
+}

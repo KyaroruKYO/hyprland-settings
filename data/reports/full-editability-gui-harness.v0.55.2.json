@@ -1,0 +1,63 @@
+{
+  "report": "full-editability-gui-harness",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "harness": "tools live AT-SPI driver (pyatspi) against the running release binary on Hyprland 0.55.4",
+  "coverage": {
+    "note": "Per-category live proof plus a whole-suite backend partition guarantee. Every one of the 117 save-only rows is admitted by is_save_only_editable and routes through the identical attach_inline_save_only_control -> stage_save_only_change -> ledger path, guarded by tests/save_only_pending.rs::every_non_gated_non_live_row_with_a_control_is_editable (117, no gaps). The live harness drove at least one representative row from each newly-unlocked category end to end.",
+    "notFullPerRowLiveDrive": "driving all 341 rows individually through flaky live AT-SPI in one session was not done; the backend guard proves classification+control+ledger for all, and the live harness proves the shared code path per category"
+  },
+  "liveProofs": [
+    {
+      "category": "save-only (no live setter)",
+      "row": "binds.pass_mouse_when_bound",
+      "control": "switch",
+      "runtimeBefore": "bool: false",
+      "runtimeAfter": "bool: false",
+      "noRuntimeMutation": true,
+      "pendingSurfaces": "chip + sidebar badge + bottom bar + Pending Changes page + diff (+binds:pass_mouse_when_bound = true to ~/.config/hypr/hyprland.conf)",
+      "discardCleared": true,
+      "screenshots": ["b-02-saveonly-pending.png", "b-03-saveonly-pending-page.png"]
+    },
+    {
+      "category": "was hardware-gated -> now save-only",
+      "row": "input.touchpad.natural_scroll",
+      "control": "switch",
+      "runtimeBefore": "bool: false",
+      "runtimeAfter": "bool: false",
+      "noRuntimeMutation": true,
+      "pendingSurfaces": "chip + Devices badge + bottom bar (staged, not saved to disk)",
+      "discardCleared": true,
+      "screenshot": "c-01-hardware-gated-saveonly.png"
+    },
+    {
+      "category": "was not-proven -> now save-only",
+      "row": "scrolling.wrap_focus",
+      "control": "switch",
+      "runtimeBefore": "bool: true",
+      "runtimeAfter": "bool: true",
+      "noRuntimeMutation": true,
+      "pendingSurfaces": "chip + bottom bar",
+      "discardCleared": true,
+      "screenshot": "c-02-notproven-saveonly.png"
+    },
+    {
+      "category": "dead-man live",
+      "row": "input.repeat_rate",
+      "control": "modal rollback dialog",
+      "runtimeOriginal": "int: 25",
+      "appliedLive": "int: 0",
+      "countdown": "15s -> 9s observed",
+      "revertRestored": "int: 25",
+      "keptJoinedPendingLedger": true,
+      "discardOfKeptReverted": "int: 25",
+      "screenshots": ["d-01-deadman-dialog-15s.png", "d-02-deadman-dialog-midcountdown.png", "d-03-deadman-reverted.png", "d-04-deadman-kept-pending.png"]
+    }
+  ],
+  "safetyBoundaryProvenLive": {
+    "productionGatedRowsHaveNoControl": true,
+    "checked": ["render.direct_scanout", "opengl.nvidia_anti_flicker"],
+    "result": "no inline control rendered for either (must stay uneditable without a recovery-plan proof)"
+  },
+  "runtimeCleanAfter": "input:repeat_rate=int:25, binds:pass_mouse_when_bound=bool:false, input:touchpad:natural_scroll=bool:false; user config never written (no Save clicked)"
+}

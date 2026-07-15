@@ -19,9 +19,11 @@
 //! runtime-preview executor, so a save-only edit cannot preview or apply
 //! anything live.
 
+use crate::runtime_preview_dead_man::dead_man_ui_state;
 use crate::runtime_preview_ui_projection::runtime_preview_ui_row_state;
-use crate::ux_presentation::{status_chip_for_row, StatusChip};
-use crate::write_classification::{ScalarWriteValueKind, SAFE_WRITABLE_ROWS};
+use crate::write_classification::{
+    is_high_risk_gated_writable_setting, ScalarWriteValueKind, SAFE_WRITABLE_ROWS,
+};
 
 /// The GTK control a save-only row edits with. Derived purely from the
 /// row's value grammar — the same value-kind → control mapping the
@@ -60,31 +62,77 @@ pub fn save_only_control_kind(row_id: &str) -> Option<SaveOnlyControlKind> {
         ScalarWriteValueKind::Boolean => SaveOnlyControlKind::Switch,
         ScalarWriteValueKind::FiniteChoice => SaveOnlyControlKind::Dropdown,
         ScalarWriteValueKind::Number | ScalarWriteValueKind::Percent => SaveOnlyControlKind::Spin,
+        // Text-representable grammars: a plain entry stages the raw token and
+        // the gated save validates + reread-verifies it (invalid input is
+        // rejected at Save, never silently written). This covers keyboard
+        // layout, fonts, regexes, vectors, paths, monitor names, accel
+        // profiles, css gaps, and numeric lists.
         ScalarWriteValueKind::LineSafeString
         | ScalarWriteValueKind::RegexString
-        | ScalarWriteValueKind::SourceBacked => SaveOnlyControlKind::Entry,
-        _ => return None,
+        | ScalarWriteValueKind::SourceBacked
+        | ScalarWriteValueKind::StringLike
+        | ScalarWriteValueKind::Path
+        | ScalarWriteValueKind::MonitorName
+        | ScalarWriteValueKind::Vector2
+        | ScalarWriteValueKind::NumericList
+        | ScalarWriteValueKind::CommaSeparatedFloatList
+        | ScalarWriteValueKind::AccelProfile
+        | ScalarWriteValueKind::CssGap => SaveOnlyControlKind::Entry,
+        // Colors/gradients live-preview; ComplexRaw/Unknown have no proven
+        // safe scalar control — fail closed.
+        ScalarWriteValueKind::Color
+        | ScalarWriteValueKind::Gradient
+        | ScalarWriteValueKind::ComplexRaw
+        | ScalarWriteValueKind::Unknown => return None,
     })
 }
 
 /// Whether a row is safely editable through the save-only staged path.
 ///
-/// True only when the row is classified [`StatusChip::SaveOnly`] (which
-/// already excludes high-risk/blocked, hardware-gated, dead-man-supervised,
-/// and not-proven rows), is NOT live-previewable (live rows use the preview
-/// ledger), is backed by the app's existing gated scalar write flow, and has
-/// a concrete scalar control. Fail-closed on anything else.
+/// Save-only is a deferred, gated config write: staging changes nothing at
+/// runtime, and "Save now" writes the value through the existing Safe Live
+/// Save Mode gate (backup + write + reread, no reload), so it only takes
+/// effect on the user's next reload. That makes it safe for far more than
+/// the rows that live-preview.
+///
+/// A row is save-only-editable when ALL hold:
+/// - it is NOT live-previewable (live rows use the preview ledger), and
+/// - this machine cannot arm it under the dead-man countdown (armable rows
+///   use the modal), and
+/// - it has a concrete scalar control for its value grammar, and
+/// - it is backed by the app's gated scalar write flow, and
+/// - it is NOT a production-gated high-risk setting.
+///
+/// The production-gate exclusion is the one hard stop: settings in the
+/// accepted high-risk display/render, cursor/input, and debug/crash lists
+/// require a recovery-plan proof to save (they can brick display or session
+/// on the next reload), and the plain save-only save cannot supply that
+/// proof. Exposing a control for them would be editable-but-unsavable, so
+/// they stay out until the production-gate recovery flow exists. Fail-closed
+/// on everything else.
 pub fn is_save_only_editable(row_id: &str) -> bool {
-    if status_chip_for_row(row_id) != StatusChip::SaveOnly {
+    let Some(state) = runtime_preview_ui_row_state(row_id) else {
+        return false;
+    };
+    if state.preview_enabled {
+        return false;
+    }
+    if dead_man_ui_state(row_id)
+        .map(|dm| dm.arm_enabled)
+        .unwrap_or(false)
+    {
         return false;
     }
     if save_only_control_kind(row_id).is_none() {
         return false;
     }
-    match runtime_preview_ui_row_state(row_id) {
-        Some(state) => !state.preview_enabled && state.save_state.available(),
-        None => false,
+    if !state.save_state.available() {
+        return false;
     }
+    if is_high_risk_gated_writable_setting(row_id) {
+        return false;
+    }
+    true
 }
 
 /// One staged, not-yet-saved config change for a save-only row. Pure data:
