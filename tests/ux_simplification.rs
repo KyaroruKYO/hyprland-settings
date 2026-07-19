@@ -246,7 +246,7 @@ fn presentation_layer_is_presentational_only_and_gates_unchanged() {
     let window = fs::read_to_string("src/ui/window.rs").expect("window reads");
     assert!(window.contains("gated_scalar_save_live("));
     assert!(window.contains("persist_safe_live_save_mode_live("));
-    assert!(window.contains("save_picked_record_live("));
+    assert!(window.contains("save_picked_record_with_precondition_live("));
     assert!(!window.contains("apply_setting_change("));
     assert!(!window.contains("\"reload\""));
 }

@@ -1,20 +1,66 @@
-use std::fs::{self, OpenOptions};
-use std::io::Write;
-use std::path::Path;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::str;
 
-use anyhow::{anyhow, Context, Result};
+use anyhow::{anyhow, Result};
+use thiserror::Error;
 
+use crate::config_backup::BackupManager;
 use crate::config_parser::{parse_hyprland_config_text, ParsedConfigLine};
+use crate::durable_fs::{hardened_atomic_replace, DurableFsError};
 use crate::write_classification::{
     config_key_from_official_setting, safe_writable_official_setting,
 };
 use crate::write_safety::{WritePlan, WritePlanAction, WriteResult};
 
-/// Read-only: what the config text would become if this change were
-/// written. Uses the exact same line-replacement/append helpers the real
-/// writer uses, but never touches a file — the pending-changes review
-/// surface renders its diff preview from this.
+#[derive(Debug, Error)]
+pub enum ScalarWriteError {
+    #[error("{0}")]
+    Drift(#[from] DurableFsError),
+    #[error("ExpectedValueChanged: {0}")]
+    ExpectedValueChanged(String),
+    #[error("ExpectedSettingNowPresent: {0}")]
+    ExpectedSettingNowPresent(String),
+    #[error("ExpectedRecordChanged: {0}")]
+    ExpectedRecordChanged(String),
+    #[error("SourceGraphChanged: {0}")]
+    SourceGraphChanged(String),
+    #[error("InvalidWritePlan: {0}")]
+    InvalidWritePlan(String),
+    #[error("PostWriteVerificationFailed: {message}; restored={restored}")]
+    PostWriteVerificationFailed { message: String, restored: bool },
+    #[error("RestoreFailed: {0}")]
+    RestoreFailed(String),
+}
+
+impl ScalarWriteError {
+    pub fn code(&self) -> &'static str {
+        match self {
+            Self::Drift(error) => error.code(),
+            Self::ExpectedValueChanged(_) => "ExpectedValueChanged",
+            Self::ExpectedSettingNowPresent(_) => "ExpectedSettingNowPresent",
+            Self::ExpectedRecordChanged(_) => "ExpectedRecordChanged",
+            Self::SourceGraphChanged(_) => "SourceGraphChanged",
+            Self::InvalidWritePlan(_) => "InvalidWritePlan",
+            Self::PostWriteVerificationFailed { .. } => "PostWriteVerificationFailed",
+            Self::RestoreFailed(_) => "RestoreFailed",
+        }
+    }
+
+    pub fn user_message(&self) -> &'static str {
+        match self {
+            Self::Drift(error) => error.user_message(),
+            Self::ExpectedValueChanged(_)
+            | Self::ExpectedSettingNowPresent(_)
+            | Self::ExpectedRecordChanged(_)
+            | Self::SourceGraphChanged(_) => {
+                "The config changed on disk after this edit was prepared. Nothing was written. Reload or reread the setting before saving again."
+            }
+            _ => "The config write failed. The setting remains pending and recovery remains available.",
+        }
+    }
+}
+
+/// Read-only: what the config text would become if this change were written.
+/// This helper never touches a file.
 pub fn preview_scalar_change_text(
     contents: &str,
     setting_id: &str,
@@ -30,45 +76,159 @@ pub fn preview_scalar_change_text(
     }
 }
 
-pub fn apply_scalar_write_plan(plan: &WritePlan) -> Result<WriteResult> {
-    let official_setting = safe_writable_official_setting(&plan.setting_id)
-        .ok_or_else(|| anyhow!("setting is not safe-writable: {}", plan.setting_id))?;
-    let config_key = config_key_from_official_setting(official_setting);
+fn validate_source_graph_precondition(plan: &WritePlan) -> Result<(), ScalarWriteError> {
+    match (
+        plan.source_graph_root.as_deref(),
+        plan.source_graph_fingerprint.as_deref(),
+    ) {
+        (None, None) => Ok(()),
+        (Some(root), Some(expected)) => {
+            let actual = crate::source_aware_current_config::current_source_graph_fingerprint(root)
+                .ok_or_else(|| {
+                    ScalarWriteError::SourceGraphChanged(
+                        "source graph could not be reproduced".to_string(),
+                    )
+                })?;
+            if actual == expected {
+                Ok(())
+            } else {
+                Err(ScalarWriteError::SourceGraphChanged(
+                    "source/include mapping or connected file bytes changed".to_string(),
+                ))
+            }
+        }
+        _ => Err(ScalarWriteError::SourceGraphChanged(
+            "source graph evidence is incomplete".to_string(),
+        )),
+    }
+}
 
-    let original = fs::read_to_string(&plan.target_path)
-        .with_context(|| format!("failed to read {}", plan.target_path.display()))?;
+pub fn apply_scalar_write_plan(plan: &WritePlan) -> Result<WriteResult, ScalarWriteError> {
+    let official_setting = safe_writable_official_setting(&plan.setting_id).ok_or_else(|| {
+        ScalarWriteError::InvalidWritePlan(format!(
+            "setting is not safe-writable: {}",
+            plan.setting_id
+        ))
+    })?;
+    let config_key = config_key_from_official_setting(official_setting);
+    validate_source_graph_precondition(plan)?;
+    let original = str::from_utf8(&plan.target_precondition.bytes).map_err(|error| {
+        ScalarWriteError::InvalidWritePlan(format!("target is not valid UTF-8: {error}"))
+    })?;
+    validate_expected_record_shape(plan, original, official_setting)?;
+
     let updated = match plan.action {
         WritePlanAction::ReplaceLine { line_number } => {
-            replace_line_value(&original, line_number, &config_key, &plan.proposed_value)?
+            replace_line_value(original, line_number, &config_key, &plan.proposed_value)
+                .map_err(|error| ScalarWriteError::ExpectedRecordChanged(error.to_string()))?
         }
         WritePlanAction::AppendSetting => {
-            append_scalar_setting(&original, &config_key, &plan.proposed_value)
+            append_scalar_setting(original, &config_key, &plan.proposed_value)
         }
     };
-    atomic_write(&plan.target_path, updated.as_bytes())?;
 
-    let verified = fs::read_to_string(&plan.target_path)
-        .with_context(|| format!("failed to reread {}", plan.target_path.display()))?;
+    // Recheck the entire source graph after backup creation and immediately
+    // before entering the target replacement primitive.
+    validate_source_graph_precondition(plan)?;
+    let durable_receipt = hardened_atomic_replace(&plan.target_precondition, updated.as_bytes())?;
+    let verified = std::fs::read_to_string(&plan.target_path).map_err(|error| {
+        restore_after_semantic_failure(plan, updated.as_bytes(), format!("reread failed: {error}"))
+    })?;
     let parsed = parse_hyprland_config_text(&plan.target_path, &verified);
-    let verified_value = parsed
+    let matches = parsed
         .scalar_records()
         .filter(|record| record.normalized_setting_id.as_deref() == Some(official_setting))
-        .last()
-        .and_then(|record| record.raw_value.clone());
+        .collect::<Vec<_>>();
+    let verified_value = matches.last().and_then(|record| record.raw_value.clone());
 
-    if verified_value.as_deref() != Some(plan.proposed_value.as_str()) {
-        return Err(anyhow!(
-            "write verification failed for {}; expected {}, got {:?}",
-            plan.setting_id,
-            plan.proposed_value,
-            verified_value
+    if matches.len() != 1 || verified_value.as_deref() != Some(plan.proposed_value.as_str()) {
+        return Err(restore_after_semantic_failure(
+            plan,
+            updated.as_bytes(),
+            format!(
+                "expected one {} value {}, got count {} and value {:?}",
+                plan.setting_id,
+                plan.proposed_value,
+                matches.len(),
+                verified_value
+            ),
         ));
     }
 
     Ok(WriteResult {
         plan: plan.clone(),
         verified_value,
+        durable_receipt,
     })
+}
+
+fn validate_expected_record_shape(
+    plan: &WritePlan,
+    original: &str,
+    official_setting: &str,
+) -> Result<(), ScalarWriteError> {
+    let parsed = parse_hyprland_config_text(&plan.target_path, original);
+    let matches = parsed
+        .scalar_records()
+        .filter(|record| record.normalized_setting_id.as_deref() == Some(official_setting))
+        .collect::<Vec<_>>();
+    if matches.len() != plan.expected_occurrence_count {
+        return if plan.expected_occurrence_count == 0 && !matches.is_empty() {
+            Err(ScalarWriteError::ExpectedSettingNowPresent(
+                plan.setting_id.clone(),
+            ))
+        } else {
+            Err(ScalarWriteError::ExpectedRecordChanged(format!(
+                "{} occurrence count changed from {} to {}",
+                plan.setting_id,
+                plan.expected_occurrence_count,
+                matches.len()
+            )))
+        };
+    }
+    if let WritePlanAction::ReplaceLine { line_number } = plan.action {
+        let Some(record) = matches.first() else {
+            return Err(ScalarWriteError::ExpectedRecordChanged(
+                plan.setting_id.clone(),
+            ));
+        };
+        if record.line_number != line_number
+            || plan.expected_raw_line.as_deref() != Some(record.raw_line.as_str())
+        {
+            return Err(ScalarWriteError::ExpectedRecordChanged(format!(
+                "{} source record moved or changed",
+                plan.setting_id
+            )));
+        }
+        if record.raw_value.as_deref() != plan.old_value.as_deref() {
+            return Err(ScalarWriteError::ExpectedValueChanged(
+                plan.setting_id.clone(),
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn restore_after_semantic_failure(
+    plan: &WritePlan,
+    committed_bytes: &[u8],
+    message: String,
+) -> ScalarWriteError {
+    let backup_root = plan
+        .backup
+        .backup_path
+        .parent()
+        .unwrap_or_else(|| std::path::Path::new("."));
+    match BackupManager::new(backup_root).rollback(&plan.backup, committed_bytes) {
+        Ok(_) => ScalarWriteError::PostWriteVerificationFailed {
+            message,
+            restored: true,
+        },
+        Err(error) => ScalarWriteError::RestoreFailed(format!(
+            "{message}; committed hash {}; restore failed: {error}",
+            crate::durable_fs::content_sha256(committed_bytes)
+        )),
+    }
 }
 
 fn replace_line_value(
@@ -104,13 +264,13 @@ fn append_scalar_setting(contents: &str, config_key: &str, proposed_value: &str)
 }
 
 fn ensure_scalar_line(line: &str, config_key: &str) -> Result<()> {
-    let parsed = parse_hyprland_config_text("/tmp/hyprland-settings-line-check.conf", line);
+    let parsed = parse_hyprland_config_text("line-check.conf", line);
     let official_setting = config_key.replace(':', ".");
-    let matches = parsed
+    if parsed
         .records
         .iter()
-        .any(|record| is_matching_scalar_record(record, &official_setting));
-    if matches {
+        .any(|record| is_matching_scalar_record(record, &official_setting))
+    {
         Ok(())
     } else {
         Err(anyhow!("source line does not parse as {official_setting}"))
@@ -135,42 +295,4 @@ fn replace_value_preserving_key(line: &str, proposed_value: &str) -> Result<Stri
         replaced.push_str(comment);
     }
     Ok(replaced)
-}
-
-fn atomic_write(target: &Path, bytes: &[u8]) -> Result<()> {
-    let parent = target
-        .parent()
-        .ok_or_else(|| anyhow!("target path has no parent"))?;
-    let temp_path = parent.join(format!(
-        ".{}.write-{}.tmp",
-        target
-            .file_name()
-            .and_then(|name| name.to_str())
-            .unwrap_or("hyprland.conf"),
-        unique_stamp()?
-    ));
-    {
-        let mut file = OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(&temp_path)
-            .with_context(|| format!("failed to create temp {}", temp_path.display()))?;
-        file.write_all(bytes)
-            .with_context(|| format!("failed to write temp {}", temp_path.display()))?;
-        file.sync_all()
-            .with_context(|| format!("failed to sync temp {}", temp_path.display()))?;
-    }
-    fs::rename(&temp_path, target).with_context(|| {
-        format!(
-            "failed to replace {} from temp {}",
-            target.display(),
-            temp_path.display()
-        )
-    })?;
-    Ok(())
-}
-
-fn unique_stamp() -> Result<String> {
-    let nanos = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
-    Ok(format!("{}-{nanos}", std::process::id()))
 }

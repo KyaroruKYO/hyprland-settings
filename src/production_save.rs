@@ -11,6 +11,7 @@ use std::collections::BTreeSet;
 
 use crate::config_discovery::ConfigDiscovery;
 use crate::current_config::CurrentConfigSnapshot;
+use crate::safe_batch_write::{SafeBatchChangeRequest, SafeBatchWriteReport};
 use crate::safe_live_save_mode::require_safe_live_save_mode;
 use crate::write_flow::{apply_setting_change, ApplyOutcome};
 
@@ -34,4 +35,32 @@ pub fn gated_scalar_save_live(
         proposed_value,
     )
     .map_err(|failure| format!("Save failed: {}", failure.reason))
+}
+
+/// Gated all-or-nothing save for pending scalar changes. The write layer
+/// accepts only one target file, stages every row before commit, and returns
+/// one durable receipt. Any preflight or commit failure leaves all callers'
+/// pending state untouched.
+pub fn gated_safe_batch_save_live(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    pending_changes: Vec<SafeBatchChangeRequest>,
+) -> Result<SafeBatchWriteReport, String> {
+    let mut runner = crate::runtime_preview_executor::HyprctlRuntimePreviewRunner;
+    require_safe_live_save_mode(&mut runner)?;
+    crate::write_flow::apply_safe_batch_setting_changes(
+        known_setting_ids,
+        discovery,
+        current_config,
+        pending_changes,
+    )
+    .map_err(|failure| {
+        let details = failure.failures.join("; ");
+        if details.is_empty() {
+            format!("Batch save failed: {}", failure.reason)
+        } else {
+            format!("Batch save failed: {} ({details})", failure.reason)
+        }
+    })
 }

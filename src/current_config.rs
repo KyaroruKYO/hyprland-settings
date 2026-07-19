@@ -5,6 +5,7 @@ use crate::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
 use crate::config_parser::{
     parse_hyprland_config_file, ParseStatus, ParsedConfig, ParsedConfigLine,
 };
+use crate::durable_fs::{capture_file_precondition, FilePrecondition};
 use crate::source_values::{monitor_source_values_from_records, MonitorSourceValue};
 use crate::structured_family::{structured_family_projections, StructuredFamilyProjection};
 
@@ -14,6 +15,11 @@ pub struct CurrentConfigSnapshot {
     pub values: BTreeMap<String, CurrentValue>,
     pub structured_records: Vec<ParsedConfigLine>,
     pub unsupported_records: Vec<ParsedConfigLine>,
+    /// Exact startup/reload evidence used by every active-config write.
+    pub file_preconditions: BTreeMap<PathBuf, FilePrecondition>,
+    /// Present for source-aware snapshots. A write must reproduce this graph
+    /// immediately before touching any target.
+    pub source_graph_fingerprint: Option<String>,
 }
 
 impl CurrentConfigSnapshot {
@@ -25,6 +31,8 @@ impl CurrentConfigSnapshot {
             values: BTreeMap::new(),
             structured_records: Vec::new(),
             unsupported_records: Vec::new(),
+            file_preconditions: BTreeMap::new(),
+            source_graph_fingerprint: None,
         }
     }
 
@@ -40,6 +48,8 @@ impl CurrentConfigSnapshot {
                     values: BTreeMap::new(),
                     structured_records: Vec::new(),
                     unsupported_records: Vec::new(),
+                    file_preconditions: BTreeMap::new(),
+                    source_graph_fingerprint: None,
                 },
             },
             ConfigDiscoveryStatus::Missing => Self::read_unavailable("No Hyprland config found."),
@@ -51,6 +61,8 @@ impl CurrentConfigSnapshot {
                 values: BTreeMap::new(),
                 structured_records: Vec::new(),
                 unsupported_records: Vec::new(),
+                file_preconditions: BTreeMap::new(),
+                source_graph_fingerprint: None,
             },
             ConfigDiscoveryStatus::NotAFile { path, .. } => Self {
                 status: CurrentConfigLoadStatus::LoadError {
@@ -60,6 +72,8 @@ impl CurrentConfigSnapshot {
                 values: BTreeMap::new(),
                 structured_records: Vec::new(),
                 unsupported_records: Vec::new(),
+                file_preconditions: BTreeMap::new(),
+                source_graph_fingerprint: None,
             },
         }
     }
@@ -108,9 +122,15 @@ impl CurrentConfigSnapshot {
             );
         }
 
+        let path = parsed.path;
+        let mut file_preconditions = BTreeMap::new();
+        if let Ok(precondition) = capture_file_precondition(&path) {
+            file_preconditions.insert(path.clone(), precondition);
+        }
+
         Self {
             status: CurrentConfigLoadStatus::Loaded {
-                path: parsed.path,
+                path,
                 scalar_count: values.len(),
                 structured_count: structured_records.len(),
                 unsupported_count: unsupported_records.len(),
@@ -118,6 +138,8 @@ impl CurrentConfigSnapshot {
             values,
             structured_records,
             unsupported_records,
+            file_preconditions,
+            source_graph_fingerprint: None,
         }
     }
 
@@ -189,6 +211,14 @@ impl CurrentConfigSnapshot {
 
     pub fn structured_family_projections(&self) -> Vec<StructuredFamilyProjection> {
         structured_family_projections(self)
+    }
+
+    pub fn file_precondition(&self, path: &PathBuf) -> Option<&FilePrecondition> {
+        self.file_preconditions.get(path).or_else(|| {
+            self.file_preconditions
+                .values()
+                .find(|precondition| &precondition.canonical_path == path)
+        })
     }
 }
 

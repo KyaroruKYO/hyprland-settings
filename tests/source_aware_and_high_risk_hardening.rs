@@ -5,16 +5,17 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use hyprland_settings::config_discovery::{
-    ConfigDiscovery, ConfigDiscoveryStatus, ConfigPathSource,
-};
+use hyprland_settings::config_graph::inspect_config_graph;
 use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::high_risk_family::{
     display_render_family_for_row, family_blocked_reason, HighRiskFamily,
 };
-use hyprland_settings::safe_batch_write::{SafeBatchChangeRequest, SafeBatchEligibility};
+use hyprland_settings::safe_batch_write::{
+    SafeBatchChangeRequest, SafeBatchEligibility, SafeBatchExecutionOptions,
+};
+use hyprland_settings::source_aware_current_config::current_config_from_graph;
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
-use hyprland_settings::write_flow::apply_safe_batch_setting_changes;
+use hyprland_settings::write_flow::apply_safe_batch_setting_changes_with_graph_and_options;
 use serde_json::{json, Value};
 use support::safe_batch_harness::*;
 
@@ -89,13 +90,6 @@ fn source_aware_apply_helper_uses_connected_file_current_values_without_real_con
     let sourced = root.join("appearance.conf");
     write_file(&config, "source = appearance.conf\n");
     write_file(&sourced, "decoration:blur:enabled = true\n");
-    let discovery = ConfigDiscovery {
-        status: ConfigDiscoveryStatus::Found {
-            path: config.clone(),
-            source: ConfigPathSource::HomeFallback,
-        },
-        attempted_paths: vec![config.clone()],
-    };
     let stale_root_only = CurrentConfigSnapshot::from_parsed(
         hyprland_settings::config_parser::parse_hyprland_config_file(&config)
             .expect("fixture should parse"),
@@ -107,14 +101,32 @@ fn source_aware_apply_helper_uses_connected_file_current_values_without_real_con
         "not configured"
     );
 
-    let report = apply_safe_batch_setting_changes(
+    let graph = inspect_config_graph(&config);
+    let stale_result = apply_safe_batch_setting_changes_with_graph_and_options(
         known_settings(),
-        &discovery,
         &stale_root_only,
+        &graph,
         vec![SafeBatchChangeRequest::new(
             "appearance.blur.enabled",
             "false",
         )],
+        SafeBatchExecutionOptions::default(),
+    );
+    assert!(
+        stale_result.is_err(),
+        "a stale root-only snapshot must fail"
+    );
+
+    let source_aware = current_config_from_graph(&graph);
+    let report = apply_safe_batch_setting_changes_with_graph_and_options(
+        known_settings(),
+        &source_aware,
+        &graph,
+        vec![SafeBatchChangeRequest::new(
+            "appearance.blur.enabled",
+            "false",
+        )],
+        SafeBatchExecutionOptions::default(),
     )
     .expect("source-aware helper should plan and execute fixture sourced setting");
     assert_eq!(report.verified_changes, vec!["appearance.blur.enabled"]);
@@ -127,7 +139,12 @@ fn source_aware_apply_helper_uses_connected_file_current_values_without_real_con
 }
 
 #[test]
+#[ignore = "read-only real-config audit; run with HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1"]
 fn source_aware_real_config_audit_records_after_counts_and_new_eligibility() {
+    if std::env::var("HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT").as_deref() != Ok("1") {
+        eprintln!("skipping: HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT is not set");
+        return;
+    }
     let audit = real_config_readonly_audit();
     assert_eq!(audit["performed"], true);
     assert_eq!(audit["realUserConfigEdited"], false);
@@ -264,7 +281,12 @@ fn high_risk_family_handling_design_covers_each_family_and_keeps_apply_blocked()
 }
 
 #[test]
+#[ignore = "read-only real-config audit; run with HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1"]
 fn combined_source_aware_and_high_risk_hardening_report_preserves_safety() {
+    if std::env::var("HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT").as_deref() != Ok("1") {
+        eprintln!("skipping: HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT is not set");
+        return;
+    }
     let audit = real_config_readonly_audit();
     let rows = high_risk_rows();
     let families = rows

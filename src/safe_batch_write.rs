@@ -1,18 +1,17 @@
 use std::collections::{BTreeMap, BTreeSet};
-use std::fs::{self, OpenOptions};
-use std::io::Write;
+use std::fs;
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use anyhow::{anyhow, Context, Result};
 
+use crate::config_backup::{BackupManager, ConfigBackup};
 use crate::config_graph::{ConfigGraphFile, ConfigGraphSummary, ConfigManagementHintKind};
 use crate::config_parser::{parse_hyprland_config_file, parse_hyprland_config_text, ParseStatus};
 use crate::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
+use crate::durable_fs::{hardened_atomic_replace, DurableWriteReceipt, FilePrecondition};
 use crate::pending_change::{stage_pending_change, PendingChangeValidation};
-use crate::production_backup_contract::{
-    backup_path_policy_for_target, choose_unique_backup_path, BackupPathPolicy,
-};
+use crate::production_backup_contract::{backup_path_policy_for_target, BackupPathPolicy};
 use crate::production_recovery_contract::PRODUCTION_RECOVERY_CONTRACT_ENABLED;
 use crate::production_verification_contract::PRODUCTION_VERIFICATION_CONTRACT_ENABLED;
 use crate::write_classification::{
@@ -148,6 +147,7 @@ pub struct SafeBatchTargetFilePlan {
     pub target_path: PathBuf,
     pub backup_policy: BackupPathPolicy,
     pub change_count: usize,
+    pub precondition: Option<FilePrecondition>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -161,6 +161,8 @@ pub struct SafeBatchWritePlan {
     pub can_execute: bool,
     pub cannot_execute_reasons: Vec<String>,
     pub safe_writable_rows_len: usize,
+    pub source_graph_root: PathBuf,
+    pub source_graph_fingerprint: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -170,6 +172,9 @@ pub struct SafeBatchExecutionOptions {
     pub force_backup_verification_failure_for: Option<PathBuf>,
     pub force_verification_failure_for: Option<String>,
     pub force_restore_failure: bool,
+    /// `Some` for production callers. Fixture callers leave this `None`, in
+    /// which case a test-owned sibling backup directory is used.
+    pub backup_root: Option<PathBuf>,
 }
 
 impl Default for SafeBatchExecutionOptions {
@@ -180,7 +185,17 @@ impl Default for SafeBatchExecutionOptions {
             force_backup_verification_failure_for: None,
             force_verification_failure_for: None,
             force_restore_failure: false,
+            backup_root: None,
         }
+    }
+}
+
+impl SafeBatchExecutionOptions {
+    pub fn production() -> Result<Self> {
+        Ok(Self {
+            backup_root: Some(BackupManager::default_user_backup_root()?),
+            ..Self::default()
+        })
     }
 }
 
@@ -190,6 +205,9 @@ pub struct SafeBatchBackupRecord {
     pub backup_path: PathBuf,
     pub bytes_equal: bool,
     pub byte_len: usize,
+    pub mode: u32,
+    pub sha256: String,
+    pub verified_backup: ConfigBackup,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -213,6 +231,7 @@ pub struct SafeBatchWriteReport {
     pub hyprland_reload_attempted: bool,
     pub mutating_hyprctl_used: bool,
     pub runtime_mutated: bool,
+    pub durable_receipts: Vec<DurableWriteReceipt>,
 }
 
 pub fn safe_batch_write_execution_gate_enabled() -> bool {
@@ -265,6 +284,7 @@ pub fn build_safe_batch_write_plan(
         .into_iter()
         .map(|(target_path, change_count)| SafeBatchTargetFilePlan {
             backup_policy: backup_path_policy_for_target(&target_path, backup_timestamp.as_ref()),
+            precondition: current_config.file_precondition(&target_path).cloned(),
             target_path,
             change_count,
         })
@@ -286,6 +306,47 @@ pub fn build_safe_batch_write_plan(
     if !safe_batch_write_execution_gate_enabled() {
         cannot_execute_reasons.push("safe-batch write execution gate is not enabled".to_string());
     }
+    if target_files.len() > 1 {
+        cannot_execute_reasons.push(
+            "multi-file batch rejected before writing: cross-file renames are not crash-atomic; save each file separately after explicit review".to_string(),
+        );
+    }
+    if target_files
+        .iter()
+        .any(|target| target.precondition.is_none())
+    {
+        cannot_execute_reasons
+            .push("one or more targets lack an immutable startup file precondition".to_string());
+    }
+    let mut selected = BTreeSet::new();
+    if pending_changes
+        .iter()
+        .any(|change| !selected.insert(change.setting_id.as_str()))
+    {
+        cannot_execute_reasons.push(
+            "the batch contains more than one pending value for the same setting".to_string(),
+        );
+    }
+
+    let observed_graph_fingerprint = crate::source_aware_current_config::graph_fingerprint(
+        config_graph,
+        &current_config.file_preconditions,
+    );
+    if let Some(expected) = current_config.source_graph_fingerprint.as_deref() {
+        if observed_graph_fingerprint.as_deref() != Some(expected) {
+            cannot_execute_reasons.push(
+                "source graph differs from the snapshot used to prepare pending changes"
+                    .to_string(),
+            );
+        }
+    }
+    let source_graph_fingerprint = current_config
+        .source_graph_fingerprint
+        .clone()
+        .or(observed_graph_fingerprint);
+    if source_graph_fingerprint.is_none() {
+        cannot_execute_reasons.push("source graph precondition is unavailable".to_string());
+    }
 
     SafeBatchWritePlan {
         batch_id,
@@ -297,6 +358,8 @@ pub fn build_safe_batch_write_plan(
         can_execute: cannot_execute_reasons.is_empty(),
         cannot_execute_reasons,
         safe_writable_rows_len: SAFE_WRITABLE_ROWS.len(),
+        source_graph_root: config_graph.root_path.clone(),
+        source_graph_fingerprint,
     }
 }
 
@@ -317,60 +380,114 @@ pub fn execute_safe_batch_write_plan(
             hyprland_reload_attempted: false,
             mutating_hyprctl_used: false,
             runtime_mutated: false,
+            durable_receipts: Vec::new(),
         };
     }
 
-    let mut backups = Vec::new();
-    for target in &plan.target_files {
-        match create_verified_backup(
-            &target.target_path,
-            &options.backup_timestamp,
-            options.force_backup_verification_failure_for.as_ref(),
-        ) {
-            Ok(record) => backups.push(record),
-            Err(error) => {
-                return failure_without_recovery(
-                    &plan.batch_id,
-                    backups,
-                    format!(
-                        "backup failed for {}: {error}",
-                        target.target_path.display()
-                    ),
-                );
-            }
-        }
+    if plan.target_files.len() != 1 {
+        return failure_without_recovery(
+            &plan.batch_id,
+            Vec::new(),
+            "multi-file batch rejected before writing".to_string(),
+        );
+    }
+    let Some(expected_graph) = plan.source_graph_fingerprint.as_deref() else {
+        return failure_without_recovery(
+            &plan.batch_id,
+            Vec::new(),
+            "source graph precondition is unavailable".to_string(),
+        );
+    };
+    if crate::source_aware_current_config::current_source_graph_fingerprint(&plan.source_graph_root)
+        .as_deref()
+        != Some(expected_graph)
+    {
+        return failure_without_recovery(
+            &plan.batch_id,
+            Vec::new(),
+            "SourceGraphChanged: config sources or bytes changed after review".to_string(),
+        );
     }
 
-    let backup_map = backups
-        .iter()
-        .map(|backup| (backup.target_path.clone(), backup.backup_path.clone()))
-        .collect::<BTreeMap<_, _>>();
-
-    let mut written_targets = Vec::new();
-    for target in &plan.target_files {
-        let changes = changes_for_target(&plan.eligible_changes, &target.target_path);
-        let insertions = insertions_for_target(&plan.insertion_changes, &target.target_path);
-        match write_target_file(&target.target_path, &changes, &insertions) {
-            Ok(()) => {
-                written_targets.push(target.target_path.clone());
-                if options.fail_after_writing_target.as_ref() == Some(&target.target_path) {
-                    return recover_failure(
-                        plan,
-                        backups,
-                        "write failed after target replacement".to_string(),
-                        options.force_restore_failure,
-                    );
-                }
-            }
-            Err(error) => {
-                return recover_failure(
-                    plan,
-                    backups,
-                    format!("write failed for {}: {error}", target.target_path.display()),
-                    options.force_restore_failure,
-                );
-            }
+    let target = &plan.target_files[0];
+    let Some(precondition) = target.precondition.as_ref() else {
+        return failure_without_recovery(
+            &plan.batch_id,
+            Vec::new(),
+            "target drift precondition is unavailable".to_string(),
+        );
+    };
+    let changes = changes_for_target(&plan.eligible_changes, &target.target_path);
+    let insertions = insertions_for_target(&plan.insertion_changes, &target.target_path);
+    let staged_bytes = match stage_target_file(precondition, &changes, &insertions) {
+        Ok(bytes) => bytes,
+        Err(error) => {
+            return failure_without_recovery(
+                &plan.batch_id,
+                Vec::new(),
+                format!("batch staging failed: {error}"),
+            )
         }
+    };
+    if let Err(error) = verify_values_in_text(
+        &target.target_path,
+        &staged_bytes,
+        &changes,
+        &insertions,
+        None,
+    ) {
+        return failure_without_recovery(
+            &plan.batch_id,
+            Vec::new(),
+            format!("staged parse/reread verification failed: {error}"),
+        );
+    }
+
+    let backup = match create_verified_backup(target, options) {
+        Ok(record) => record,
+        Err(error) => {
+            return failure_without_recovery(
+                &plan.batch_id,
+                Vec::new(),
+                format!(
+                    "backup failed for {}: {error}",
+                    target.target_path.display()
+                ),
+            )
+        }
+    };
+    let backups = vec![backup];
+    if crate::source_aware_current_config::current_source_graph_fingerprint(&plan.source_graph_root)
+        .as_deref()
+        != Some(expected_graph)
+    {
+        return failure_without_recovery(
+            &plan.batch_id,
+            backups,
+            "SourceGraphChanged: config sources or bytes changed immediately before commit"
+                .to_string(),
+        );
+    }
+    let durable_receipt = match hardened_atomic_replace(precondition, &staged_bytes) {
+        Ok(receipt) => receipt,
+        Err(error) => {
+            return failure_without_recovery(
+                &plan.batch_id,
+                backups,
+                format!("write failed before durable completion: {error}"),
+            )
+        }
+    };
+
+    if options.fail_after_writing_target.as_ref() == Some(&target.target_path) {
+        return recover_failure(
+            plan,
+            backups,
+            vec![durable_receipt],
+            &staged_bytes,
+            "injected failure after target replacement".to_string(),
+            options.force_restore_failure,
+        );
     }
 
     match verify_written_values(
@@ -390,21 +507,16 @@ pub fn execute_safe_batch_write_plan(
             hyprland_reload_attempted: false,
             mutating_hyprctl_used: false,
             runtime_mutated: false,
+            durable_receipts: vec![durable_receipt],
         },
-        Err(error) => {
-            let mut report = recover_failure(
-                plan,
-                backups,
-                format!("verification failed: {error}"),
-                options.force_restore_failure,
-            );
-            if written_targets.is_empty() && !backup_map.is_empty() {
-                report
-                    .failures
-                    .push("no target writes completed before verification failure".to_string());
-            }
-            report
-        }
+        Err(error) => recover_failure(
+            plan,
+            backups,
+            vec![durable_receipt],
+            &staged_bytes,
+            format!("verification failed: {error}"),
+            options.force_restore_failure,
+        ),
     }
 }
 
@@ -769,28 +881,37 @@ fn ensure_source_line_matches(
 }
 
 fn create_verified_backup(
-    target_path: &Path,
-    timestamp: &str,
-    force_backup_verification_failure_for: Option<&PathBuf>,
+    target: &SafeBatchTargetFilePlan,
+    options: &SafeBatchExecutionOptions,
 ) -> Result<SafeBatchBackupRecord> {
-    let original = fs::read(target_path)
-        .with_context(|| format!("failed to read target {}", target_path.display()))?;
-    let backup_path = choose_unique_backup_path(target_path, timestamp);
-    fs::write(&backup_path, &original)
-        .with_context(|| format!("failed to write backup {}", backup_path.display()))?;
-    let backup = fs::read(&backup_path)
-        .with_context(|| format!("failed to reread backup {}", backup_path.display()))?;
-    let forced = force_backup_verification_failure_for
-        .map(|path| path == target_path)
+    let precondition = target
+        .precondition
+        .as_ref()
+        .ok_or_else(|| anyhow!("missing target precondition"))?;
+    let backup_root = options.backup_root.clone().unwrap_or_else(|| {
+        target
+            .target_path
+            .parent()
+            .unwrap_or_else(|| Path::new("."))
+            .join(".hyprland-settings-test-backups")
+    });
+    let backup = BackupManager::new(backup_root).create_backup_from_precondition(precondition)?;
+    let forced = options
+        .force_backup_verification_failure_for
+        .as_ref()
+        .map(|path| path == &target.target_path)
         .unwrap_or(false);
-    if backup != original || forced {
+    if !backup.backup_precondition.bytes.eq(&precondition.bytes) || forced {
         return Err(anyhow!("backup byte equality verification failed"));
     }
     Ok(SafeBatchBackupRecord {
-        target_path: target_path.to_path_buf(),
-        backup_path,
+        target_path: target.target_path.clone(),
+        backup_path: backup.backup_path.clone(),
         bytes_equal: true,
-        byte_len: original.len(),
+        byte_len: precondition.bytes.len(),
+        mode: backup.backup_precondition.metadata.mode,
+        sha256: backup.backup_precondition.sha256.clone(),
+        verified_backup: backup,
     })
 }
 
@@ -816,13 +937,14 @@ fn insertions_for_target<'a>(
         .collect::<Vec<_>>()
 }
 
-fn write_target_file(
-    target_path: &Path,
+fn stage_target_file(
+    precondition: &FilePrecondition,
     changes: &[&SafeBatchEligibleChange],
     insertions: &[&SafeBatchInsertionChange],
-) -> Result<()> {
-    let original = fs::read_to_string(target_path)
-        .with_context(|| format!("failed to read {}", target_path.display()))?;
+) -> Result<Vec<u8>> {
+    let target_path = &precondition.requested_path;
+    let original = std::str::from_utf8(&precondition.bytes)
+        .with_context(|| format!("{} is not valid UTF-8", target_path.display()))?;
     let had_trailing_newline = original.ends_with('\n');
     let mut lines = original.lines().map(ToOwned::to_owned).collect::<Vec<_>>();
     for change in changes {
@@ -846,7 +968,28 @@ fn write_target_file(
                 change.setting_id
             ));
         }
+        if line != &change.original_raw_line {
+            return Err(anyhow!(
+                "source line bytes changed for {}",
+                change.setting_id
+            ));
+        }
         lines[index] = replace_value_preserving_key(line, &change.proposed_value)?;
+    }
+    let original_parsed = parse_hyprland_config_text(target_path, original);
+    for insertion in insertions {
+        let count = original_parsed
+            .scalar_records()
+            .filter(|record| {
+                record.normalized_setting_id.as_deref() == Some(insertion.official_setting.as_str())
+            })
+            .count();
+        if count != 0 {
+            return Err(anyhow!(
+                "ExpectedSettingNowPresent: {} appeared after review",
+                insertion.setting_id
+            ));
+        }
     }
     let mut updated = lines.join("\n");
     if had_trailing_newline || !updated.is_empty() {
@@ -860,7 +1003,62 @@ fn write_target_file(
             updated.push('\n');
         }
     }
-    atomic_write(target_path, updated.as_bytes())
+    Ok(updated.into_bytes())
+}
+
+fn verify_values_in_text(
+    target_path: &Path,
+    bytes: &[u8],
+    changes: &[&SafeBatchEligibleChange],
+    insertions: &[&SafeBatchInsertionChange],
+    force_verification_failure_for: Option<&str>,
+) -> Result<Vec<String>> {
+    let text = std::str::from_utf8(bytes).context("staged config is not valid UTF-8")?;
+    let parsed = parse_hyprland_config_text(target_path, text);
+    let mut verified = Vec::new();
+    for change in changes {
+        if force_verification_failure_for == Some(change.setting_id.as_str()) {
+            return Err(anyhow!(
+                "forced verification failure for {}",
+                change.setting_id
+            ));
+        }
+        let record = parsed
+            .scalar_records()
+            .find(|record| {
+                record.normalized_setting_id.as_deref() == Some(change.official_setting.as_str())
+                    && record.line_number == change.line_number
+            })
+            .ok_or_else(|| anyhow!("verified setting missing for {}", change.setting_id))?;
+        if record.raw_value.as_deref() != Some(change.proposed_value.as_str()) {
+            return Err(anyhow!("staged value mismatch for {}", change.setting_id));
+        }
+        verified.push(change.setting_id.clone());
+    }
+    for insertion in insertions {
+        if force_verification_failure_for == Some(insertion.setting_id.as_str()) {
+            return Err(anyhow!(
+                "forced verification failure for {}",
+                insertion.setting_id
+            ));
+        }
+        let matches = parsed
+            .scalar_records()
+            .filter(|record| {
+                record.normalized_setting_id.as_deref() == Some(insertion.official_setting.as_str())
+            })
+            .collect::<Vec<_>>();
+        if matches.len() != 1
+            || matches[0].raw_value.as_deref() != Some(insertion.proposed_value.as_str())
+        {
+            return Err(anyhow!(
+                "staged insertion mismatch for {}",
+                insertion.setting_id
+            ));
+        }
+        verified.push(insertion.setting_id.clone());
+    }
+    Ok(verified)
 }
 
 fn verify_written_values(
@@ -944,6 +1142,8 @@ fn verify_written_values(
 fn recover_failure(
     plan: &SafeBatchWritePlan,
     backups: Vec<SafeBatchBackupRecord>,
+    durable_receipts: Vec<DurableWriteReceipt>,
+    expected_committed_bytes: &[u8],
     failure: String,
     force_restore_failure: bool,
 ) -> SafeBatchWriteReport {
@@ -960,10 +1160,14 @@ fn recover_failure(
             ));
             continue;
         }
-        match fs::read(&backup.backup_path)
-            .and_then(|bytes| fs::write(&backup.target_path, bytes).map(|_| ()))
-        {
-            Ok(()) => {}
+        let manager = BackupManager::new(
+            backup
+                .backup_path
+                .parent()
+                .unwrap_or_else(|| Path::new(".")),
+        );
+        match manager.rollback(&backup.verified_backup, expected_committed_bytes) {
+            Ok(_) => {}
             Err(error) => {
                 recovery_succeeded = false;
                 failures.push(format!(
@@ -1001,6 +1205,7 @@ fn recover_failure(
         hyprland_reload_attempted: false,
         mutating_hyprctl_used: false,
         runtime_mutated: false,
+        durable_receipts,
     }
 }
 
@@ -1064,6 +1269,7 @@ fn failure_without_recovery(
         hyprland_reload_attempted: false,
         mutating_hyprctl_used: false,
         runtime_mutated: false,
+        durable_receipts: Vec::new(),
     }
 }
 
@@ -1083,40 +1289,16 @@ fn replace_value_preserving_key(line: &str, proposed_value: &str) -> Result<Stri
     Ok(replaced)
 }
 
-fn atomic_write(target: &Path, bytes: &[u8]) -> Result<()> {
-    let parent = target
-        .parent()
-        .ok_or_else(|| anyhow!("target path has no parent"))?;
-    let temp_path = parent.join(format!(
-        ".{}.safe-batch-{}.tmp",
-        target
-            .file_name()
-            .and_then(|name| name.to_str())
-            .unwrap_or("hyprland.conf"),
-        unique_stamp()?
-    ));
-    {
-        let mut file = OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(&temp_path)
-            .with_context(|| format!("failed to create temp {}", temp_path.display()))?;
-        file.write_all(bytes)
-            .with_context(|| format!("failed to write temp {}", temp_path.display()))?;
-        file.sync_all()
-            .with_context(|| format!("failed to sync temp {}", temp_path.display()))?;
-    }
-    fs::rename(&temp_path, target).with_context(|| {
-        format!(
-            "failed to replace {} from temp {}",
-            target.display(),
-            temp_path.display()
-        )
-    })?;
-    Ok(())
-}
-
 fn unique_stamp() -> Result<String> {
     let nanos = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
     Ok(format!("{}-{nanos}", std::process::id()))
+}
+
+impl crate::runtime_preview_ui_projection::DurableSaveReceipt for SafeBatchWriteReport {
+    fn durable_save_succeeded(&self) -> bool {
+        self.status == SafeBatchWriteStatus::Succeeded
+            && self.failures.is_empty()
+            && self.durable_receipts.len() == 1
+            && !self.verified_changes.is_empty()
+    }
 }

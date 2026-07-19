@@ -6,7 +6,7 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use anyhow::{anyhow, Context, Result};
 use serde::{Deserialize, Serialize};
 
-use crate::config_backup::{BackupManager, ConfigBackup};
+use crate::config_backup::BackupManager;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
@@ -222,13 +222,21 @@ impl HighRiskRecoveryPlanner {
     }
 
     pub fn expire_and_recover(&self, plan: &HighRiskRecoveryPlan) -> HighRiskRecoveryResult {
-        let backup = ConfigBackup {
-            source_path: plan.target_config_path.clone(),
-            backup_path: plan.backup_path.clone(),
-            byte_len: plan.previous_known_good_value.len(),
-        };
         let backup_manager = BackupManager::new(&self.backup_root);
-        if let Err(error) = backup_manager.rollback(&backup) {
+        let backup = match backup_manager.load_existing_for_restore(
+            &plan.target_config_path,
+            &plan.backup_path,
+            plan.previous_known_good_value.as_bytes(),
+        ) {
+            Ok(backup) => backup,
+            Err(error) => {
+                return failed_result(
+                    plan,
+                    &format!("restore failed during backup validation: {error:#}"),
+                );
+            }
+        };
+        if let Err(error) = backup_manager.rollback(&backup, plan.proposed_mutation.as_bytes()) {
             return failed_result(plan, &format!("restore failed: {error:#}"));
         }
 

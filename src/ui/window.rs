@@ -16,9 +16,10 @@ use crate::current_config::{
 };
 use crate::export::ExportBundle;
 use crate::family_record_picker::{
-    list_animation_records_live, list_curve_records_live, save_picked_record_live,
-    AnimationRecordEntry, CurveRecordEntry, FamilyRecordPreviewController, PickedFamily,
-    PickedRecordValues, RecordPickerPhase, ANIMATION_STYLE_BLOCKED_REASON,
+    list_animation_records_live, list_curve_records_live,
+    save_picked_record_with_precondition_live, AnimationRecordEntry, CurveRecordEntry,
+    FamilyRecordPreviewController, PickedFamily, PickedRecordValues, RecordPickerPhase,
+    ANIMATION_STYLE_BLOCKED_REASON,
 };
 use crate::future_capability::{
     apply_production_activation_draft_gtk_update, disabled_future_approval_card_projections,
@@ -75,6 +76,7 @@ use crate::session_config_preview::build_session_config_preview;
 use crate::session_value_projection::{
     compare_active_and_session_values, SessionValueComparisonStatus, SessionValueProjection,
 };
+use crate::structured_family_gated_persistence::capture_family_save_precondition;
 use crate::ui::model::{
     initial_screen_shader_advisory_ui_action, run_screen_shader_advisory_ui_action,
     RowDetailProjection, ScreenShaderAdvisoryUiActionRequest, UiProjection,
@@ -337,7 +339,8 @@ fn revert_all_kept_dead_man_previews() {
 
 /// Stage (or restage) a save-only row's config draft and refresh every
 /// pending surface. No runtime mutation happens: the value is only written
-/// later, through the gated scalar save, when the user chooses Save now.
+/// later, through the gated scalar save, when the user chooses the atomic
+/// one-file batch action.
 fn stage_save_only_change(
     row_id: &str,
     official_setting: &str,
@@ -1537,9 +1540,9 @@ fn pending_next_save_changes(
 
 /// The bottom unsaved-changes action bar: a slide-up strip with the
 /// warning icon and "Unsaved changes — applied live, not saved to disk"
-/// status on the left and Discard / Save now (split button) on the right.
-/// Save now routes every pending row through the existing per-row gated
-/// scalar save (Safe Live Save Mode verified per write, fails closed);
+/// status on the left and Discard / Save all atomically (split button) on
+/// the right. The batch path preflights every row, requires one target file,
+/// and performs one durable replacement; any failure retains every row.
 /// Discard reverts every pending preview through its own controller. The
 /// split menu's "Save as new profile" stays disabled: profile saving has
 /// no enabled production behavior.
@@ -1571,7 +1574,7 @@ fn build_pending_bottom_bar(model: &Rc<UiProjection>) -> (gtk::Revealer, Rc<dyn 
     bar.append(&discard_button);
 
     let save_split = adw::SplitButton::new();
-    save_split.set_label("Save now");
+    save_split.set_label("Save all atomically");
     save_split.add_css_class("suggested-action");
     save_split.set_widget_name("hyprland-settings-pending-save-now");
     {
@@ -1670,52 +1673,99 @@ fn build_pending_bottom_bar(model: &Rc<UiProjection>) -> (gtk::Revealer, Rc<dyn 
             if snapshots.is_empty() {
                 return;
             }
-            let total = snapshots.len();
-            let mut saved = 0usize;
-            let mut first_error: Option<String> = None;
-            for snapshot in &snapshots {
-                match crate::production_save::gated_scalar_save_live(
-                    model.known_setting_ids.clone(),
-                    &model.config_discovery,
-                    &model.current_config,
-                    &snapshot.row_id,
-                    &snapshot.current_value,
-                ) {
-                    Ok(_) => {
-                        saved += 1;
+
+            // Resolve and lock every live-preview controller before touching
+            // disk. Holding these mutable borrows through the durable commit
+            // prevents a preview session from disappearing or changing state
+            // between preflight and the Saved transition.
+            let live_controllers = snapshots
+                .iter()
+                .filter_map(|snapshot| match &snapshot.source {
+                    PendingSource::LivePreview(weak) => Some(
+                        weak.upgrade()
+                            .map(|controller| (snapshot.row_id.clone(), controller))
+                            .ok_or_else(|| {
+                                format!(
+                                    "{}: preview controller is no longer available",
+                                    snapshot.row_id
+                                )
+                            }),
+                    ),
+                    PendingSource::SaveOnlyDraft | PendingSource::DeadManKept => None,
+                })
+                .collect::<Result<Vec<_>, _>>();
+            let live_controllers = match live_controllers {
+                Ok(controllers) => controllers,
+                Err(error) => {
+                    status_label.set_label(&format!(
+                        "Batch not saved: {error}. All changes remain pending."
+                    ));
+                    notify_pending_changed();
+                    return;
+                }
+            };
+            let mut live_controller_borrows = Vec::with_capacity(live_controllers.len());
+            for (row_id, controller) in &live_controllers {
+                let controller = match controller.try_borrow_mut() {
+                    Ok(controller) => controller,
+                    Err(_) => {
+                        status_label.set_label(&format!(
+                            "Batch not saved: {row_id}: preview controller is busy. All changes remain pending."
+                        ));
+                        notify_pending_changed();
+                        return;
+                    }
+                };
+                if let Err(error) = controller.validate_mark_saved_transition() {
+                    status_label.set_label(&format!(
+                        "Batch not saved: {row_id}: {}. All changes remain pending.",
+                        error.user_text()
+                    ));
+                    notify_pending_changed();
+                    return;
+                }
+                live_controller_borrows.push(controller);
+            }
+
+            let requests = snapshots
+                .iter()
+                .map(|snapshot| {
+                    crate::safe_batch_write::SafeBatchChangeRequest::new(
+                        &snapshot.row_id,
+                        &snapshot.current_value,
+                    )
+                })
+                .collect();
+            match crate::production_save::gated_safe_batch_save_live(
+                model.known_setting_ids.clone(),
+                &model.config_discovery,
+                &model.current_config,
+                requests,
+            ) {
+                Ok(report) => {
+                    for controller in &mut live_controller_borrows {
+                        // Preflight above proved this transition and the
+                        // mutable borrow has remained held. A failure here is
+                        // therefore an internal invariant violation, not a
+                        // recoverable post-write state race.
+                        controller
+                            .mark_saved_after_durable_receipt(&report)
+                            .expect("preflighted preview must accept a complete durable receipt");
+                    }
+                    for snapshot in &snapshots {
                         match &snapshot.source {
-                            PendingSource::LivePreview(weak) => {
-                                if let Some(controller) = weak.upgrade() {
-                                    if let Ok(mut controller) = controller.try_borrow_mut() {
-                                        let _ = controller.mark_saved();
-                                    }
-                                }
-                            }
-                            // The staged value is now on disk; drop the draft
-                            // (the control already shows the saved value, so
-                            // no reset).
                             PendingSource::SaveOnlyDraft => {
-                                SAVE_ONLY_LEDGER
-                                    .with(|ledger| ledger.borrow_mut().clear(&snapshot.row_id));
+                                SAVE_ONLY_LEDGER.with(|ledger| {
+                                    ledger.borrow_mut().clear(&snapshot.row_id);
+                                });
                             }
-                            // Kept dead-man change is now on disk; drop the
-                            // ledger entry (the live value stays applied).
-                            PendingSource::DeadManKept => {
-                                clear_dead_man_kept(&snapshot.row_id);
-                            }
+                            PendingSource::DeadManKept => clear_dead_man_kept(&snapshot.row_id),
+                            PendingSource::LivePreview(_) => {}
                         }
                     }
-                    Err(reason) => {
-                        first_error = Some(reason);
-                        break;
-                    }
-                }
-            }
-            match first_error {
-                None => {
                     // Saved state: brief confirmation, then slide away.
                     saved_state.set(true);
-                    status_label.set_label("Changes saved to disk");
+                    status_label.set_label("All changes saved atomically to one file");
                     icon.set_icon_name(Some("emblem-ok-symbolic"));
                     icon.remove_css_class("warning");
                     icon.add_css_class("accent");
@@ -1731,8 +1781,10 @@ fn build_pending_bottom_bar(model: &Rc<UiProjection>) -> (gtk::Revealer, Rc<dyn 
                         },
                     );
                 }
-                Some(reason) => {
-                    status_label.set_label(&format!("Saved {saved} of {total} — {reason}"));
+                Err(reason) => {
+                    status_label.set_label(&format!(
+                        "Batch not saved: {reason} All changes remain pending."
+                    ));
                 }
             }
             notify_pending_changed();
@@ -6276,6 +6328,7 @@ fn record_picker_action_row(
     preview_button: &gtk::Button,
     parent: &gtk::Box,
 ) -> gtk::Label {
+    let save_precondition = capture_family_save_precondition(discovery);
     let keep_button = gtk::Button::with_label("Keep changes");
     keep_button.set_sensitive(false);
     let revert_button = gtk::Button::with_label("Revert now");
@@ -6452,15 +6505,51 @@ fn record_picker_action_row(
         let combo = combo.clone();
         let status = status.clone();
         let discovery = discovery.clone();
+        let save_precondition = save_precondition.clone();
+        let controller_slot = controller_slot.clone();
+        let keep_button = keep_button.clone();
+        let revert_button = revert_button.clone();
+        let cancel_button = cancel_button.clone();
         save_button.connect_clicked(move |_| {
             let Some(record) = combo.active_id() else {
                 status.set_label("Select a record first.");
                 return;
             };
-            let outcome =
-                save_picked_record_live(&discovery, family, record.as_str(), values_for_save());
+            let active_controller =
+                controller_slot
+                    .borrow()
+                    .as_ref()
+                    .cloned()
+                    .filter(|controller| {
+                        let controller = controller.borrow();
+                        controller.record_name() == record.as_str()
+                            && matches!(
+                                controller.phase(),
+                                RecordPickerPhase::CountingDown | RecordPickerPhase::Kept
+                            )
+                    });
+            let values = values_for_save();
+            let persist = || match &save_precondition {
+                Ok(precondition) => save_picked_record_with_precondition_live(
+                    &discovery,
+                    family,
+                    record.as_str(),
+                    values,
+                    precondition,
+                ),
+                Err(error) => Err(error.clone()),
+            };
+            let outcome = match active_controller {
+                Some(controller) => controller.borrow_mut().persist_and_mark_saved(persist),
+                None => persist(),
+            };
             match outcome {
-                Ok(receipt) => status.set_label(&receipt.status_text),
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    keep_button.set_sensitive(false);
+                    revert_button.set_sensitive(false);
+                    cancel_button.set_sensitive(false);
+                }
                 Err(error) => status.set_label(&error.user_text()),
             }
         });
@@ -7314,6 +7403,7 @@ fn animation_record_menu_box(
     discovery: &ConfigDiscovery,
     enabled_switch: &gtk::Switch,
 ) -> gtk::Box {
+    let save_precondition = capture_family_save_precondition(discovery);
     let record_name = entry.record.name.clone();
     let enabled_switch = enabled_switch.clone();
     let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
@@ -7436,14 +7526,43 @@ fn animation_record_menu_box(
         let discovery = discovery.clone();
         let values_for_save = Rc::clone(&values_for_save);
         let status = status.clone();
+        let save_precondition = save_precondition.clone();
+        let controller_slot = Rc::clone(&controller_slot);
+        let keep_button = keep_button.clone();
+        let revert_button = revert_button.clone();
         save_button.connect_clicked(move |_| {
-            match save_picked_record_live(
-                &discovery,
-                PickedFamily::Animation,
-                &record_name,
-                values_for_save(),
-            ) {
-                Ok(receipt) => status.set_label(&receipt.status_text),
+            let active_controller =
+                controller_slot
+                    .borrow()
+                    .as_ref()
+                    .cloned()
+                    .filter(|controller| {
+                        matches!(
+                            controller.borrow().phase(),
+                            RecordPickerPhase::CountingDown | RecordPickerPhase::Kept
+                        )
+                    });
+            let values = values_for_save();
+            let persist = || match &save_precondition {
+                Ok(precondition) => save_picked_record_with_precondition_live(
+                    &discovery,
+                    PickedFamily::Animation,
+                    &record_name,
+                    values,
+                    precondition,
+                ),
+                Err(error) => Err(error.clone()),
+            };
+            let outcome = match active_controller {
+                Some(controller) => controller.borrow_mut().persist_and_mark_saved(persist),
+                None => persist(),
+            };
+            match outcome {
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    keep_button.set_sensitive(false);
+                    revert_button.set_sensitive(false);
+                }
                 Err(error) => status.set_label(&error.user_text()),
             }
         });
@@ -10384,7 +10503,7 @@ fn append_user_facing_write_reason(detail: &RowDetailProjection, section: &gtk::
 fn apply_state_message(detail: &RowDetailProjection) -> String {
     if !detail.edit.editable {
         return format!(
-            "Apply is blocked because this setting is not currently editable in the app: {}.",
+            "Staging is blocked because this setting is not currently editable in the app: {}.",
             detail
                 .edit
                 .disabled_reason
@@ -10394,15 +10513,15 @@ fn apply_state_message(detail: &RowDetailProjection) -> String {
     }
 
     let Some(pending) = &detail.edit.pending else {
-        return "Apply is blocked because no pending value could be prepared.".to_string();
+        return "Staging is blocked because no pending value could be prepared.".to_string();
     };
 
     if pending.can_review {
         if high_risk_write_policy(&detail.row_id).is_some() {
-            return "Apply can proceed only through the high-risk gated review path with recovery and confirmation proof."
+            return "Staging can proceed only through the high-risk gated review path with recovery and confirmation proof."
                 .to_string();
         }
-        return "Apply is available after backup, config write, and reread verification."
+        return "Ready to stage for Save all atomically. No write happens from this detail pane."
             .to_string();
     }
 
@@ -10411,23 +10530,23 @@ fn apply_state_message(detail: &RowDetailProjection) -> String {
         .iter()
         .find_map(|line| line.strip_prefix("blocked: "))
     {
-        return format!("Apply is blocked because {reason}.");
+        return format!("Staging is blocked because {reason}.");
     }
 
     if let Some(reason) = pending.validation_label.strip_prefix("invalid: ") {
-        return format!("Apply is blocked because the proposed value is invalid: {reason}.");
+        return format!("Staging is blocked because the proposed value is invalid: {reason}.");
     }
 
     if let Some(reason) = pending.validation_label.strip_prefix("not allowed: ") {
-        return format!("Apply is blocked because {reason}.");
+        return format!("Staging is blocked because {reason}.");
     }
 
     if high_risk_write_policy(&detail.row_id).is_some() {
-        return "Apply is blocked until the high-risk gate has complete recovery, rollback, confirmation, and approval proof."
+        return "Staging is blocked until the high-risk gate has complete recovery, rollback, confirmation, and approval proof."
             .to_string();
     }
 
-    "Apply is blocked until the current config is readable, conflict-free, and the proposed value passes validation."
+    "Staging is blocked until the current config is readable, conflict-free, and the proposed value passes validation."
         .to_string()
 }
 
@@ -11210,21 +11329,17 @@ fn append_runtime_preview_controls(
                 status.set_label("Nothing to save: no preview value has been applied yet.");
                 return;
             };
-            match controller.borrow_mut().mark_saved() {
-                Ok(_) => {}
-                Err(error) => {
-                    status.set_label(&error.user_text());
-                    return;
-                }
-            }
-            match crate::production_save::gated_scalar_save_live(
-                known_setting_ids.clone(),
-                &config_discovery,
-                &current_config,
-                &setting_id,
-                &value,
-            ) {
-                Ok(outcome) => {
+            let save_result = controller.borrow_mut().persist_and_mark_saved(|| {
+                crate::production_save::gated_scalar_save_live(
+                    known_setting_ids.clone(),
+                    &config_discovery,
+                    &current_config,
+                    &setting_id,
+                    &value,
+                )
+            });
+            match save_result {
+                Ok((outcome, _session_receipt)) => {
                     button.set_sensitive(false);
                     status.set_label(&format!(
                         "Saved: {} = {} persisted once with backup {} (Safe Live Save Mode verified; no reload).",
@@ -11235,7 +11350,7 @@ fn append_runtime_preview_controls(
                         outcome.backup_path.display(),
                     ));
                 }
-                Err(reason) => status.set_label(&reason),
+                Err(error) => status.set_label(&error.user_text()),
             }
             notify_pending_changed();
         });
@@ -11294,9 +11409,9 @@ fn append_write_controls(
     controls.set_widget_name("hyprland-settings-review-apply-area");
     controls.set_margin_top(8);
 
-    controls.append(&body_label("Write review"));
+    controls.append(&body_label("Save review"));
     controls.append(&small_label(
-        "Only allowlisted scalar settings can be applied. A backup is created first, the config is rewritten, and the value is reread for verification. Hyprland reload is not run.",
+        "Only allowlisted scalar settings can be staged here. Saving happens later through the preflighted one-file atomic batch; this detail pane does not write config or reload Hyprland.",
     ));
 
     let value_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
@@ -11339,8 +11454,8 @@ fn append_write_controls(
     };
     controls.append(&value_row);
 
-    let apply_button = gtk::Button::with_label("Apply reviewed change");
-    apply_button.set_widget_name("hyprland-settings-apply-reviewed-change-button");
+    let apply_button = gtk::Button::with_label("Stage reviewed change");
+    apply_button.set_widget_name("hyprland-settings-stage-reviewed-change-button");
     let can_review = detail
         .edit
         .pending
@@ -11353,10 +11468,13 @@ fn append_write_controls(
     let result_label = small_label(&apply_state_message(detail));
     controls.append(&result_label);
 
-    let known_setting_ids = model.known_setting_ids.clone();
-    let config_discovery = model.config_discovery.clone();
-    let current_config = model.current_config.clone();
+    let _ = model;
     let setting_id = detail.row_id.clone();
+    let official_setting = detail.official_setting.clone();
+    let page_id =
+        crate::ux_presentation::page_for_official_setting(&official_setting).map(|page| page.id);
+    let original_value = detail.current_value.raw_value.clone().unwrap_or_default();
+    let config_has_line = detail.current_value.status == CurrentValueSourceStatus::Configured;
     apply_button.connect_clicked(move |button| {
         let proposed_value = value_choice
             .as_ref()
@@ -11364,30 +11482,18 @@ fn append_write_controls(
             .map(|value| value.to_string())
             .or_else(|| value_entry.as_ref().map(|entry| entry.text().to_string()))
             .unwrap_or_default();
-        match crate::production_save::gated_scalar_save_live(
-            known_setting_ids.clone(),
-            &config_discovery,
-            &current_config,
+        stage_save_only_change(
             &setting_id,
+            &official_setting,
+            page_id,
+            &original_value,
             &proposed_value,
-        ) {
-            Ok(outcome) => {
-                button.set_sensitive(false);
-                result_label.set_label(&format!(
-                    "Applied and verified {} = {}. Backup: {}. Rollback source: {}. {}",
-                    outcome.setting_id,
-                    outcome
-                        .verified_value
-                        .unwrap_or_else(|| "unknown".to_string()),
-                    outcome.backup_path.display(),
-                    outcome.rollback_source_path.display(),
-                    outcome.reload_note
-                ));
-            }
-            Err(reason) => {
-                result_label.set_label(&format!("Apply blocked: {reason}"));
-            }
-        }
+            config_has_line,
+        );
+        button.set_sensitive(false);
+        result_label.set_label(
+            "Staged for Save all atomically. No config or runtime change has occurred yet.",
+        );
     });
 
     detail_content.append(&controls);

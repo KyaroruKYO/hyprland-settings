@@ -10,6 +10,7 @@ pub mod current_config;
 pub mod cursor_default_monitor_oracle;
 pub mod cursor_input_boundary;
 pub mod display_render_boundary;
+pub mod durable_fs;
 pub mod export;
 pub mod family_record_picker;
 pub mod future_capability;

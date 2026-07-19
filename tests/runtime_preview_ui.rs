@@ -247,9 +247,31 @@ fn controller_preview_save_revert_cancel_route_through_executor() {
         "cancel clears the session"
     );
 
-    // Save marks the session; persistence is deferred to the config flow.
+    // Save can mark the session only after a durable receipt exists.
     controller.offer_value("7", 2_000).expect("ok");
-    let save = controller.mark_saved().expect("save marks");
+    struct FixtureDurableReceipt(bool);
+    impl hyprland_settings::runtime_preview_ui_projection::DurableSaveReceipt
+        for FixtureDurableReceipt
+    {
+        fn durable_save_succeeded(&self) -> bool {
+            self.0
+        }
+    }
+    let injected_failure = controller.persist_and_mark_saved::<FixtureDurableReceipt>(|| {
+        Err("injected durable write failure".to_string())
+    });
+    assert!(injected_failure.is_err());
+    assert_eq!(
+        controller.session_state(),
+        RuntimePreviewUiSessionState::PreviewingLive,
+        "failed writes must preserve preview recovery state"
+    );
+    assert!(controller
+        .mark_saved_after_durable_receipt(&FixtureDurableReceipt(false))
+        .is_err());
+    let (_durable, save) = controller
+        .persist_and_mark_saved(|| Ok(FixtureDurableReceipt(true)))
+        .expect("durable save marks");
     assert_eq!(save.action, "save");
     assert!(!save.config_written, "the controller itself never persists");
     assert!(save
@@ -265,6 +287,57 @@ fn controller_preview_save_revert_cancel_route_through_executor() {
         assert!(call[0] == "getoption" || call[0] == "eval");
         assert!(!call.join(" ").contains("reload"));
     }
+}
+
+#[test]
+fn failed_individual_save_keeps_revert_and_cancel_recovery_available() {
+    let row_id = gaps_row_id();
+    let log = std::rc::Rc::new(std::cell::RefCell::new(Vec::new()));
+    let runner = RecordingRunner {
+        log: log.clone(),
+        getoption_response: "int: 5\nset: true".to_string(),
+    };
+    let mut controller =
+        RuntimePreviewUiController::new(row_id, Box::new(runner)).expect("controller builds");
+    controller
+        .offer_value("9", 0)
+        .expect("preview should run")
+        .expect("first value should apply");
+
+    struct NeverDurable;
+    impl hyprland_settings::runtime_preview_ui_projection::DurableSaveReceipt for NeverDurable {
+        fn durable_save_succeeded(&self) -> bool {
+            false
+        }
+    }
+    assert!(controller
+        .persist_and_mark_saved::<NeverDurable>(|| Err("injected disk failure".to_string()))
+        .is_err());
+    assert_eq!(
+        controller.session_state(),
+        RuntimePreviewUiSessionState::PreviewingLive
+    );
+    assert_eq!(controller.last_applied_value().as_deref(), Some("9"));
+
+    let revert = controller
+        .revert()
+        .expect("Revert must remain available after failed Save");
+    assert_eq!(revert.value.as_deref(), Some("5"));
+    assert!(log.borrow().last().expect("revert call recorded")[1].contains("gaps_in = 5"));
+
+    controller
+        .offer_value("8", 1_000)
+        .expect("new preview should run");
+    assert!(controller
+        .mark_saved_after_durable_receipt(&NeverDurable)
+        .is_err());
+    let cancel = controller
+        .cancel()
+        .expect("Cancel must remain available after incomplete receipt");
+    assert_eq!(
+        cancel.session_state,
+        RuntimePreviewUiSessionState::Cancelled
+    );
 }
 
 #[test]

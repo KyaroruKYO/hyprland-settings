@@ -10,6 +10,7 @@ use hyprland_settings::config_graph::{
 use hyprland_settings::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValue, CurrentValueStatus,
 };
+use hyprland_settings::durable_fs::capture_file_precondition;
 use hyprland_settings::safe_batch_write::{SafeBatchChangeRequest, SafeBatchExecutionOptions};
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 use hyprland_settings::write_flow::apply_safe_batch_setting_changes_with_graph_and_options;
@@ -83,7 +84,13 @@ fn snapshot(
     values: Vec<(&str, &str, &Path, usize, &str, CurrentValueStatus)>,
 ) -> CurrentConfigSnapshot {
     let mut map = BTreeMap::new();
+    let mut file_preconditions = BTreeMap::new();
     for (setting_id, raw_value, source_path, line_number, raw_line, status) in values {
+        file_preconditions
+            .entry(source_path.to_path_buf())
+            .or_insert_with(|| {
+                capture_file_precondition(source_path).expect("fixture precondition")
+            });
         map.insert(
             setting_id.to_string(),
             CurrentValue {
@@ -110,6 +117,8 @@ fn snapshot(
         values: map,
         structured_records: Vec::new(),
         unsupported_records: Vec::new(),
+        file_preconditions,
+        source_graph_fingerprint: None,
     }
 }
 

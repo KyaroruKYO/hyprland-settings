@@ -329,13 +329,16 @@ fn valid_oracle_and_gate_proof_accepts_temp_fixture_write() -> anyhow::Result<()
     let target_path = root.join("hyprland.conf");
     let baseline = "cursor:default_monitor = eDP-1\n";
     fs::write(&target_path, baseline)?;
-    let current_config = snapshot_for(&target_path, baseline);
     let backup_manager = BackupManager::new(root.join("backups"));
     let known_setting_ids: BTreeSet<String> = SAFE_WRITABLE_ROWS
         .iter()
         .map(|row| row.row_id.to_string())
         .collect();
     let proof = complete_default_monitor_proof(target_path.clone(), "DP-1", "eDP-1")?;
+    // Recovery proof setup performs and restores a fixture write. The restore
+    // changes the fixture inode, so production code correctly rejects any
+    // snapshot captured before it. Review the restored file afresh.
+    let current_config = snapshot_for(&target_path, baseline);
 
     let default_path = apply_setting_change_with_backup_manager(
         known_setting_ids.clone(),

@@ -1,8 +1,10 @@
 use std::collections::BTreeSet;
+use std::fs;
 use std::path::PathBuf;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use anyhow::Result;
-use hyprland_settings::config_backup::ConfigBackup;
+use hyprland_settings::config_backup::BackupManager;
 use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::high_risk_recovery::{
@@ -125,12 +127,16 @@ fn screen_shader_remains_migration_candidate_not_enabled_high_risk_row() -> Resu
 
 #[test]
 fn current_fixture_write_review_still_accepts_normal_path_only_approval() -> Result<()> {
-    let config_path = PathBuf::from("/tmp/screen-shader-production-decision.conf");
-    let backup_path = PathBuf::from("/tmp/screen-shader-production-decision.conf.bak");
-    let snapshot = snapshot_for(
-        &config_path,
-        "decoration:screen_shader = ./old-screen-shader.frag\n",
-    );
+    let root = std::env::temp_dir().join(format!(
+        "hyprland-settings-screen-shader-decision-{}-{}",
+        std::process::id(),
+        SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos()
+    ));
+    fs::create_dir_all(&root)?;
+    let config_path = root.join("hyprland.conf");
+    let contents = "decoration:screen_shader = ./old-screen-shader.frag\n";
+    fs::write(&config_path, contents)?;
+    let snapshot = snapshot_for(&config_path, contents);
     let current_value = snapshot.value_for("decoration.screen_shader");
     let pending = stage_pending_change(
         "decoration.screen_shader",
@@ -142,11 +148,7 @@ fn current_fixture_write_review_still_accepts_normal_path_only_approval() -> Res
         detected_config_path: config_path.clone(),
         current_value,
         pending_change: pending,
-        backup: Some(ConfigBackup {
-            source_path: config_path,
-            backup_path,
-            byte_len: 64,
-        }),
+        backup: Some(BackupManager::new(root.join("backups")).create_backup(&config_path)?),
     });
 
     assert!(
@@ -159,6 +161,8 @@ fn current_fixture_write_review_still_accepts_normal_path_only_approval() -> Res
     assert!(policy
         .review_warning
         .contains("Path validation is not display/render safety proof"));
+
+    fs::remove_dir_all(root)?;
 
     Ok(())
 }

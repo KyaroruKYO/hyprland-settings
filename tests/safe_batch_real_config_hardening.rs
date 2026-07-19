@@ -26,7 +26,12 @@ fn report_validation_pending() -> Value {
 }
 
 #[test]
+#[ignore = "read-only real-config audit; run with HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1"]
 fn real_config_blocker_analysis_separates_missing_unmapped_and_redacts_local_detail() {
+    if std::env::var("HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT").as_deref() != Ok("1") {
+        eprintln!("skipping: HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT is not set");
+        return;
+    }
     let audit = real_config_readonly_audit();
     assert_eq!(audit["performed"], true);
     assert_eq!(audit["realUserConfigEdited"], false);
@@ -105,7 +110,12 @@ fn real_config_blocker_analysis_separates_missing_unmapped_and_redacts_local_det
 }
 
 #[test]
+#[ignore = "read-only real-config audit; run with HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1"]
 fn duplicate_missing_and_managed_blockers_explain_why_apply_is_blocked() {
+    if std::env::var("HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT").as_deref() != Ok("1") {
+        eprintln!("skipping: HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT is not set");
+        return;
+    }
     let audit = real_config_readonly_audit();
     let duplicate_details = audit["duplicateConflictDetails"]
         .as_array()
@@ -233,7 +243,12 @@ fn ui_readonly_smoke_report_uses_source_proof_without_apply() {
 }
 
 #[test]
+#[ignore = "read-only real-config audit; run with HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1"]
 fn real_config_hardening_summary_preserves_write_safety() {
+    if std::env::var("HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT").as_deref() != Ok("1") {
+        eprintln!("skipping: HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT is not set");
+        return;
+    }
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
     let audit = real_config_readonly_audit();
     let before_blockers = json!({

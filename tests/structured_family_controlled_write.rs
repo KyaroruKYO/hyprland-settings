@@ -245,8 +245,14 @@ fn controlled_executor_round_trip_helper_preserves_non_family_lines_and_emits_fu
 
     // The single-call round trip proves the same chain and carries rollback
     // proof inside the receipt.
+    let fresh_plan = build_structured_family_controlled_write_plan(
+        &staged_apply,
+        temp_target(&root, &target_path),
+        rendered_records,
+    )
+    .expect("restored target should produce a fresh plan");
     let round_trip_receipt =
-        execute_structured_family_controlled_write_round_trip(&plan, &approval)
+        execute_structured_family_controlled_write_round_trip(&fresh_plan, &approval)
             .expect("round trip should execute");
     assert!(round_trip_receipt.executed);
     let rollback = round_trip_receipt
@@ -294,17 +300,12 @@ fn controlled_executor_refuses_active_real_hyprland_config() {
         .contains(&StructuredFamilyControlledWriteTargetRejection::ActiveRealConfigTargetRejected));
 
     let staged_apply = accepted_staged_apply_plan(family, &root);
-    let plan = build_structured_family_controlled_write_plan(
+    let error = build_structured_family_controlled_write_plan(
         &staged_apply,
         target,
         vec!["monitor = eDP-1, 1920x1080@60, 0x0, 1".to_string()],
     )
-    .expect("plan builds; target policy is enforced at execution time");
-    let error = execute_structured_family_controlled_write(
-        &plan,
-        &approve_structured_family_controlled_write(),
-    )
-    .expect_err("active real config must be rejected");
+    .expect_err("active real config must be rejected before planning");
     assert_eq!(
         error,
         StructuredFamilyControlledWriteError::TargetRejected(
@@ -334,7 +335,6 @@ fn controlled_executor_refuses_unknown_targets_path_escapes_and_symlink_escapes(
     let root = unique_temp_root("escape-refusal");
     let target_path = copy_fixture_to_root(family, &root);
     let staged_apply = accepted_staged_apply_plan(family, &root);
-    let approval = approve_structured_family_controlled_write();
     let rendered = vec!["monitor = eDP-1, 1920x1080@60, 0x0, 1".to_string()];
 
     // Unknown declared kind is never writable.
@@ -348,11 +348,9 @@ fn controlled_executor_refuses_unknown_targets_path_escapes_and_symlink_escapes(
     assert!(unknown_policy
         .rejection_reasons
         .contains(&StructuredFamilyControlledWriteTargetRejection::UnknownTargetRejected));
-    let plan =
+    let error =
         build_structured_family_controlled_write_plan(&staged_apply, unknown, rendered.clone())
-            .expect("plan builds; policy is enforced at execution time");
-    let error = execute_structured_family_controlled_write(&plan, &approval)
-        .expect_err("unknown target must be rejected");
+            .expect_err("unknown target must be rejected before planning");
     assert!(matches!(
         error,
         StructuredFamilyControlledWriteError::TargetRejected(_)
@@ -406,10 +404,8 @@ fn controlled_executor_refuses_unknown_targets_path_escapes_and_symlink_escapes(
     assert!(symlink_policy
         .rejection_reasons
         .contains(&StructuredFamilyControlledWriteTargetRejection::SymlinkEscapeRejected));
-    let plan = build_structured_family_controlled_write_plan(&staged_apply, symlinked, rendered)
-        .expect("plan builds; policy is enforced at execution time");
-    let error = execute_structured_family_controlled_write(&plan, &approval)
-        .expect_err("symlink escape must be rejected");
+    let error = build_structured_family_controlled_write_plan(&staged_apply, symlinked, rendered)
+        .expect_err("symlink escape must be rejected before planning");
     assert!(matches!(
         error,
         StructuredFamilyControlledWriteError::TargetRejected(
@@ -493,7 +489,7 @@ fn controlled_executor_fails_closed_on_missing_approval_and_missing_plans() {
     // Backup paths outside the controlled root fail closed.
     let mut foreign_backup = plan.clone();
     if let Some(backup_plan) = foreign_backup.backup_plan.as_mut() {
-        backup_plan.backup_path = std::env::temp_dir().join("outside-root-backup.conf");
+        backup_plan.backup_root = std::env::temp_dir().join("outside-root-backup");
     }
     assert_eq!(
         execute_structured_family_controlled_write(&foreign_backup, &approval),
@@ -805,17 +801,12 @@ fn controlled_executor_refuses_symlinked_target_file_pointing_outside_root() {
         .contains(&StructuredFamilyControlledWriteTargetRejection::SymlinkEscapeRejected));
 
     let staged_apply = accepted_staged_apply_plan(family, &root);
-    let plan = build_structured_family_controlled_write_plan(
+    let error = build_structured_family_controlled_write_plan(
         &staged_apply,
         target,
         vec!["monitor = eDP-1, 1920x1080@60, 0x0, 1".to_string()],
     )
-    .expect("plan builds; policy is enforced at execution time");
-    let error = execute_structured_family_controlled_write(
-        &plan,
-        &approve_structured_family_controlled_write(),
-    )
-    .expect_err("symlinked target file must be rejected");
+    .expect_err("symlinked target file must be rejected before planning");
     assert!(matches!(
         error,
         StructuredFamilyControlledWriteError::TargetRejected(
@@ -866,5 +857,49 @@ fn controlled_executor_atomic_writes_leave_no_stray_temp_files() {
         "atomic writes must not leave temp files behind: {stray:?}"
     );
 
+    fs::remove_dir_all(&root).expect("temp root should clean up");
+}
+
+#[test]
+fn controlled_structured_write_rejects_external_record_drift_before_backup_or_write() {
+    let family = StructuredFamilyKind::Animation;
+    let root = unique_temp_root("record-drift");
+    let target_path = copy_fixture_to_root(family, &root);
+    let original_records = family_records_on_disk(&target_path, family);
+    let staged_apply = accepted_staged_apply_plan(family, &root);
+    let plan = build_structured_family_controlled_write_plan(
+        &staged_apply,
+        temp_target(&root, &target_path),
+        original_records,
+    )
+    .expect("plan should capture exact target bytes");
+
+    let external_bytes = [
+        fs::read(&target_path).expect("target should read"),
+        b"# external structured-record edit\n".to_vec(),
+    ]
+    .concat();
+    fs::write(&target_path, &external_bytes).expect("external edit should write fixture");
+    let before_entries = fs::read_dir(&root).expect("root should list").count();
+
+    let error = execute_structured_family_controlled_write(
+        &plan,
+        &approve_structured_family_controlled_write(),
+    )
+    .expect_err("structured target drift must abort before backup and write");
+
+    assert!(matches!(
+        error,
+        StructuredFamilyControlledWriteError::OnDiskDriftDetected(_)
+    ));
+    assert_eq!(
+        fs::read(&target_path).expect("target should read"),
+        external_bytes
+    );
+    assert_eq!(
+        fs::read_dir(&root).expect("root should list").count(),
+        before_entries,
+        "drift rejection must not create a backup or temp file"
+    );
     fs::remove_dir_all(&root).expect("temp root should clean up");
 }

@@ -19,13 +19,15 @@ use std::path::{Path, PathBuf};
 
 use serde::Serialize;
 
+use crate::config_backup::BackupManager;
 use crate::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
+use crate::durable_fs::{capture_file_precondition, hardened_atomic_replace, FilePrecondition};
 use crate::runtime_preview_executor::RuntimePreviewRunner;
 use crate::safe_live_save_mode::require_safe_live_save_mode;
 use crate::structured_family::StructuredFamilyKind;
 use crate::structured_family_active_config_pilot::active_config_pilot_content_hash;
 use crate::structured_family_controlled_write::{
-    apply_rendered_family_records, atomic_controlled_write, family_records_in_text,
+    apply_rendered_family_records, family_records_in_text,
 };
 use crate::structured_family_preview_controller::FamilyPreviewTarget;
 use crate::structured_family_runtime_preview::{
@@ -46,6 +48,8 @@ pub enum FamilySaveError {
     WriteFailed(String),
     VerificationFailedAndRestored(String),
     RestoreFailed(String),
+    OnDiskDriftDetected(String),
+    PreviewStateInvalid(String),
 }
 
 impl FamilySaveError {
@@ -64,6 +68,10 @@ impl FamilySaveError {
             Self::RestoreFailed(detail) => format!(
                 "Save verification failed AND restore failed - restore manually from the backup: {detail}"
             ),
+            Self::OnDiskDriftDetected(_) => "The config changed on disk after this edit was prepared. Nothing was written. Reload or reread the setting before saving again.".to_string(),
+            Self::PreviewStateInvalid(detail) => {
+                format!("Save blocked before writing because preview recovery state is unavailable: {detail}")
+            }
         }
     }
 }
@@ -82,6 +90,13 @@ pub struct FamilySaveReceipt {
     pub restored_after_success: bool,
     pub reload_run: bool,
     pub status_text: String,
+    pub durable_receipt_created: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FamilySavePrecondition {
+    pub target: FilePrecondition,
+    pub source_graph_fingerprint: String,
 }
 
 /// Validate the value range for a target before any gate or file access.
@@ -176,8 +191,30 @@ pub fn record_matches_target(target: FamilyPreviewTarget, raw_line: &str) -> boo
     record_line_matches_name(raw_line, target.record())
 }
 
-fn backup_root() -> PathBuf {
-    std::env::temp_dir().join("hyprland-settings-family-save-backups")
+pub fn capture_family_save_precondition(
+    discovery: &ConfigDiscovery,
+) -> Result<FamilySavePrecondition, FamilySaveError> {
+    let config_path = match &discovery.status {
+        ConfigDiscoveryStatus::Found { path, .. } => path,
+        other => {
+            return Err(FamilySaveError::ConfigUnavailable(format!(
+                "no config file discovered: {other:?}"
+            )))
+        }
+    };
+    let target = capture_file_precondition(config_path)
+        .map_err(|error| FamilySaveError::TargetIdentityFailed(error.to_string()))?;
+    let source_graph_fingerprint =
+        crate::source_aware_current_config::current_source_graph_fingerprint(config_path)
+            .ok_or_else(|| {
+                FamilySaveError::TargetIdentityFailed(
+                    "source graph could not be fingerprinted".to_string(),
+                )
+            })?;
+    Ok(FamilySavePrecondition {
+        target,
+        source_graph_fingerprint,
+    })
 }
 
 /// The production Save. Verifies the Safe Live Save Mode gate live, writes
@@ -190,6 +227,44 @@ pub fn gated_family_save(
     target: FamilyPreviewTarget,
     value: f64,
 ) -> Result<FamilySaveReceipt, FamilySaveError> {
+    let (config_path, rendered_line, kind) = prepare_family_save(runner, discovery, target, value)?;
+    let precondition = capture_family_save_precondition(discovery)?;
+    persist_rendered_record_line(
+        &config_path,
+        &precondition,
+        kind,
+        target.family_id(),
+        target.record(),
+        rendered_line,
+        format!("{value}"),
+    )
+}
+
+pub fn gated_family_save_with_precondition(
+    runner: &mut dyn RuntimePreviewRunner,
+    discovery: &ConfigDiscovery,
+    target: FamilyPreviewTarget,
+    value: f64,
+    precondition: &FamilySavePrecondition,
+) -> Result<FamilySaveReceipt, FamilySaveError> {
+    let (config_path, rendered_line, kind) = prepare_family_save(runner, discovery, target, value)?;
+    persist_rendered_record_line(
+        &config_path,
+        precondition,
+        kind,
+        target.family_id(),
+        target.record(),
+        rendered_line,
+        format!("{value}"),
+    )
+}
+
+fn prepare_family_save(
+    runner: &mut dyn RuntimePreviewRunner,
+    discovery: &ConfigDiscovery,
+    target: FamilyPreviewTarget,
+    value: f64,
+) -> Result<(PathBuf, String, StructuredFamilyKind), FamilySaveError> {
     // Gate 1: only receipt-proven families can save.
     if proven_family_record_proof(target.family_id()).is_none() {
         return Err(FamilySaveError::FamilyNotProven(
@@ -222,14 +297,7 @@ pub fn gated_family_save(
     let rendered_line = render_target_line(target, value, runner)?;
     let kind = family_kind(target);
 
-    persist_rendered_record_line(
-        &config_path,
-        kind,
-        target.family_id(),
-        target.record(),
-        rendered_line,
-        format!("{value}"),
-    )
+    Ok((config_path, rendered_line, kind))
 }
 
 /// The shared persist tail every gated family save uses after its gates
@@ -240,15 +308,32 @@ pub fn gated_family_save(
 /// Mode and target identity gates.
 fn persist_rendered_record_line(
     config_path: &Path,
+    precondition: &FamilySavePrecondition,
     kind: StructuredFamilyKind,
     family_id: &'static str,
     record_name: &str,
     rendered_line: String,
     saved_value: String,
 ) -> Result<FamilySaveReceipt, FamilySaveError> {
-    // Read original bytes and hash.
-    let original = fs::read(config_path)
-        .map_err(|error| FamilySaveError::ConfigUnavailable(error.to_string()))?;
+    if precondition.target.requested_path != config_path {
+        return Err(FamilySaveError::TargetIdentityFailed(
+            "reviewed target does not match the save target".to_string(),
+        ));
+    }
+    let current_graph =
+        crate::source_aware_current_config::current_source_graph_fingerprint(config_path)
+            .ok_or_else(|| {
+                FamilySaveError::OnDiskDriftDetected(
+                    "source graph could not be reproduced".to_string(),
+                )
+            })?;
+    if current_graph != precondition.source_graph_fingerprint {
+        return Err(FamilySaveError::OnDiskDriftDetected(
+            "source/include graph changed".to_string(),
+        ));
+    }
+
+    let original = precondition.target.bytes.clone();
     let pre_save_hash = active_config_pilot_content_hash(&original);
     let original_text = String::from_utf8_lossy(&original).into_owned();
 
@@ -274,32 +359,31 @@ fn persist_rendered_record_line(
         rendered_records.push(rendered_line.clone());
     }
 
-    // Byte-exact backup outside the config directory, verified readable.
-    let root = backup_root();
-    fs::create_dir_all(&root).map_err(|error| FamilySaveError::BackupFailed(error.to_string()))?;
-    let backup_path = root.join(format!(
-        "hyprland.conf.family-save-{}-{}.bak",
-        record_name,
-        std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|duration| duration.as_secs())
-            .unwrap_or(0)
-    ));
-    fs::write(&backup_path, &original)
+    let backup_root = BackupManager::default_user_backup_root()
         .map_err(|error| FamilySaveError::BackupFailed(error.to_string()))?;
-    let backup_bytes =
-        fs::read(&backup_path).map_err(|error| FamilySaveError::BackupFailed(error.to_string()))?;
-    if backup_bytes != original {
-        return Err(FamilySaveError::BackupFailed(
-            "backup is not byte-exact".to_string(),
-        ));
-    }
+    let backup_manager = BackupManager::new(backup_root);
+    let backup = backup_manager
+        .create_backup_from_precondition(&precondition.target)
+        .map_err(|error| FamilySaveError::OnDiskDriftDetected(error.to_string()))?;
+    let backup_path = backup.backup_path.clone();
 
     // One atomic write of the updated family records.
     let new_text =
         apply_rendered_family_records(config_path, &original_text, kind, &rendered_records);
-    atomic_controlled_write(config_path, new_text.as_bytes())
-        .map_err(|error| FamilySaveError::WriteFailed(error.to_string()))?;
+    let current_graph =
+        crate::source_aware_current_config::current_source_graph_fingerprint(config_path)
+            .ok_or_else(|| {
+                FamilySaveError::OnDiskDriftDetected(
+                    "source graph could not be reproduced immediately before commit".to_string(),
+                )
+            })?;
+    if current_graph != precondition.source_graph_fingerprint {
+        return Err(FamilySaveError::OnDiskDriftDetected(
+            "source/include graph changed immediately before commit".to_string(),
+        ));
+    }
+    let durable_receipt = hardened_atomic_replace(&precondition.target, new_text.as_bytes())
+        .map_err(|error| FamilySaveError::OnDiskDriftDetected(error.to_string()))?;
 
     // Reread and verify the intended record persisted through the parser.
     let verify = verify_saved_record_named(config_path, kind, record_name, &rendered_line);
@@ -307,8 +391,8 @@ fn persist_rendered_record_line(
         Ok(()) => {}
         Err(detail) => {
             // Fail closed: restore the backup before reporting.
-            return match atomic_controlled_write(config_path, &original) {
-                Ok(()) => Err(FamilySaveError::VerificationFailedAndRestored(detail)),
+            return match backup_manager.rollback(&backup, new_text.as_bytes()) {
+                Ok(_) => Err(FamilySaveError::VerificationFailedAndRestored(detail)),
                 Err(error) => Err(FamilySaveError::RestoreFailed(format!(
                     "{detail}; restore error: {error}; backup at {}",
                     backup_path.display()
@@ -337,6 +421,8 @@ fn persist_rendered_record_line(
             config_path.display(),
             backup_path.display()
         ),
+        durable_receipt_created: durable_receipt.final_bytes_verified
+            && durable_receipt.parent_directory_synced,
     })
 }
 
@@ -588,6 +674,42 @@ pub fn gated_family_record_save(
     discovery: &ConfigDiscovery,
     request: FamilyRecordSaveRequest,
 ) -> Result<FamilySaveReceipt, FamilySaveError> {
+    let (config_path, rendered_line) = prepare_family_record_save(runner, discovery, &request)?;
+    let precondition = capture_family_save_precondition(discovery)?;
+    persist_rendered_record_line(
+        &config_path,
+        &precondition,
+        request.kind(),
+        request.family_id(),
+        request.record(),
+        rendered_line,
+        request.saved_value_text(),
+    )
+}
+
+pub fn gated_family_record_save_with_precondition(
+    runner: &mut dyn RuntimePreviewRunner,
+    discovery: &ConfigDiscovery,
+    request: FamilyRecordSaveRequest,
+    precondition: &FamilySavePrecondition,
+) -> Result<FamilySaveReceipt, FamilySaveError> {
+    let (config_path, rendered_line) = prepare_family_record_save(runner, discovery, &request)?;
+    persist_rendered_record_line(
+        &config_path,
+        precondition,
+        request.kind(),
+        request.family_id(),
+        request.record(),
+        rendered_line,
+        request.saved_value_text(),
+    )
+}
+
+fn prepare_family_record_save(
+    runner: &mut dyn RuntimePreviewRunner,
+    discovery: &ConfigDiscovery,
+    request: &FamilyRecordSaveRequest,
+) -> Result<(PathBuf, String), FamilySaveError> {
     // Gate 1: every record shape the request carries must have a passed
     // live-proof receipt.
     for shape in request.required_shapes() {
@@ -620,16 +742,8 @@ pub fn gated_family_record_save(
     }
 
     // Render from the readback (modify-existing enforced inside).
-    let rendered_line = render_record_request_line(&request, runner)?;
-
-    persist_rendered_record_line(
-        &config_path,
-        request.kind(),
-        request.family_id(),
-        request.record(),
-        rendered_line,
-        request.saved_value_text(),
-    )
+    let rendered_line = render_record_request_line(request, runner)?;
+    Ok((config_path, rendered_line))
 }
 
 /// Live wrapper owning the runner, so UI code never constructs one.

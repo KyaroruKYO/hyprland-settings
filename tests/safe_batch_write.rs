@@ -10,6 +10,7 @@ use hyprland_settings::config_graph::{
 use hyprland_settings::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValue, CurrentValueStatus,
 };
+use hyprland_settings::durable_fs::capture_file_precondition;
 use hyprland_settings::safe_batch_write::{
     build_safe_batch_write_plan, execute_safe_batch_write_plan, safe_batch_write_user_facing_lines,
     SafeBatchChangeRequest, SafeBatchEligibility, SafeBatchExecutionOptions, SafeBatchWriteStatus,
@@ -98,7 +99,13 @@ fn snapshot(
     values: Vec<(&str, &str, &Path, usize, &str, CurrentValueStatus)>,
 ) -> CurrentConfigSnapshot {
     let mut map = BTreeMap::new();
+    let mut file_preconditions = BTreeMap::new();
     for (setting_id, raw_value, source_path, line_number, raw_line, status) in values {
+        file_preconditions
+            .entry(source_path.to_path_buf())
+            .or_insert_with(|| {
+                capture_file_precondition(source_path).expect("fixture precondition")
+            });
         map.insert(
             setting_id.to_string(),
             CurrentValue {
@@ -125,6 +132,8 @@ fn snapshot(
         values: map,
         structured_records: Vec::new(),
         unsupported_records: Vec::new(),
+        file_preconditions,
+        source_graph_fingerprint: None,
     }
 }
 
@@ -203,7 +212,7 @@ fn safe_batch_with_two_normal_scalar_changes_in_one_file_succeeds() {
 }
 
 #[test]
-fn safe_batch_with_normal_scalar_changes_across_two_files_succeeds() {
+fn safe_batch_with_normal_scalar_changes_across_two_files_is_rejected_before_write() {
     let root = temp_root("two-file-success");
     let primary = root.join("hyprland.conf");
     let included = root.join("appearance.conf");
@@ -243,7 +252,7 @@ fn safe_batch_with_normal_scalar_changes_across_two_files_succeeds() {
         ],
     );
 
-    assert!(plan.can_execute);
+    assert!(!plan.can_execute);
     assert_eq!(plan.target_files.len(), 2);
     let report = execute_safe_batch_write_plan(
         &plan,
@@ -253,10 +262,142 @@ fn safe_batch_with_normal_scalar_changes_across_two_files_succeeds() {
         },
     );
 
-    assert_eq!(report.status, SafeBatchWriteStatus::Succeeded);
-    assert_eq!(report.backups.len(), 2);
-    assert!(fs::read_to_string(&primary).unwrap().contains("false"));
-    assert!(fs::read_to_string(&included).unwrap().contains("true"));
+    assert_eq!(report.status, SafeBatchWriteStatus::Blocked);
+    assert!(report.backups.is_empty());
+    assert_eq!(
+        fs::read_to_string(&primary).unwrap(),
+        "decoration:blur:enabled = true\n"
+    );
+    assert_eq!(
+        fs::read_to_string(&included).unwrap(),
+        "decoration:shadow:enabled = false\n"
+    );
+}
+
+#[test]
+fn second_row_validation_failure_rejects_entire_same_file_batch() {
+    let root = temp_root("second-row-invalid");
+    let config = root.join("hyprland.conf");
+    let original = "decoration:blur:enabled = true\ndecoration:shadow:enabled = false\n";
+    write_file(&config, original);
+    let current = snapshot(vec![
+        (
+            "decoration.blur.enabled",
+            "true",
+            &config,
+            1,
+            "decoration:blur:enabled = true",
+            CurrentValueStatus::Configured,
+        ),
+        (
+            "decoration.shadow.enabled",
+            "false",
+            &config,
+            2,
+            "decoration:shadow:enabled = false",
+            CurrentValueStatus::Configured,
+        ),
+    ]);
+    let graph = graph_for(vec![graph_file(&config, Vec::new())], config.clone());
+    let plan = plan_for(
+        &current,
+        &graph,
+        vec![
+            SafeBatchChangeRequest::new("appearance.blur.enabled", "false"),
+            SafeBatchChangeRequest::new("appearance.shadow.enabled", "not-a-boolean"),
+        ],
+    );
+
+    assert!(!plan.can_execute);
+    assert!(!plan.blocked_changes.is_empty());
+    let report = execute_safe_batch_write_plan(&plan, &SafeBatchExecutionOptions::default());
+    assert_eq!(report.status, SafeBatchWriteStatus::Blocked);
+    assert!(report.backups.is_empty());
+    assert_eq!(fs::read_to_string(&config).unwrap(), original);
+}
+
+#[test]
+fn drift_in_one_row_rejects_entire_same_file_batch_without_backup() {
+    let root = temp_root("one-row-drift");
+    let config = root.join("hyprland.conf");
+    write_file(
+        &config,
+        "decoration:blur:enabled = true\ndecoration:shadow:enabled = false\n",
+    );
+    let current = snapshot(vec![
+        (
+            "decoration.blur.enabled",
+            "true",
+            &config,
+            1,
+            "decoration:blur:enabled = true",
+            CurrentValueStatus::Configured,
+        ),
+        (
+            "decoration.shadow.enabled",
+            "false",
+            &config,
+            2,
+            "decoration:shadow:enabled = false",
+            CurrentValueStatus::Configured,
+        ),
+    ]);
+    let graph = graph_for(vec![graph_file(&config, Vec::new())], config.clone());
+    let plan = plan_for(
+        &current,
+        &graph,
+        vec![
+            SafeBatchChangeRequest::new("appearance.blur.enabled", "false"),
+            SafeBatchChangeRequest::new("appearance.shadow.enabled", "true"),
+        ],
+    );
+    let external = "decoration:blur:enabled = true\ndecoration:shadow:enabled = true\n";
+    fs::write(&config, external).expect("external edit should write fixture");
+
+    let report = execute_safe_batch_write_plan(&plan, &SafeBatchExecutionOptions::default());
+    assert_eq!(report.status, SafeBatchWriteStatus::Blocked);
+    assert!(report.backups.is_empty());
+    assert!(report
+        .failures
+        .iter()
+        .any(|failure| failure.contains("SourceGraphChanged")));
+    assert_eq!(fs::read_to_string(&config).unwrap(), external);
+}
+
+#[test]
+fn staged_parse_failure_writes_nothing() {
+    let root = temp_root("staged-parse-failure");
+    let config = root.join("hyprland.conf");
+    let original = "decoration:blur:enabled = true\n";
+    write_file(&config, original);
+    let current = snapshot(vec![(
+        "decoration.blur.enabled",
+        "true",
+        &config,
+        1,
+        "decoration:blur:enabled = true",
+        CurrentValueStatus::Configured,
+    )]);
+    let graph = graph_for(vec![graph_file(&config, Vec::new())], config.clone());
+    let mut plan = plan_for(
+        &current,
+        &graph,
+        vec![SafeBatchChangeRequest::new(
+            "misc.disable_splash_rendering",
+            "true",
+        )],
+    );
+    assert!(plan.can_execute);
+    plan.insertion_changes[0].insertion_line = "this is not an assignment".to_string();
+
+    let report = execute_safe_batch_write_plan(&plan, &SafeBatchExecutionOptions::default());
+    assert_eq!(report.status, SafeBatchWriteStatus::Blocked);
+    assert!(report.backups.is_empty());
+    assert!(report
+        .failures
+        .iter()
+        .any(|failure| failure.contains("staged parse/reread verification failed")));
+    assert_eq!(fs::read_to_string(&config).unwrap(), original);
 }
 
 #[test]
@@ -598,10 +739,11 @@ fn blocked_categories_prevent_batch_execution_and_partial_apply_by_default() {
 #[test]
 fn write_failure_and_verification_failure_restore_all_touched_files() {
     let root = temp_root("recovery");
-    let first = root.join("first.conf");
-    let second = root.join("second.conf");
-    write_file(&first, "decoration:blur:enabled = true\n");
-    write_file(&second, "decoration:shadow:enabled = false\n");
+    let first = root.join("hyprland.conf");
+    write_file(
+        &first,
+        "decoration:blur:enabled = true\ndecoration:shadow:enabled = false\n",
+    );
     let current = snapshot(vec![
         (
             "decoration.blur.enabled",
@@ -614,19 +756,13 @@ fn write_failure_and_verification_failure_restore_all_touched_files() {
         (
             "decoration.shadow.enabled",
             "false",
-            &second,
-            1,
+            &first,
+            2,
             "decoration:shadow:enabled = false",
             CurrentValueStatus::Configured,
         ),
     ]);
-    let graph = graph_for(
-        vec![
-            graph_file(&first, Vec::new()),
-            graph_file(&second, Vec::new()),
-        ],
-        first.clone(),
-    );
+    let graph = graph_for(vec![graph_file(&first, Vec::new())], first.clone());
     let plan = plan_for(
         &current,
         &graph,
@@ -649,15 +785,41 @@ fn write_failure_and_verification_failure_restore_all_touched_files() {
     assert!(write_failure.recovery_succeeded);
     assert_eq!(
         fs::read_to_string(&first).unwrap(),
-        "decoration:blur:enabled = true\n"
-    );
-    assert_eq!(
-        fs::read_to_string(&second).unwrap(),
-        "decoration:shadow:enabled = false\n"
+        "decoration:blur:enabled = true\ndecoration:shadow:enabled = false\n"
     );
 
+    // A successful restore is itself an atomic replacement, so the original
+    // inode-bound plan is deliberately stale. Build a fresh reviewed plan for
+    // the independent post-write verification-failure scenario.
+    let restored_current = snapshot(vec![
+        (
+            "decoration.blur.enabled",
+            "true",
+            &first,
+            1,
+            "decoration:blur:enabled = true",
+            CurrentValueStatus::Configured,
+        ),
+        (
+            "decoration.shadow.enabled",
+            "false",
+            &first,
+            2,
+            "decoration:shadow:enabled = false",
+            CurrentValueStatus::Configured,
+        ),
+    ]);
+    let restored_graph = graph_for(vec![graph_file(&first, Vec::new())], first.clone());
+    let restored_plan = plan_for(
+        &restored_current,
+        &restored_graph,
+        vec![
+            SafeBatchChangeRequest::new("appearance.blur.enabled", "false"),
+            SafeBatchChangeRequest::new("appearance.shadow.enabled", "true"),
+        ],
+    );
     let verification_failure = execute_safe_batch_write_plan(
-        &plan,
+        &restored_plan,
         &SafeBatchExecutionOptions {
             backup_timestamp: "verification-failure".to_string(),
             force_verification_failure_for: Some("appearance.shadow.enabled".to_string()),
@@ -671,11 +833,7 @@ fn write_failure_and_verification_failure_restore_all_touched_files() {
     assert!(verification_failure.restore_verification_succeeded);
     assert_eq!(
         fs::read_to_string(&first).unwrap(),
-        "decoration:blur:enabled = true\n"
-    );
-    assert_eq!(
-        fs::read_to_string(&second).unwrap(),
-        "decoration:shadow:enabled = false\n"
+        "decoration:blur:enabled = true\ndecoration:shadow:enabled = false\n"
     );
 }
 

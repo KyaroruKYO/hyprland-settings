@@ -71,7 +71,7 @@ fn rollback_restores_fixture_content() -> Result<()> {
     let backup = manager.create_backup(&source)?;
     fs::write(&source, "misc:disable_hyprland_logo = false\n")?;
 
-    manager.rollback(&backup)?;
+    manager.rollback(&backup, b"misc:disable_hyprland_logo = false\n")?;
 
     assert_eq!(
         fs::read_to_string(&source)?,

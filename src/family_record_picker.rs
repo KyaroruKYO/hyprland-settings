@@ -39,7 +39,8 @@ use crate::runtime_preview_executor::{
     RuntimePreviewRunner,
 };
 use crate::structured_family_gated_persistence::{
-    gated_family_record_save, FamilyRecordSaveRequest, FamilySaveError, FamilySaveReceipt,
+    gated_family_record_save, gated_family_record_save_with_precondition, FamilyRecordSaveRequest,
+    FamilySaveError, FamilySavePrecondition, FamilySaveReceipt,
 };
 use crate::structured_family_runtime_preview::{
     parse_animation_records, parse_bezier_records, proven_record_shape_proof,
@@ -385,6 +386,7 @@ pub enum RecordPickerPhase {
     Disarmed,
     CountingDown,
     Kept,
+    Saved,
     Reverted,
     TimedOutReverted,
     Cancelled,
@@ -396,6 +398,7 @@ impl RecordPickerPhase {
             Self::Disarmed => "Disarmed",
             Self::CountingDown => "Counting down",
             Self::Kept => "Kept",
+            Self::Saved => "Saved",
             Self::Reverted => "Reverted",
             Self::TimedOutReverted => "Timed out and reverted",
             Self::Cancelled => "Cancelled",
@@ -789,6 +792,46 @@ impl FamilyRecordPreviewController {
         ))
     }
 
+    /// Persist an active preview and consume its recovery registration only
+    /// after the persistence layer returns a durable, reread-verified receipt.
+    /// A persistence failure leaves the phase and original value untouched.
+    pub fn persist_and_mark_saved<F>(
+        &mut self,
+        persist: F,
+    ) -> Result<FamilySaveReceipt, FamilySaveError>
+    where
+        F: FnOnce() -> Result<FamilySaveReceipt, FamilySaveError>,
+    {
+        if !matches!(
+            self.phase,
+            RecordPickerPhase::CountingDown | RecordPickerPhase::Kept
+        ) {
+            return Err(FamilySaveError::PreviewStateInvalid(
+                "the record preview is not active or kept".to_string(),
+            ));
+        }
+
+        let receipt = persist()?;
+        if !receipt.durable_receipt_created || !receipt.reread_verified {
+            return Err(FamilySaveError::PreviewStateInvalid(
+                "persistence did not return a durable reread-verified receipt".to_string(),
+            ));
+        }
+        if receipt.family_id != self.family.family_id() || receipt.record != self.record_name {
+            return Err(FamilySaveError::PreviewStateInvalid(
+                "the durable receipt does not identify this previewed record".to_string(),
+            ));
+        }
+
+        if let Some(dead_man) = self.dead_man.as_mut() {
+            dead_man.confirm();
+        }
+        self.phase = RecordPickerPhase::Saved;
+        self.original = None;
+        self.dead_man = None;
+        Ok(receipt)
+    }
+
     fn revert_internal(
         &mut self,
         action: &'static str,
@@ -968,6 +1011,46 @@ pub fn save_picked_record(
     gated_family_record_save(runner, discovery, request)
 }
 
+pub fn save_picked_record_with_precondition(
+    runner: &mut dyn RuntimePreviewRunner,
+    discovery: &ConfigDiscovery,
+    family: PickedFamily,
+    record_name: &str,
+    values: PickedRecordValues,
+    precondition: &FamilySavePrecondition,
+) -> Result<FamilySaveReceipt, FamilySaveError> {
+    let request = match (family, values) {
+        (
+            PickedFamily::Animation,
+            PickedRecordValues::AnimationRecord {
+                enabled,
+                speed,
+                bezier,
+            },
+        ) => FamilyRecordSaveRequest::AnimationRecordFields {
+            record: record_name.to_string(),
+            enabled,
+            speed,
+            bezier,
+        },
+        (PickedFamily::Curve, PickedRecordValues::CurvePoints { x0, y0, x1, y1 }) => {
+            FamilyRecordSaveRequest::CurveRecordPoints {
+                record: record_name.to_string(),
+                x0,
+                y0,
+                x1,
+                y1,
+            }
+        }
+        _ => {
+            return Err(FamilySaveError::InvalidValue(
+                "values do not match the picked family".to_string(),
+            ))
+        }
+    };
+    gated_family_record_save_with_precondition(runner, discovery, request, precondition)
+}
+
 /// Live wrapper owning the runner, so UI code never constructs one.
 pub fn save_picked_record_live(
     discovery: &ConfigDiscovery,
@@ -977,4 +1060,22 @@ pub fn save_picked_record_live(
 ) -> Result<FamilySaveReceipt, FamilySaveError> {
     let mut runner = HyprctlRuntimePreviewRunner;
     save_picked_record(&mut runner, discovery, family, record_name, values)
+}
+
+pub fn save_picked_record_with_precondition_live(
+    discovery: &ConfigDiscovery,
+    family: PickedFamily,
+    record_name: &str,
+    values: PickedRecordValues,
+    precondition: &FamilySavePrecondition,
+) -> Result<FamilySaveReceipt, FamilySaveError> {
+    let mut runner = HyprctlRuntimePreviewRunner;
+    save_picked_record_with_precondition(
+        &mut runner,
+        discovery,
+        family,
+        record_name,
+        values,
+        precondition,
+    )
 }

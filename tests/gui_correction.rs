@@ -213,7 +213,8 @@ fn bezier_editor_lives_under_animations_not_settings() {
     // existing curves, style untouched, gated save.
     let menu = fn_slice(&window, "animation_record_menu_box");
     assert!(menu.contains("FamilyRecordPreviewController::new_live"));
-    assert!(menu.contains("save_picked_record_live"));
+    assert!(menu.contains("save_picked_record_with_precondition_live"));
+    assert!(menu.contains("save_precondition"));
     assert!(menu.contains("PickedRecordValues::AnimationRecord"));
     assert!(!menu.contains("style"));
 

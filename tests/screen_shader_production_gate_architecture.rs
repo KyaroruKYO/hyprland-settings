@@ -4,7 +4,7 @@ use std::path::PathBuf;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use anyhow::Result;
-use hyprland_settings::config_backup::ConfigBackup;
+use hyprland_settings::config_backup::BackupManager;
 use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::high_risk_recovery::HighRiskRecoveryPlanner;
@@ -45,11 +45,8 @@ fn base_review_for(
     let snapshot = snapshot_for(&config_path, config_contents);
     let current = snapshot.value_for(setting_id);
     let pending = stage_pending_change(setting_id, &current, proposed_value);
-    let backup = ConfigBackup {
-        source_path: config_path.clone(),
-        backup_path: config_path.with_extension("bak"),
-        byte_len: config_contents.len(),
-    };
+    let backup =
+        BackupManager::new(config_path.with_extension("backups")).create_backup(&config_path)?;
     Ok(review_write_plan(WritePlanRequest {
         known_setting_ids: BTreeSet::from([setting_id.to_string()]),
         detected_config_path: config_path,

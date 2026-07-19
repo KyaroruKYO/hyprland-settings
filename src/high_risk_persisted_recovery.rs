@@ -1,6 +1,7 @@
 use std::fmt;
 use std::fs::{self, OpenOptions};
 use std::io::Write;
+use std::os::unix::fs::OpenOptionsExt;
 use std::path::{Path, PathBuf};
 
 use serde::{Deserialize, Serialize};
@@ -8,7 +9,7 @@ use serde::{Deserialize, Serialize};
 use crate::blocked_row_pre_enablement::{
     blocked_pre_enablement_row, blocked_pre_enablement_rows, BlockedRowBucket,
 };
-use crate::config_backup::ConfigBackup;
+use crate::config_backup::BackupManager;
 use crate::config_parser::parse_hyprland_config_file;
 use crate::high_risk_recovery::ensure_dry_run_target_path;
 
@@ -512,7 +513,15 @@ pub fn create_temp_config_backup(
         fs::create_dir_all(parent)
             .map_err(|error| HighRiskRecoveryPlanError::Io(error.to_string()))?;
     }
-    fs::write(&plan.backup_config_path, &target_bytes)
+    let mut backup_file = OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .mode(0o600)
+        .open(&plan.backup_config_path)
+        .map_err(|error| HighRiskRecoveryPlanError::Io(error.to_string()))?;
+    backup_file
+        .write_all(&target_bytes)
+        .and_then(|_| backup_file.sync_all())
         .map_err(|error| HighRiskRecoveryPlanError::Io(error.to_string()))?;
     let backup_bytes = fs::read(&plan.backup_config_path)
         .map_err(|error| HighRiskRecoveryPlanError::Io(error.to_string()))?;
@@ -528,16 +537,25 @@ pub fn restore_temp_config_from_backup(
     plan: &HighRiskRecoveryPlan,
 ) -> Result<TempRestoreProof, HighRiskRecoveryPlanError> {
     require_valid_recovery_plan(plan)?;
-    let backup = ConfigBackup {
-        source_path: plan.target_config_path.clone(),
-        backup_path: plan.backup_config_path.clone(),
-        byte_len: fs::metadata(&plan.backup_config_path)
-            .map_err(|error| HighRiskRecoveryPlanError::Io(error.to_string()))?
-            .len() as usize,
-    };
-    let backup_bytes = fs::read(&backup.backup_path)
+    let backup_manager = BackupManager::new(
+        plan.backup_config_path
+            .parent()
+            .unwrap_or_else(|| Path::new(".")),
+    );
+    let backup_bytes = fs::read(&plan.backup_config_path)
         .map_err(|error| HighRiskRecoveryPlanError::Io(error.to_string()))?;
-    atomic_write(&backup.source_path, &backup_bytes)?;
+    let backup = backup_manager
+        .load_existing_for_restore(
+            &plan.target_config_path,
+            &plan.backup_config_path,
+            &backup_bytes,
+        )
+        .map_err(|error| HighRiskRecoveryPlanError::Io(error.to_string()))?;
+    let expected_current_bytes = fs::read(&plan.target_config_path)
+        .map_err(|error| HighRiskRecoveryPlanError::Io(error.to_string()))?;
+    backup_manager
+        .rollback(&backup, &expected_current_bytes)
+        .map_err(|error| HighRiskRecoveryPlanError::Io(error.to_string()))?;
 
     let parsed = parse_hyprland_config_file(&plan.target_config_path)
         .map_err(|error| HighRiskRecoveryPlanError::ParserReread(error.to_string()))?;

@@ -173,14 +173,16 @@ fn bottom_bar_matches_the_reference_and_keeps_the_gated_save() {
     assert!(bar.contains("Unsaved changes — applied live, not saved to disk"));
     assert!(bar.contains("dialog-warning-symbolic"));
     assert!(bar.contains("Discard"));
-    assert!(bar.contains("Save now"));
+    assert!(bar.contains("Save all atomically"));
     assert!(bar.contains("adw::SplitButton"));
     assert!(bar.contains("Save as new profile"));
     // The profile action ships disabled: no invented behavior.
     assert!(bar.contains("action.set_enabled(false)"));
-    assert!(bar.contains("Changes saved to disk"));
-    // Save now = the existing per-row gated save, nothing else.
-    assert!(bar.contains("gated_scalar_save_live"));
+    assert!(bar.contains("All changes saved atomically to one file"));
+    assert!(bar.contains("All changes remain pending"));
+    // The batch is preflighted and committed through one same-file operation.
+    assert!(bar.contains("gated_safe_batch_save_live"));
+    assert!(!bar.contains("gated_scalar_save_live"));
     assert!(!bar.contains("fs::write"));
     assert!(!bar.contains("apply_setting_change("));
     // Discard reverts through each controller.

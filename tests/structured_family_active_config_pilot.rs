@@ -89,7 +89,12 @@ fn autoreload_not_confirmed() -> StructuredFamilyActiveConfigAutoreloadEvidence 
 }
 
 #[test]
+#[ignore = "read-only real-config rehearsal; run with HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1"]
 fn copied_active_config_rehearsal_round_trips_without_touching_the_source() {
+    if std::env::var("HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT").as_deref() != Ok("1") {
+        eprintln!("skipping: HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT is not set");
+        return;
+    }
     let active = active_config_path();
     if !active.exists() {
         eprintln!("skipping: no active Hyprland config on this machine");
@@ -122,7 +127,12 @@ fn copied_active_config_rehearsal_round_trips_without_touching_the_source() {
 }
 
 #[test]
+#[ignore = "read-only real-config preflight audit; run with HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1"]
 fn pilot_preflight_blocks_on_autoreload_evidence_and_every_missing_proof() {
+    if std::env::var("HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT").as_deref() != Ok("1") {
+        eprintln!("skipping: HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT is not set");
+        return;
+    }
     let active = active_config_path();
     if !active.exists() {
         eprintln!("skipping: no active Hyprland config on this machine");

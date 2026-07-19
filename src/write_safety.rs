@@ -3,6 +3,7 @@ use std::path::{Path, PathBuf};
 
 use crate::config_backup::ConfigBackup;
 use crate::current_config::{CurrentValueProjection, CurrentValueSourceStatus};
+use crate::durable_fs::{DurableWriteReceipt, FilePrecondition};
 use crate::high_risk_recovery::{validate_watchdog_plan, HighRiskWatchdogPlan};
 use crate::pending_change::{PendingChange, PendingChangeValidation};
 use crate::write_classification::is_safe_writable_setting;
@@ -36,6 +37,12 @@ pub struct WritePlan {
     pub old_value: Option<String>,
     pub proposed_value: String,
     pub backup_path: PathBuf,
+    pub backup: ConfigBackup,
+    pub target_precondition: FilePrecondition,
+    pub expected_raw_line: Option<String>,
+    pub expected_occurrence_count: usize,
+    pub source_graph_root: Option<PathBuf>,
+    pub source_graph_fingerprint: Option<String>,
     pub rollback: RollbackPlan,
 }
 
@@ -55,6 +62,7 @@ pub struct RollbackPlan {
 pub struct WriteResult {
     pub plan: WritePlan,
     pub verified_value: Option<String>,
+    pub durable_receipt: DurableWriteReceipt,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -175,6 +183,7 @@ pub fn review_write_plan(request: WritePlanRequest) -> WriteReview {
     }
     let action = action.expect("valid write review should have action");
 
+    let target_precondition = backup.source_precondition.clone();
     let plan = WritePlan {
         setting_id: setting_id.to_string(),
         target_path: request.detected_config_path.clone(),
@@ -182,6 +191,14 @@ pub fn review_write_plan(request: WritePlanRequest) -> WriteReview {
         old_value: request.current_value.raw_value.clone(),
         proposed_value: request.pending_change.proposed_value,
         backup_path: backup.backup_path.clone(),
+        backup: backup.clone(),
+        target_precondition,
+        expected_raw_line: request.current_value.raw_line.clone(),
+        expected_occurrence_count: usize::from(
+            request.current_value.status == CurrentValueSourceStatus::Configured,
+        ),
+        source_graph_root: None,
+        source_graph_fingerprint: None,
         rollback: RollbackPlan {
             source_path: request.detected_config_path,
             backup_path: backup.backup_path,

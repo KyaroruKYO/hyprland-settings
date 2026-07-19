@@ -1,5 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
+use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -13,6 +14,7 @@ use hyprland_settings::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValue, CurrentValueProjection,
     CurrentValueSourceStatus, CurrentValueStatus,
 };
+use hyprland_settings::durable_fs::capture_file_precondition;
 use hyprland_settings::pending_change::{
     stage_pending_change_with_sources, PendingChangeValidation, PendingChangeValueSources,
 };
@@ -54,18 +56,35 @@ pub fn report_path(name: &str) -> PathBuf {
 }
 
 pub fn write_report(name: &str, value: &Value) {
-    let path = report_path(name);
-    if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent).expect("report parent should be created");
+    let serialized = format!(
+        "{}\n",
+        serde_json::to_string_pretty(value).expect("report should serialize")
+    );
+
+    if std::env::var("HYPRLAND_SETTINGS_REGENERATE_REPORTS").as_deref() == Ok("1") {
+        let path = report_path(name);
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent).expect("report parent should be created");
+        }
+        fs::write(&path, serialized).expect("explicit report regeneration should succeed");
+        return;
     }
-    fs::write(
-        &path,
-        format!(
-            "{}\n",
-            serde_json::to_string_pretty(value).expect("report should serialize")
-        ),
-    )
-    .expect("report should be written");
+
+    // Normal tests prove serialization through a test-owned file. Historical
+    // committed reports are never rewritten from machine-local test state.
+    let mut output = tempfile::Builder::new()
+        .prefix("hyprland-settings-report-")
+        .suffix(&format!("-{name}"))
+        .tempfile()
+        .expect("temporary report should be created");
+    output
+        .write_all(serialized.as_bytes())
+        .expect("temporary report should be written");
+    output.flush().expect("temporary report should flush");
+    let reread = fs::read_to_string(output.path()).expect("temporary report should reread");
+    let parsed: Value =
+        serde_json::from_str(&reread).expect("temporary report should be valid JSON");
+    assert_eq!(&parsed, value, "temporary report should round trip");
 }
 
 pub fn temp_root(label: &str) -> PathBuf {
@@ -160,7 +179,13 @@ pub fn snapshot(
     values: Vec<(&str, &str, &Path, usize, &str, CurrentValueStatus)>,
 ) -> CurrentConfigSnapshot {
     let mut map = BTreeMap::new();
+    let mut file_preconditions = BTreeMap::new();
     for (official_setting, raw_value, source_path, line_number, raw_line, status) in values {
+        file_preconditions
+            .entry(source_path.to_path_buf())
+            .or_insert_with(|| {
+                capture_file_precondition(source_path).expect("fixture precondition")
+            });
         map.insert(
             official_setting.to_string(),
             CurrentValue {
@@ -187,6 +212,8 @@ pub fn snapshot(
         values: map,
         structured_records: Vec::new(),
         unsupported_records: Vec::new(),
+        file_preconditions,
+        source_graph_fingerprint: None,
     }
 }
 
@@ -432,7 +459,6 @@ pub fn build_fixture_for_rows(
     }
 
     let mut contents = vec![String::new(); files.len()];
-    let mut snapshot_rows = Vec::new();
     let mut changes = Vec::new();
     let mut executed_rows = Vec::new();
 
@@ -445,18 +471,10 @@ pub fn build_fixture_for_rows(
     }) {
         let pair = row.value_pair.as_ref().expect("pair checked");
         let file_index = executed_rows.len() % files.len();
-        let line_number = contents[file_index].lines().count() + 1;
         let key = config_key_from_official_setting(&row.official_setting);
         let raw_line = format!("{key} = {}", pair.old_value);
         contents[file_index].push_str(&raw_line);
         contents[file_index].push('\n');
-        snapshot_rows.push((
-            row.official_setting.clone(),
-            pair.old_value.clone(),
-            files[file_index].clone(),
-            line_number,
-            raw_line,
-        ));
         changes.push(SafeBatchChangeRequest::new(
             row.row_id.clone(),
             pair.proposed_value.clone(),
@@ -464,32 +482,15 @@ pub fn build_fixture_for_rows(
         executed_rows.push(row.clone());
     }
 
+    for source in files.iter().skip(1) {
+        contents[0].push_str(&format!("source = {}\n", source.display()));
+    }
     for (path, content) in files.iter().zip(contents.iter()) {
         write_file(path, content);
     }
 
-    let current = snapshot(
-        snapshot_rows
-            .iter()
-            .map(|(setting, value, path, line, raw)| {
-                (
-                    setting.as_str(),
-                    value.as_str(),
-                    path.as_path(),
-                    *line,
-                    raw.as_str(),
-                    CurrentValueStatus::Configured,
-                )
-            })
-            .collect(),
-    );
-    let graph = graph_for(
-        files
-            .iter()
-            .map(|path| graph_file(path, Vec::new()))
-            .collect(),
-        files[0].clone(),
-    );
+    let graph = inspect_config_graph(&files[0]);
+    let current = current_config_from_graph(&graph);
     (root, current, graph, changes, executed_rows)
 }
 
@@ -582,6 +583,8 @@ pub fn blocked_plan_for(reason: SafeBatchEligibility) -> (PathBuf, SafeBatchWrit
                 values: BTreeMap::new(),
                 structured_records: Vec::new(),
                 unsupported_records: Vec::new(),
+                file_preconditions: BTreeMap::new(),
+                source_graph_fingerprint: None,
             };
             files.push(graph_file(&managed, Vec::new()));
             let graph = graph_for(files, config.clone());
@@ -652,6 +655,11 @@ fn graph_scalar_occurrences(graph: &ConfigGraphSummary) -> BTreeMap<String, Vec<
 }
 
 pub fn real_config_readonly_audit() -> Value {
+    assert_eq!(
+        std::env::var("HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT").as_deref(),
+        Ok("1"),
+        "real-config audit is disabled in normal tests; rerun the ignored audit with HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1"
+    );
     let discovery = discover_hyprland_config();
     let ConfigDiscoveryStatus::Found { path, .. } = &discovery.status else {
         return json!({

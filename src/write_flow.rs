@@ -22,7 +22,7 @@ use crate::safe_batch_write::{
     SafeBatchExecutionOptions, SafeBatchWriteReport, SafeBatchWriteStatus,
 };
 use crate::scalar_write::apply_scalar_write_plan;
-use crate::source_aware_current_config::current_config_from_graph;
+use crate::source_aware_current_config::current_source_graph_fingerprint;
 use crate::source_values::{read_system_xkb_rules, MonitorSourceValue, XkbSourceValue};
 use crate::write_classification::{
     finite_choice_options, high_risk_write_policy, is_high_risk_gated_writable_setting,
@@ -70,7 +70,16 @@ pub struct ApplyOutcome {
     pub rollback_source_path: PathBuf,
     pub rollback_backup_path: PathBuf,
     pub verified_value: Option<String>,
+    pub durable_receipt_created: bool,
+    pub before_sha256: String,
+    pub after_sha256: String,
     pub reload_note: String,
+}
+
+impl crate::runtime_preview_ui_projection::DurableSaveReceipt for ApplyOutcome {
+    fn durable_save_succeeded(&self) -> bool {
+        self.durable_receipt_created
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -82,7 +91,7 @@ pub struct ApplyFailure {
 pub fn apply_safe_batch_setting_changes(
     known_setting_ids: BTreeSet<String>,
     discovery: &ConfigDiscovery,
-    _current_config: &CurrentConfigSnapshot,
+    current_config: &CurrentConfigSnapshot,
     pending_changes: Vec<SafeBatchChangeRequest>,
 ) -> Result<SafeBatchWriteReport, ApplyFailure> {
     let target_path = detected_config_path(discovery).map_err(|reason| ApplyFailure {
@@ -90,13 +99,15 @@ pub fn apply_safe_batch_setting_changes(
         failures: vec!["MissingCurrentSource".to_string()],
     })?;
     let graph = inspect_config_graph(target_path);
-    let source_aware_current_config = current_config_from_graph(&graph);
     apply_safe_batch_setting_changes_with_graph_and_options(
         known_setting_ids,
-        &source_aware_current_config,
+        current_config,
         &graph,
         pending_changes,
-        SafeBatchExecutionOptions::default(),
+        SafeBatchExecutionOptions::production().map_err(|error| ApplyFailure {
+            reason: error.to_string(),
+            failures: vec!["MissingBackupRoot".to_string()],
+        })?,
     )
 }
 
@@ -364,11 +375,32 @@ fn apply_setting_change_with_backup_manager_and_all_gates(
         });
     }
 
+    let target_precondition = current_config
+        .file_precondition(&target_path)
+        .cloned()
+        .ok_or_else(|| ApplyFailure {
+            reason: "active-config write has no immutable file precondition".to_string(),
+            failures: vec!["MissingDriftPrecondition".to_string()],
+        })?;
+    if let Some(expected_graph) = current_config.source_graph_fingerprint.as_deref() {
+        let actual_graph =
+            current_source_graph_fingerprint(&target_path).ok_or_else(|| ApplyFailure {
+                reason: "source graph could not be reproduced before write".to_string(),
+                failures: vec!["SourceGraphChanged".to_string()],
+            })?;
+        if actual_graph != expected_graph {
+            return Err(ApplyFailure {
+                reason: "The config changed on disk after this edit was prepared. Nothing was written. Reload or reread the setting before saving again.".to_string(),
+                failures: vec!["SourceGraphChanged".to_string()],
+            });
+        }
+    }
+
     let backup = backup_manager
-        .create_backup(&target_path)
+        .create_backup_from_precondition(&target_precondition)
         .map_err(|error| ApplyFailure {
             reason: error.to_string(),
-            failures: vec!["MissingBackup".to_string()],
+            failures: vec!["OnDiskDriftDetected".to_string()],
         })?;
 
     let review = review_write_plan(WritePlanRequest {
@@ -383,6 +415,13 @@ fn apply_setting_change_with_backup_manager_and_all_gates(
             reason: "write plan rejected by safety gates".to_string(),
             failures: review.failures.iter().map(format_gate_failure).collect(),
         });
+    }
+    let mut review = review;
+    if let Some(plan) = review.plan.as_mut() {
+        if let Some(fingerprint) = current_config.source_graph_fingerprint.clone() {
+            plan.source_graph_root = Some(target_path.clone());
+            plan.source_graph_fingerprint = Some(fingerprint);
+        }
     }
     let gated_review = review_screen_shader_gated_write_plan(review, high_risk_gate_proof);
     if !gated_review.is_approved() {
@@ -453,8 +492,8 @@ fn apply_setting_change_with_backup_manager_and_all_gates(
             .expect("approved review should include a plan"),
     )
     .map_err(|error| ApplyFailure {
-        reason: error.to_string(),
-        failures: vec!["WriteFailed".to_string()],
+        reason: error.user_message().to_string(),
+        failures: vec![error.code().to_string(), error.to_string()],
     })?;
 
     Ok(outcome_from_result(result))
@@ -805,6 +844,8 @@ fn outcome_from_result(result: WriteResult) -> ApplyOutcome {
                 .map(|policy| policy.review_warning.to_string())
         })
         .unwrap_or_else(|| "Hyprland reload is not performed by this app yet.".to_string());
+    let before_sha256 = result.durable_receipt.before_sha256.clone();
+    let after_sha256 = result.durable_receipt.after_sha256.clone();
     ApplyOutcome {
         setting_id,
         target_path: result.plan.target_path,
@@ -812,6 +853,10 @@ fn outcome_from_result(result: WriteResult) -> ApplyOutcome {
         rollback_source_path: result.plan.rollback.source_path,
         rollback_backup_path: result.plan.rollback.backup_path,
         verified_value: result.verified_value,
+        durable_receipt_created: result.durable_receipt.final_bytes_verified
+            && result.durable_receipt.parent_directory_synced,
+        before_sha256,
+        after_sha256,
         reload_note,
     }
 }

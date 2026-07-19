@@ -7,13 +7,15 @@ use anyhow::Result;
 use hyprland_settings::config_backup::BackupManager;
 use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueProjection};
+use hyprland_settings::durable_fs::DurableFsError;
 use hyprland_settings::pending_change::stage_pending_change;
-use hyprland_settings::scalar_write::apply_scalar_write_plan;
+use hyprland_settings::scalar_write::{apply_scalar_write_plan, ScalarWriteError};
+use hyprland_settings::source_aware_current_config::current_source_graph_fingerprint;
 use hyprland_settings::write_classification::{
     config_key_from_official_setting, finite_choice_options, is_high_risk_gated_writable_setting,
-    SafeWritableRow, ScalarWriteValueKind, SAFE_WRITABLE_ROWS,
+    safe_writable_official_setting, SafeWritableRow, ScalarWriteValueKind, SAFE_WRITABLE_ROWS,
 };
-use hyprland_settings::write_safety::{review_write_plan, WritePlanRequest};
+use hyprland_settings::write_safety::{review_write_plan, WritePlan, WritePlanRequest};
 
 fn temp_root(name: &str) -> Result<PathBuf> {
     let stamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
@@ -35,6 +37,28 @@ fn known_ids() -> BTreeSet<String> {
 fn current_value_for(path: &PathBuf, setting_id: &str, contents: &str) -> CurrentValueProjection {
     let parsed = parse_hyprland_config_text(path, contents);
     CurrentConfigSnapshot::from_parsed(parsed).value_for(setting_id)
+}
+
+fn reviewed_plan(
+    root: &std::path::Path,
+    source: &PathBuf,
+    setting_id: &str,
+    proposed_value: &str,
+) -> Result<WritePlan> {
+    let contents = fs::read_to_string(source)?;
+    let official_setting =
+        safe_writable_official_setting(setting_id).expect("fixture row should be safe-writable");
+    let current = current_value_for(source, official_setting, &contents);
+    let backup = BackupManager::new(root.join("backups")).create_backup(source)?;
+    let pending = stage_pending_change(setting_id, &current, proposed_value);
+    let review = review_write_plan(WritePlanRequest {
+        known_setting_ids: known_ids(),
+        detected_config_path: source.clone(),
+        current_value: current,
+        pending_change: pending,
+        backup: Some(backup),
+    });
+    Ok(review.plan.expect("fixture write should pass review"))
 }
 
 fn valid_value_for(row: &SafeWritableRow) -> &'static str {
@@ -252,7 +276,7 @@ fn generic_scalar_writer_appends_missing_safe_writable_row() -> Result<()> {
         let source = root.join("hyprland.conf");
         let config_key = config_key_from_official_setting(row.official_setting);
         let proposed = valid_value_for(row);
-        fs::write(&source, "general:gaps_in = 5\n")?;
+        fs::write(&source, "# insertion fixture\n")?;
         let backup = BackupManager::new(root.join("backups")).create_backup(&source)?;
         let current = CurrentValueProjection::not_configured();
         let pending = stage_pending_change(row.row_id, &current, proposed);
@@ -316,5 +340,120 @@ fn finite_choice_writer_roundtrips_every_verified_choice() -> Result<()> {
             fs::remove_dir_all(root)?;
         }
     }
+    Ok(())
+}
+
+#[test]
+fn scalar_replacement_rejects_same_setting_and_unrelated_external_drift() -> Result<()> {
+    for external_bytes in [
+        b"general:snap:enabled = true\n".as_slice(),
+        b"# unrelated external edit\ngeneral:snap:enabled = false\n".as_slice(),
+    ] {
+        let root = temp_root("replacement-drift")?;
+        let source = root.join("hyprland.conf");
+        fs::write(&source, "general:snap:enabled = false\n")?;
+        let plan = reviewed_plan(&root, &source, "windows.snap.enabled", "true")?;
+
+        fs::write(&source, external_bytes)?;
+        let error = apply_scalar_write_plan(&plan)
+            .expect_err("any target-file byte drift must abort the replacement");
+
+        assert!(matches!(
+            error,
+            ScalarWriteError::Drift(DurableFsError::OnDiskDriftDetected(_))
+        ));
+        assert_eq!(fs::read(&source)?, external_bytes);
+        fs::remove_dir_all(root)?;
+    }
+    Ok(())
+}
+
+#[test]
+fn scalar_insertion_rejects_external_setting_appearance_and_duplicates() -> Result<()> {
+    let root = temp_root("insertion-drift")?;
+    let source = root.join("hyprland.conf");
+    fs::write(&source, "# setting initially absent\n")?;
+    let plan = reviewed_plan(&root, &source, "windows.snap.enabled", "true")?;
+
+    let externally_added = b"# setting initially absent\ngeneral:snap:enabled = false\n";
+    fs::write(&source, externally_added)?;
+    let error = apply_scalar_write_plan(&plan)
+        .expect_err("appearance of a formerly absent setting must abort insertion");
+    assert!(matches!(
+        error,
+        ScalarWriteError::Drift(DurableFsError::OnDiskDriftDetected(_))
+    ));
+    assert_eq!(fs::read(&source)?, externally_added);
+
+    let duplicate_root = temp_root("duplicate-drift")?;
+    let duplicate_source = duplicate_root.join("hyprland.conf");
+    fs::write(&duplicate_source, "general:snap:enabled = false\n")?;
+    let duplicate_plan = reviewed_plan(
+        &duplicate_root,
+        &duplicate_source,
+        "windows.snap.enabled",
+        "true",
+    )?;
+    let duplicate_bytes = b"general:snap:enabled = false\ngeneral:snap:enabled = true\n";
+    fs::write(&duplicate_source, duplicate_bytes)?;
+    assert!(matches!(
+        apply_scalar_write_plan(&duplicate_plan),
+        Err(ScalarWriteError::Drift(
+            DurableFsError::OnDiskDriftDetected(_)
+        ))
+    ));
+    assert_eq!(fs::read(&duplicate_source)?, duplicate_bytes);
+
+    fs::remove_dir_all(root)?;
+    fs::remove_dir_all(duplicate_root)?;
+    Ok(())
+}
+
+#[test]
+fn scalar_replacement_rejects_same_bytes_with_replaced_inode() -> Result<()> {
+    let root = temp_root("inode-drift")?;
+    let source = root.join("hyprland.conf");
+    let original = b"general:snap:enabled = false\n";
+    fs::write(&source, original)?;
+    let plan = reviewed_plan(&root, &source, "windows.snap.enabled", "true")?;
+
+    fs::rename(&source, root.join("replaced-original.conf"))?;
+    fs::write(&source, original)?;
+    let error = apply_scalar_write_plan(&plan)
+        .expect_err("same bytes in a replacement inode must not satisfy the plan");
+
+    assert!(matches!(
+        error,
+        ScalarWriteError::Drift(DurableFsError::TargetIdentityChanged(_))
+    ));
+    assert_eq!(fs::read(&source)?, original);
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
+fn scalar_replacement_rejects_source_include_mapping_drift() -> Result<()> {
+    let root = temp_root("source-graph-drift")?;
+    let graph_root = root.join("hyprland.conf");
+    let source_a = root.join("settings-a.conf");
+    let source_b = root.join("settings-b.conf");
+    fs::write(&graph_root, "source = settings-a.conf\n")?;
+    fs::write(&source_a, "general:snap:enabled = false\n")?;
+    fs::write(&source_b, "general:snap:enabled = false\n")?;
+    let mut plan = reviewed_plan(&root, &source_a, "windows.snap.enabled", "true")?;
+    plan.source_graph_root = Some(graph_root.clone());
+    plan.source_graph_fingerprint = current_source_graph_fingerprint(&graph_root);
+    assert!(plan.source_graph_fingerprint.is_some());
+
+    fs::write(&graph_root, "source = settings-b.conf\n")?;
+    let error = apply_scalar_write_plan(&plan)
+        .expect_err("source/include target remapping must abort before target write");
+
+    assert!(matches!(error, ScalarWriteError::SourceGraphChanged(_)));
+    assert_eq!(
+        fs::read_to_string(&source_a)?,
+        "general:snap:enabled = false\n"
+    );
+    fs::remove_dir_all(root)?;
     Ok(())
 }

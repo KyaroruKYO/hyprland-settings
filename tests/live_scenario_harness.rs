@@ -124,8 +124,8 @@ fn live_scenario_harness_runs_safe_env_scenarios_without_real_desktop_mutation()
         )],
     );
 
-    let write_failure_home = create_source_include_config(&root.join("write-failure"));
-    let verification_failure_home = create_source_include_config(&root.join("verify-failure"));
+    let write_failure_home = create_large_single_config(&root.join("write-failure"));
+    let verification_failure_home = create_large_single_config(&root.join("verify-failure"));
     let write_failure = execute_forced_failure(&write_failure_home, FailureMode::WriteFailure);
     let verification_failure =
         execute_forced_failure(&verification_failure_home, FailureMode::VerificationFailure);
@@ -139,7 +139,10 @@ fn live_scenario_harness_runs_safe_env_scenarios_without_real_desktop_mutation()
     assert!(verification_failure.recovery_attempted);
     assert!(verification_failure.restore_verification_succeeded);
 
-    let real_config = support::safe_batch_harness::real_config_readonly_audit();
+    let real_config: Value = serde_json::from_str(include_str!(
+        "../data/reports/safe-batch-real-config-readonly-audit.v0.55.2.json"
+    ))
+    .expect("committed historical read-only audit should parse");
 
     write_report(
         "live-scenario-single-config.v0.55.2.json",
@@ -159,8 +162,9 @@ fn live_scenario_harness_runs_safe_env_scenarios_without_real_desktop_mutation()
             "artifactKind": "live_scenario_source_include",
             "scenarios": [source_result.to_json(), nested_result.to_json()],
             "multiFileBatch": {
-                "attempted": true,
+                "attempted": false,
                 "succeeded": source_result.safe_batch_writes_succeeded,
+                "policy": "rejected before writing because cross-file renames are not crash-atomic",
                 "failureRecoveryCases": ["write_failure_restored", "verification_failure_restored"]
             },
             "realConfigTouched": false
@@ -222,6 +226,7 @@ fn live_scenario_harness_runs_safe_env_scenarios_without_real_desktop_mutation()
         &json!({
             "schemaVersion": 1,
             "artifactKind": "live_scenario_real_config_readonly_final",
+            "historicalCommittedAuditFixture": true,
             "realConfigReadOnly": true,
             "eligibleRows": real_config["summary"]["eligibleSafeBatchWrites"],
             "blockedRows": real_config["summary"]["blocked"],
@@ -532,6 +537,17 @@ fn execute_single_file_safe_batch(home: &Path) -> ScenarioResult {
 fn execute_multifile_safe_batch(home: &Path) -> ScenarioResult {
     let graph = graph_for_home(home);
     let current = current_config_from_graph(&graph);
+    let before = graph
+        .files
+        .iter()
+        .filter(|file| file.readable)
+        .map(|file| {
+            (
+                file.path.clone(),
+                std::fs::read(&file.path).expect("fixture source should read"),
+            )
+        })
+        .collect::<Vec<_>>();
     let plan = build_safe_batch_write_plan(
         "multi-file-safe-batch",
         &known_settings(),
@@ -543,11 +559,17 @@ fn execute_multifile_safe_batch(home: &Path) -> ScenarioResult {
         ],
         "live-scenario",
     );
-    assert!(plan.can_execute, "{:?}", plan.cannot_execute_reasons);
+    assert!(!plan.can_execute);
+    assert!(plan
+        .cannot_execute_reasons
+        .iter()
+        .any(|reason| reason.contains("multi-file batch rejected before writing")));
     let report = execute_safe_batch_write_plan(&plan, &SafeBatchExecutionOptions::default());
-    assert_eq!(report.status, SafeBatchWriteStatus::Succeeded);
-    assert_eq!(report.backups.len(), 2);
-    assert!(report.backups.iter().all(|backup| backup.bytes_equal));
+    assert_eq!(report.status, SafeBatchWriteStatus::Blocked);
+    assert!(report.backups.is_empty());
+    for (path, bytes) in before {
+        assert_eq!(std::fs::read(path).expect("fixture should reread"), bytes);
+    }
     ScenarioResult {
         name: "source_include_config",
         mode: "safe-env",
@@ -555,10 +577,10 @@ fn execute_multifile_safe_batch(home: &Path) -> ScenarioResult {
         config_discovered: true,
         eligible_rows: safe_batch_actionable_rows(&plan),
         blocked_rows: plan.blocked_changes.len(),
-        apply_available: plan.can_execute,
-        safe_batch_writes_attempted: true,
-        safe_batch_writes_succeeded: true,
-        failure_paths_tested: Vec::new(),
+        apply_available: false,
+        safe_batch_writes_attempted: false,
+        safe_batch_writes_succeeded: false,
+        failure_paths_tested: vec!["multi_file_rejected_before_write"],
         issues_found: Vec::new(),
     }
 }

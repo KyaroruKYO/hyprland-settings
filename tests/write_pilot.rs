@@ -146,7 +146,7 @@ fn rollback_restores_after_write_pilot() -> Result<()> {
     });
 
     apply_windows_snap_enabled_plan(&review.plan.expect("valid plan expected"))?;
-    manager.rollback(&backup)?;
+    manager.rollback(&backup, b"general:snap:enabled = true\n")?;
 
     assert_eq!(
         fs::read_to_string(&source)?,

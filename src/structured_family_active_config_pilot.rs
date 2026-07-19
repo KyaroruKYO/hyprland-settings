@@ -21,15 +21,19 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
+use crate::config_backup::BackupManager;
 use crate::config_parser::parse_hyprland_config_text;
 use crate::current_config::CurrentConfigSnapshot;
+use crate::durable_fs::{
+    capture_file_precondition, hardened_atomic_replace, verify_file_precondition, FilePrecondition,
+};
 use crate::structured_family::{
     structured_family_projection, StructuredFamilyDraftRenderedRecordStagedApplyPlan,
     StructuredFamilyKind,
 };
 use crate::structured_family_controlled_write::{
     apply_rendered_family_records, approve_structured_family_controlled_write,
-    atomic_controlled_write, build_structured_family_controlled_write_plan,
+    build_structured_family_controlled_write_plan,
     execute_structured_family_controlled_write_round_trip, verify_family_records_on_disk,
     StructuredFamilyControlledWriteVerification,
 };
@@ -155,6 +159,8 @@ pub struct StructuredFamilyActiveConfigPilotPlan {
     pub original_records: Vec<String>,
     pub rendered_records: Vec<String>,
     pub backup_path: PathBuf,
+    pub target_precondition: FilePrecondition,
+    pub source_graph_fingerprint: String,
     /// Must be true: the pilot always restores the original bytes.
     pub restore_original_bytes: bool,
     pub autoreload_evidence: StructuredFamilyActiveConfigAutoreloadEvidence,
@@ -179,6 +185,7 @@ pub struct StructuredFamilyActiveConfigPilotPreflight {
 pub enum StructuredFamilyActiveConfigPilotError {
     GateFailed(StructuredFamilyActiveConfigPilotGate),
     TargetDriftDetected,
+    SourceGraphChanged,
     TargetReadFailed(String),
     PreWriteRereadFailed(String),
     BackupFailed(String),
@@ -187,6 +194,7 @@ pub enum StructuredFamilyActiveConfigPilotError {
     RestoreFailed(String),
     PostRestoreVerificationFailed,
     RehearsalFailed(String),
+    OnDiskDriftDetected(String),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -327,6 +335,12 @@ pub fn build_first_active_config_pilot_plan(
     autoreload_evidence: StructuredFamilyActiveConfigAutoreloadEvidence,
     rehearsal: Option<StructuredFamilyActiveConfigRehearsalProof>,
 ) -> Result<StructuredFamilyActiveConfigPilotPlan, StructuredFamilyActiveConfigPilotError> {
+    let target_precondition = capture_file_precondition(active_config_path).map_err(|error| {
+        StructuredFamilyActiveConfigPilotError::OnDiskDriftDetected(error.to_string())
+    })?;
+    let source_graph_fingerprint =
+        crate::source_aware_current_config::current_source_graph_fingerprint(active_config_path)
+            .ok_or(StructuredFamilyActiveConfigPilotError::SourceGraphChanged)?;
     let original_records = family_records_from_file(active_config_path, family)?;
     let mut rendered_records = original_records.clone();
     rendered_records.push(appended_record.to_string());
@@ -336,6 +350,8 @@ pub fn build_first_active_config_pilot_plan(
         original_records,
         rendered_records,
         backup_path: backup_root.join("hyprland.conf.active-pilot-backup"),
+        target_precondition,
+        source_graph_fingerprint,
         restore_original_bytes: true,
         autoreload_evidence,
         rehearsal,
@@ -380,7 +396,7 @@ pub fn preflight_first_active_config_pilot(
         .unwrap_or(false);
     check(
         Gate::TargetIdentityProven,
-        is_active && is_regular_file,
+        is_active && is_regular_file && verify_file_precondition(&plan.target_precondition).is_ok(),
         format!(
             "target {} must be the active real config and a regular file (not a symlink)",
             plan.active_config_path.display()
@@ -512,9 +528,18 @@ pub fn execute_first_active_config_write_pilot(
         ));
     }
 
-    let original_bytes = fs::read(&plan.active_config_path).map_err(|error| {
-        StructuredFamilyActiveConfigPilotError::TargetReadFailed(error.to_string())
+    verify_file_precondition(&plan.target_precondition).map_err(|error| {
+        StructuredFamilyActiveConfigPilotError::OnDiskDriftDetected(error.to_string())
     })?;
+    if crate::source_aware_current_config::current_source_graph_fingerprint(
+        &plan.active_config_path,
+    )
+    .as_deref()
+        != Some(plan.source_graph_fingerprint.as_str())
+    {
+        return Err(StructuredFamilyActiveConfigPilotError::SourceGraphChanged);
+    }
+    let original_bytes = plan.target_precondition.bytes.clone();
     let pre_write_hash = active_config_pilot_content_hash(&original_bytes);
 
     // Pre-write reread: the file must parse and its family records must match
@@ -529,20 +554,15 @@ pub fn execute_first_active_config_write_pilot(
         return Err(StructuredFamilyActiveConfigPilotError::TargetDriftDetected);
     }
 
-    if let Some(parent) = plan.backup_path.parent() {
-        fs::create_dir_all(parent).map_err(|error| {
-            StructuredFamilyActiveConfigPilotError::BackupFailed(error.to_string())
-        })?;
-    }
-    fs::write(&plan.backup_path, &original_bytes)
+    let backup_root = plan.backup_path.parent().ok_or_else(|| {
+        StructuredFamilyActiveConfigPilotError::BackupFailed(
+            "backup policy has no parent directory".to_string(),
+        )
+    })?;
+    let backup_manager = BackupManager::new(backup_root);
+    let backup = backup_manager
+        .create_backup_from_precondition(&plan.target_precondition)
         .map_err(|error| StructuredFamilyActiveConfigPilotError::BackupFailed(error.to_string()))?;
-    let backup_bytes = fs::read(&plan.backup_path)
-        .map_err(|error| StructuredFamilyActiveConfigPilotError::BackupFailed(error.to_string()))?;
-    if backup_bytes != original_bytes {
-        return Err(StructuredFamilyActiveConfigPilotError::BackupFailed(
-            "backup is not byte-exact".to_string(),
-        ));
-    }
 
     let original_text = String::from_utf8_lossy(&original_bytes).into_owned();
     let new_text = apply_rendered_family_records(
@@ -551,8 +571,17 @@ pub fn execute_first_active_config_write_pilot(
         plan.family,
         &plan.rendered_records,
     );
-    atomic_controlled_write(&plan.active_config_path, new_text.as_bytes())
-        .map_err(|error| StructuredFamilyActiveConfigPilotError::WriteFailed(error.to_string()))?;
+    if crate::source_aware_current_config::current_source_graph_fingerprint(
+        &plan.active_config_path,
+    )
+    .as_deref()
+        != Some(plan.source_graph_fingerprint.as_str())
+    {
+        return Err(StructuredFamilyActiveConfigPilotError::SourceGraphChanged);
+    }
+    hardened_atomic_replace(&plan.target_precondition, new_text.as_bytes()).map_err(|error| {
+        StructuredFamilyActiveConfigPilotError::OnDiskDriftDetected(error.to_string())
+    })?;
 
     let post_write_verification = verify_family_records_on_disk(
         &plan.active_config_path,
@@ -570,17 +599,21 @@ pub fn execute_first_active_config_write_pilot(
         .map_err(|error| StructuredFamilyActiveConfigPilotError::WriteFailed(error.to_string()))?;
 
     if !post_write_verification.intended_records_present {
-        atomic_controlled_write(&plan.active_config_path, &original_bytes).map_err(|error| {
-            StructuredFamilyActiveConfigPilotError::RestoreFailed(error.to_string())
-        })?;
+        backup_manager
+            .rollback(&backup, new_text.as_bytes())
+            .map_err(|error| {
+                StructuredFamilyActiveConfigPilotError::RestoreFailed(error.to_string())
+            })?;
         return Err(StructuredFamilyActiveConfigPilotError::PostWriteVerificationFailed);
     }
 
     // Restore the original bytes: the pilot proves the round trip and leaves
     // the active config exactly as it was.
-    atomic_controlled_write(&plan.active_config_path, &original_bytes).map_err(|error| {
-        StructuredFamilyActiveConfigPilotError::RestoreFailed(error.to_string())
-    })?;
+    backup_manager
+        .rollback(&backup, new_text.as_bytes())
+        .map_err(|error| {
+            StructuredFamilyActiveConfigPilotError::RestoreFailed(error.to_string())
+        })?;
     let restored_bytes = fs::read(&plan.active_config_path).map_err(|error| {
         StructuredFamilyActiveConfigPilotError::RestoreFailed(error.to_string())
     })?;
@@ -605,7 +638,7 @@ pub fn execute_first_active_config_write_pilot(
     Ok(StructuredFamilyActiveConfigPilotReceipt {
         family: plan.family,
         active_config_path: plan.active_config_path.clone(),
-        backup_path: plan.backup_path.clone(),
+        backup_path: backup.backup_path,
         pre_write_hash,
         post_write_hash,
         post_restore_hash,

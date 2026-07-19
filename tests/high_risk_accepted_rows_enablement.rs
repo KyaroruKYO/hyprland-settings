@@ -88,7 +88,6 @@ fn complete_production_proof(
     let backup_path = root.join("hyprland.conf.recovery-backup");
     let baseline = format!("{} = {previous}\n", config_key(row_id));
     fs::write(&target_path, &baseline)?;
-    let snapshot = snapshot_for(&target_path, &baseline);
 
     let plan = create_temp_recovery_plan(
         row.row_id,
@@ -106,6 +105,7 @@ fn complete_production_proof(
         format!("{} = {proposed}\n", config_key(row_id)),
     )?;
     let rollback_proof = restore_temp_config_from_backup(&plan)?;
+    let snapshot = snapshot_for(&target_path, &baseline);
 
     let proof = HighRiskProductionGateProof {
         recovery_plan: plan.clone(),

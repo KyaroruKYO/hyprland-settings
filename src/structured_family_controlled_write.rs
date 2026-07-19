@@ -17,8 +17,12 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
+use crate::config_backup::{BackupManager, ConfigBackup};
 use crate::config_parser::parse_hyprland_config_text;
 use crate::current_config::CurrentConfigSnapshot;
+use crate::durable_fs::{
+    capture_file_precondition, hardened_atomic_replace, verify_file_precondition, FilePrecondition,
+};
 use crate::structured_family::{
     structured_family_projection, StructuredFamilyDraftRenderedRecordStagedApplyPlan,
     StructuredFamilyDraftRenderedRecordStagedApplyStatus, StructuredFamilyKind,
@@ -46,6 +50,7 @@ pub enum StructuredFamilyControlledWriteError {
     PostWriteVerificationFailed,
     RestoreFailed(String),
     PostRestoreVerificationFailed,
+    OnDiskDriftDetected(String),
 }
 
 impl StructuredFamilyControlledWriteError {
@@ -67,6 +72,7 @@ impl StructuredFamilyControlledWriteError {
             Self::PostWriteVerificationFailed => "PostWriteVerificationFailed",
             Self::RestoreFailed(_) => "RestoreFailed",
             Self::PostRestoreVerificationFailed => "PostRestoreVerificationFailed",
+            Self::OnDiskDriftDetected(_) => "OnDiskDriftDetected",
         }
     }
 }
@@ -111,7 +117,7 @@ pub fn verify_structured_family_controlled_write_approval(
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StructuredFamilyControlledWriteBackupPlan {
-    pub backup_path: PathBuf,
+    pub backup_root: PathBuf,
     pub required: bool,
 }
 
@@ -136,6 +142,7 @@ pub struct StructuredFamilyControlledWritePlan {
     pub backup_plan: Option<StructuredFamilyControlledWriteBackupPlan>,
     pub restore_plan: Option<StructuredFamilyControlledWriteRestorePlan>,
     pub verification_plan: Option<StructuredFamilyControlledWriteVerificationPlan>,
+    pub target_precondition: FilePrecondition,
 }
 
 /// Build a controlled write plan from an accepted staged apply plan. Rejects
@@ -146,6 +153,15 @@ pub fn build_structured_family_controlled_write_plan(
     target: StructuredFamilyControlledWriteTarget,
     rendered_records: Vec<String>,
 ) -> Result<StructuredFamilyControlledWritePlan, StructuredFamilyControlledWriteError> {
+    let policy = classify_structured_family_write_target(&target);
+    if !policy.writable {
+        let reason = policy
+            .rejection_reasons
+            .first()
+            .copied()
+            .unwrap_or(StructuredFamilyControlledWriteTargetRejection::UnknownTargetRejected);
+        return Err(StructuredFamilyControlledWriteError::TargetRejected(reason));
+    }
     if !staged_apply.accepted_confirmation_linked {
         return Err(StructuredFamilyControlledWriteError::UnsafeStagedApplyPlan(
             "staged apply plan is not linked to an accepted confirmation",
@@ -176,7 +192,10 @@ pub fn build_structured_family_controlled_write_plan(
         return Err(StructuredFamilyControlledWriteError::EmptyRenderedRecords);
     }
 
-    let backup_path = controlled_backup_path(&target.path);
+    let target_precondition = capture_file_precondition(&target.path).map_err(|error| {
+        StructuredFamilyControlledWriteError::OnDiskDriftDetected(error.to_string())
+    })?;
+    let backup_root = target.controlled_root.clone();
     Ok(StructuredFamilyControlledWritePlan {
         family: staged_apply.family,
         target,
@@ -184,7 +203,7 @@ pub fn build_structured_family_controlled_write_plan(
         staged_apply_linked: true,
         staged_apply_blocker_count: staged_apply.blockers.len(),
         backup_plan: Some(StructuredFamilyControlledWriteBackupPlan {
-            backup_path,
+            backup_root,
             required: true,
         }),
         restore_plan: Some(StructuredFamilyControlledWriteRestorePlan {
@@ -194,35 +213,17 @@ pub fn build_structured_family_controlled_write_plan(
             verify_post_write: true,
             verify_post_restore: true,
         }),
+        target_precondition,
     })
 }
 
-/// Write bytes to a sibling temp file, then rename over the target. A crash
-/// mid-write leaves the original file intact instead of a truncated target.
+/// Fixture convenience wrapper over the shared hardened atomic replacement.
 pub fn atomic_controlled_write(path: &Path, bytes: &[u8]) -> std::io::Result<()> {
-    let mut temp_name = path
-        .file_name()
-        .map(|name| name.to_string_lossy().into_owned())
-        .unwrap_or_else(|| "controlled-target".to_string());
-    temp_name.push_str(".controlled-write-tmp");
-    let temp_path = path.with_file_name(temp_name);
-    fs::write(&temp_path, bytes)?;
-    match fs::rename(&temp_path, path) {
-        Ok(()) => Ok(()),
-        Err(error) => {
-            let _ = fs::remove_file(&temp_path);
-            Err(error)
-        }
-    }
-}
-
-fn controlled_backup_path(target_path: &Path) -> PathBuf {
-    let mut file_name = target_path
-        .file_name()
-        .map(|name| name.to_string_lossy().into_owned())
-        .unwrap_or_else(|| "controlled-target".to_string());
-    file_name.push_str(".controlled-write-backup");
-    target_path.with_file_name(file_name)
+    let precondition = capture_file_precondition(path)
+        .map_err(|error| std::io::Error::other(error.to_string()))?;
+    hardened_atomic_replace(&precondition, bytes)
+        .map(|_| ())
+        .map_err(|error| std::io::Error::other(error.to_string()))
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -231,6 +232,7 @@ pub struct StructuredFamilyControlledWriteBackup {
     pub created: bool,
     pub byte_exact: bool,
     pub original_byte_count: usize,
+    pub verified_backup: ConfigBackup,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -415,31 +417,25 @@ pub fn execute_structured_family_controlled_write(
     }
 
     let (backup_plan, _restore_plan, _verification_plan) = required_plans(plan)?;
-    if !backup_plan
-        .backup_path
-        .starts_with(&plan.target.controlled_root)
-    {
+    if backup_plan.backup_root != plan.target.controlled_root {
         return Err(StructuredFamilyControlledWriteError::BackupPathOutsideControlledRoot);
     }
 
-    let original = fs::read(&plan.target.path).map_err(|error| {
-        StructuredFamilyControlledWriteError::TargetReadFailed(error.to_string())
+    verify_file_precondition(&plan.target_precondition).map_err(|error| {
+        StructuredFamilyControlledWriteError::OnDiskDriftDetected(error.to_string())
     })?;
 
-    fs::write(&backup_plan.backup_path, &original)
+    let original = plan.target_precondition.bytes.clone();
+    let backup_manager = BackupManager::new(&backup_plan.backup_root);
+    let verified_backup = backup_manager
+        .create_backup_from_precondition(&plan.target_precondition)
         .map_err(|error| StructuredFamilyControlledWriteError::BackupFailed(error.to_string()))?;
-    let backup_bytes = fs::read(&backup_plan.backup_path)
-        .map_err(|error| StructuredFamilyControlledWriteError::BackupFailed(error.to_string()))?;
-    if backup_bytes != original {
-        return Err(StructuredFamilyControlledWriteError::BackupFailed(
-            "backup bytes are not byte-exact".to_string(),
-        ));
-    }
     let backup = StructuredFamilyControlledWriteBackup {
-        backup_path: backup_plan.backup_path.clone(),
+        backup_path: verified_backup.backup_path.clone(),
         created: true,
         byte_exact: true,
         original_byte_count: original.len(),
+        verified_backup,
     };
 
     let original_text = String::from_utf8_lossy(&original).into_owned();
@@ -449,16 +445,19 @@ pub fn execute_structured_family_controlled_write(
         plan.family,
         &plan.rendered_records,
     );
-    atomic_controlled_write(&plan.target.path, new_text.as_bytes())
-        .map_err(|error| StructuredFamilyControlledWriteError::WriteFailed(error.to_string()))?;
+    hardened_atomic_replace(&plan.target_precondition, new_text.as_bytes()).map_err(|error| {
+        StructuredFamilyControlledWriteError::OnDiskDriftDetected(error.to_string())
+    })?;
 
     let post_write_verification =
         verify_family_records_on_disk(&plan.target.path, plan.family, &plan.rendered_records)?;
     if !post_write_verification.intended_records_present {
         // Fail closed: put the original bytes back before reporting failure.
-        atomic_controlled_write(&plan.target.path, &original).map_err(|error| {
-            StructuredFamilyControlledWriteError::RestoreFailed(error.to_string())
-        })?;
+        backup_manager
+            .rollback(&backup.verified_backup, new_text.as_bytes())
+            .map_err(|error| {
+                StructuredFamilyControlledWriteError::RestoreFailed(error.to_string())
+            })?;
         return Err(StructuredFamilyControlledWriteError::PostWriteVerificationFailed);
     }
 
@@ -489,10 +488,26 @@ pub fn restore_structured_family_controlled_write(
         return Err(StructuredFamilyControlledWriteError::MissingRestorePlan);
     }
 
-    let backup_bytes = fs::read(&receipt.backup.backup_path)
+    let backup_manager = BackupManager::new(&plan.target.controlled_root);
+    let original_text = String::from_utf8_lossy(&plan.target_precondition.bytes).into_owned();
+    let expected_written_text = apply_rendered_family_records(
+        &plan.target.path,
+        &original_text,
+        plan.family,
+        &plan.rendered_records,
+    );
+    backup_manager
+        .rollback(
+            &receipt.backup.verified_backup,
+            expected_written_text.as_bytes(),
+        )
         .map_err(|error| StructuredFamilyControlledWriteError::RestoreFailed(error.to_string()))?;
-    atomic_controlled_write(&receipt.target_path, &backup_bytes)
-        .map_err(|error| StructuredFamilyControlledWriteError::RestoreFailed(error.to_string()))?;
+    let backup_bytes = receipt
+        .backup
+        .verified_backup
+        .backup_precondition
+        .bytes
+        .clone();
     let restored_bytes = fs::read(&receipt.target_path)
         .map_err(|error| StructuredFamilyControlledWriteError::RestoreFailed(error.to_string()))?;
     let restored_byte_exact = restored_bytes == backup_bytes;

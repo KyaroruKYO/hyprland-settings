@@ -18,7 +18,7 @@ use hyprland_settings::family_record_picker::{
 use hyprland_settings::runtime_preview_executor::RuntimePreviewRunner;
 use hyprland_settings::structured_family_gated_persistence::{
     gated_family_record_save, record_line_matches_name, render_record_request_line,
-    FamilyRecordSaveRequest, FamilySaveError,
+    FamilyRecordSaveRequest, FamilySaveError, FamilySaveReceipt,
 };
 use hyprland_settings::structured_family_runtime_preview::{
     parse_animation_records, parse_bezier_records, proven_record_shape_proof,
@@ -403,6 +403,75 @@ fn controller_timeout_auto_reverts_and_session_drop_reverts_unconfirmed() {
         .expect("preview applies");
     controller.keep().expect("keep confirms");
     assert!(controller.revert_if_unconfirmed().is_none());
+}
+
+#[test]
+fn structured_preview_is_marked_saved_only_after_a_durable_receipt() {
+    let listing = mock_listing("3.00", 0.10);
+    let mut controller = FamilyRecordPreviewController::new(
+        PickedFamily::Animation,
+        "fade",
+        Box::new(MockRunner::new("true")),
+        &listing,
+    )
+    .expect("fade is supported");
+    controller
+        .preview(PickedRecordValues::AnimationRecord {
+            enabled: true,
+            speed: 3.25,
+            bezier: "quick".to_string(),
+        })
+        .expect("preview applies");
+
+    let error = controller
+        .persist_and_mark_saved(|| Err(FamilySaveError::WriteFailed("injected".to_string())))
+        .expect_err("failed persistence must not mark the preview saved");
+    assert!(matches!(error, FamilySaveError::WriteFailed(_)));
+    assert_eq!(controller.phase(), RecordPickerPhase::CountingDown);
+    assert!(
+        controller.revert_if_unconfirmed().is_some(),
+        "automatic recovery remains registered after a failed Save"
+    );
+
+    let mut controller = FamilyRecordPreviewController::new(
+        PickedFamily::Animation,
+        "fade",
+        Box::new(MockRunner::new("true")),
+        &listing,
+    )
+    .expect("fade is supported");
+    controller
+        .preview(PickedRecordValues::AnimationRecord {
+            enabled: true,
+            speed: 3.25,
+            bezier: "quick".to_string(),
+        })
+        .expect("preview applies");
+    let receipt = FamilySaveReceipt {
+        family_id: "hl.animation",
+        record: "fade".to_string(),
+        saved_value: "enabled = true, speed = 3.25, bezier = quick".to_string(),
+        rendered_line: "animation = fade, 1, 3.25, quick".to_string(),
+        config_path: "/fixture/hyprland.conf".into(),
+        backup_path: "/fixture/backup".into(),
+        pre_save_hash: 1,
+        post_save_hash: 2,
+        reread_verified: true,
+        restored_after_success: false,
+        reload_run: false,
+        status_text: "Saved and verified".to_string(),
+        durable_receipt_created: true,
+    };
+    let saved = controller
+        .persist_and_mark_saved(|| Ok(receipt))
+        .expect("durable receipt marks preview saved");
+    assert!(saved.durable_receipt_created);
+    assert_eq!(controller.phase(), RecordPickerPhase::Saved);
+    assert!(controller.revert_if_unconfirmed().is_none());
+    assert!(matches!(
+        controller.revert_now(),
+        Err(RecordPickerError::NotArmed)
+    ));
 }
 
 #[test]

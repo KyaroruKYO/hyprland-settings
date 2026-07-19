@@ -11,9 +11,7 @@ use std::collections::BTreeMap;
 use hyprland_settings::runtime_preview_dead_man::dead_man_ui_state;
 use hyprland_settings::runtime_preview_ui_projection::runtime_preview_ui_row_state;
 use hyprland_settings::save_only_pending::{is_save_only_editable, save_only_control_kind};
-use hyprland_settings::ux_presentation::{
-    page_for_official_setting, status_chip_for_row, StatusChip,
-};
+use hyprland_settings::ux_presentation::{page_for_official_setting, status_chip_for_row};
 use hyprland_settings::write_classification::{
     is_high_risk_gated_writable_setting, SAFE_WRITABLE_ROWS,
 };

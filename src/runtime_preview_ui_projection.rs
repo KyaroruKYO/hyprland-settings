@@ -133,6 +133,10 @@ pub struct RuntimePreviewUiReceipt {
     pub status_text: String,
 }
 
+pub trait DurableSaveReceipt {
+    fn durable_save_succeeded(&self) -> bool;
+}
+
 /// Everything the detail pane needs to render live preview for one row.
 #[derive(Debug, Clone, Serialize)]
 pub struct RuntimePreviewUiRowState {
@@ -502,7 +506,50 @@ impl RuntimePreviewUiController {
     /// Mark the session saved. The actual persistence must be performed by
     /// the caller exactly once through the app's existing safe scalar write
     /// flow; this controller cannot write config files.
-    pub fn mark_saved(&mut self) -> Result<RuntimePreviewUiReceipt, RuntimePreviewUiError> {
+    pub fn mark_saved_after_durable_receipt(
+        &mut self,
+        receipt: &impl DurableSaveReceipt,
+    ) -> Result<RuntimePreviewUiReceipt, RuntimePreviewUiError> {
+        if !receipt.durable_save_succeeded() {
+            return Err(RuntimePreviewUiError::Executor(
+                "durable write receipt is incomplete; preview remains pending".to_string(),
+            ));
+        }
+        self.mark_saved()
+    }
+
+    /// Validate that a later durable receipt can transition this controller
+    /// to Saved. Batch callers hold the mutable borrow after this check, so
+    /// the session cannot change between UI-state preflight and disk commit.
+    pub fn validate_mark_saved_transition(&self) -> Result<(), RuntimePreviewUiError> {
+        if !self.row_state.save_state.available() {
+            return Err(RuntimePreviewUiError::RowNotPreviewable(
+                self.row_state.save_state.reason(),
+            ));
+        }
+        match self.session.as_ref() {
+            Some(session) if session.state == RuntimePreviewSessionState::Active => Ok(()),
+            _ => Err(RuntimePreviewUiError::NoActiveSession),
+        }
+    }
+
+    /// Run persistence and transition the preview session only after the
+    /// returned durable receipt proves the write and reread completed. A
+    /// persistence error leaves the active session unchanged, so Revert and
+    /// Cancel remain available.
+    pub fn persist_and_mark_saved<R>(
+        &mut self,
+        persist: impl FnOnce() -> Result<R, String>,
+    ) -> Result<(R, RuntimePreviewUiReceipt), RuntimePreviewUiError>
+    where
+        R: DurableSaveReceipt,
+    {
+        let durable = persist().map_err(RuntimePreviewUiError::Executor)?;
+        let receipt = self.mark_saved_after_durable_receipt(&durable)?;
+        Ok((durable, receipt))
+    }
+
+    fn mark_saved(&mut self) -> Result<RuntimePreviewUiReceipt, RuntimePreviewUiError> {
         if !self.row_state.save_state.available() {
             return Err(RuntimePreviewUiError::RowNotPreviewable(
                 self.row_state.save_state.reason(),

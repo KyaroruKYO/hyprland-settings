@@ -1,15 +1,65 @@
 mod support;
 
+use std::collections::BTreeMap;
 use std::fs;
 use std::os::unix::fs::PermissionsExt;
+use std::path::PathBuf;
 
+use hyprland_settings::config_graph::ConfigGraphSummary;
+use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::safe_batch_write::{
     execute_safe_batch_write_plan, safe_batch_write_user_facing_lines, SafeBatchChangeRequest,
-    SafeBatchEligibility, SafeBatchExecutionOptions, SafeBatchWriteStatus,
+    SafeBatchEligibility, SafeBatchExecutionOptions, SafeBatchWritePlan, SafeBatchWriteStatus,
 };
+use hyprland_settings::source_aware_current_config::current_config_from_graph;
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 use serde_json::json;
 use support::safe_batch_harness::*;
+
+fn changes_grouped_by_target(
+    current: &CurrentConfigSnapshot,
+    graph: &ConfigGraphSummary,
+    changes: Vec<SafeBatchChangeRequest>,
+) -> BTreeMap<PathBuf, Vec<SafeBatchChangeRequest>> {
+    let mut grouped = BTreeMap::<PathBuf, Vec<SafeBatchChangeRequest>>::new();
+    for change in changes {
+        let singleton = plan_for(
+            "deep-single-target-classification",
+            current,
+            graph,
+            vec![change.clone()],
+        );
+        assert!(
+            singleton.can_execute,
+            "singleton should be eligible: {:?}",
+            singleton.cannot_execute_reasons
+        );
+        assert_eq!(singleton.target_files.len(), 1);
+        grouped
+            .entry(singleton.target_files[0].target_path.clone())
+            .or_default()
+            .push(change);
+    }
+    grouped
+}
+
+fn fresh_one_file_failure_plan(label: &str) -> SafeBatchWritePlan {
+    let rows = harness_rows();
+    let (_root, current, graph, changes, _executed_rows) = build_fixture_for_rows(&rows, label);
+    let grouped = changes_grouped_by_target(&current, &graph, changes);
+    let selected = grouped
+        .into_values()
+        .max_by_key(Vec::len)
+        .expect("fixture should have an eligible one-file group")
+        .into_iter()
+        .take(4)
+        .collect::<Vec<_>>();
+    assert!(selected.len() >= 2);
+    let plan = plan_for(label, &current, &graph, selected);
+    assert!(plan.can_execute, "{:?}", plan.cannot_execute_reasons);
+    assert_eq!(plan.target_files.len(), 1);
+    plan
+}
 
 #[test]
 fn all_341_scalar_rows_are_classified_and_reported() {
@@ -101,9 +151,9 @@ fn value_generation_coverage_is_explicit_for_every_row() {
 }
 
 #[test]
-fn eligible_normal_scalar_rows_write_in_large_multifile_fixture_batch() {
+fn eligible_normal_scalar_rows_write_as_independent_one_file_transactions() {
     let rows = harness_rows();
-    let (root, current, graph, changes, executed_rows) =
+    let (_root, current, graph, changes, executed_rows) =
         build_fixture_for_rows(&rows, "all-eligible-write");
     assert!(
         changes.len() > 200,
@@ -114,25 +164,49 @@ fn eligible_normal_scalar_rows_write_in_large_multifile_fixture_batch() {
         assert_no_real_config_path(&file.path);
     }
 
-    let plan = plan_for("deep-all-eligible", &current, &graph, changes);
-    assert!(plan.can_execute, "{:?}", plan.cannot_execute_reasons);
-    assert_eq!(plan.blocked_changes.len(), 0);
-    assert!(plan.target_files.len() >= 2);
-
-    let report = execute_safe_batch_write_plan(
-        &plan,
-        &SafeBatchExecutionOptions {
-            backup_timestamp: "deep-all-eligible".to_string(),
-            ..SafeBatchExecutionOptions::default()
-        },
+    let combined = plan_for(
+        "deep-all-eligible-combined",
+        &current,
+        &graph,
+        changes.clone(),
     );
-    assert_eq!(report.status, SafeBatchWriteStatus::Succeeded);
-    assert_eq!(report.verified_changes.len(), executed_rows.len());
-    assert_eq!(report.backups.len(), plan.target_files.len());
-    assert!(report.backups.iter().all(|backup| backup.bytes_equal));
-    assert!(!report.hyprland_reload_attempted);
-    assert!(!report.mutating_hyprctl_used);
-    assert!(!report.runtime_mutated);
+    assert!(!combined.can_execute);
+    assert!(combined
+        .cannot_execute_reasons
+        .iter()
+        .any(|reason| reason.contains("multi-file batch rejected before writing")));
+
+    let grouped = changes_grouped_by_target(&current, &graph, changes);
+    assert!(grouped.len() >= 2);
+    let mut verified_count = 0usize;
+    let mut backup_count = 0usize;
+    for (index, one_file_changes) in grouped.values().enumerate() {
+        let fresh_current = current_config_from_graph(&graph);
+        let plan = plan_for(
+            &format!("deep-one-file-{index}"),
+            &fresh_current,
+            &graph,
+            one_file_changes.clone(),
+        );
+        assert!(plan.can_execute, "{:?}", plan.cannot_execute_reasons);
+        assert_eq!(plan.target_files.len(), 1);
+        let report = execute_safe_batch_write_plan(
+            &plan,
+            &SafeBatchExecutionOptions {
+                backup_timestamp: format!("deep-one-file-{index}"),
+                ..SafeBatchExecutionOptions::default()
+            },
+        );
+        assert_eq!(report.status, SafeBatchWriteStatus::Succeeded);
+        assert_eq!(report.backups.len(), 1);
+        assert!(report.backups[0].bytes_equal);
+        assert!(!report.hyprland_reload_attempted);
+        assert!(!report.mutating_hyprctl_used);
+        assert!(!report.runtime_mutated);
+        verified_count += report.verified_changes.len();
+        backup_count += report.backups.len();
+    }
+    assert_eq!(verified_count, executed_rows.len());
 
     let blocked_or_not_testable = rows.len() - executed_rows.len();
     let not_testable = rows.iter().filter(|row| row.value_pair.is_none()).count();
@@ -145,21 +219,23 @@ fn eligible_normal_scalar_rows_write_in_large_multifile_fixture_batch() {
         "artifactKind": "safe-batch-fixture-write-coverage",
         "generatedAt": "2026-06-18T00:00:00-07:00",
         "startingCommit": "6af51b1969c5e6870e7b2a55e58e5991ee860d6e",
-        "fixtureRoot": root.display().to_string(),
+        "fixtureRoot": "<test-temp>",
         "totalRowsConsidered": rows.len(),
         "totalEligibleAndExecutedInFixtureWrites": executed_rows.len(),
         "totalIntentionallyBlocked": intentionally_blocked,
         "totalNotTestableDueMissingValueGeneratorOrFixtureSupport": not_testable,
         "totalBlockedOrNotTestable": blocked_or_not_testable,
         "multipleSettingsInOneBatch": true,
-        "multipleFilesInOneBatch": true,
-        "targetFilesTouched": plan.target_files.len(),
-        "backupsCreatedBeforeWrite": report.backups.len(),
-        "backupByteEqualityVerified": report.backups.iter().all(|backup| backup.bytes_equal),
-        "rereadVerificationPassedAfterWrite": report.status == SafeBatchWriteStatus::Succeeded,
-        "hyprlandReloadAttempted": report.hyprland_reload_attempted,
-        "mutatingHyprctlUsed": report.mutating_hyprctl_used,
-        "runtimeMutated": report.runtime_mutated,
+        "multipleFilesInOneBatch": false,
+        "multiFileCombinedPlanRejectedBeforeWrite": true,
+        "oneFileTransactionsExecuted": grouped.len(),
+        "targetFilesTouched": grouped.len(),
+        "backupsCreatedBeforeWrite": backup_count,
+        "backupByteEqualityVerified": true,
+        "rereadVerificationPassedAfterWrite": true,
+        "hyprlandReloadAttempted": false,
+        "mutatingHyprctlUsed": false,
+        "runtimeMutated": false,
         "realUserConfigWritten": false,
         "executedRows": executed_rows.iter().map(|row| row.row_id.clone()).collect::<Vec<_>>()
     });
@@ -239,16 +315,8 @@ fn blocked_category_matrix_blocks_execution_without_partial_apply() {
 
 #[test]
 fn failure_and_recovery_matrix_covers_backup_write_verify_and_restore_paths() {
-    let rows = harness_rows();
-    let (_root, current, graph, changes, _executed_rows) =
-        build_fixture_for_rows(&rows, "failure-recovery");
-    let selected_changes = changes.into_iter().take(4).collect::<Vec<_>>();
-    let plan = plan_for("deep-failure-recovery", &current, &graph, selected_changes);
-    assert!(plan.can_execute);
-    assert!(plan.target_files.len() >= 2);
+    let plan = fresh_one_file_failure_plan("failure-recovery-backup");
     let first_target = plan.target_files[0].target_path.clone();
-    let second_target = plan.target_files[1].target_path.clone();
-    let first_setting = plan.eligible_changes[0].setting_id.clone();
 
     let mut cases = Vec::new();
 
@@ -315,16 +383,9 @@ fn failure_and_recovery_matrix_covers_backup_write_verify_and_restore_paths() {
         "report": execution_report_json(&creation_failure)
     }));
 
-    for (case, target) in [
-        (
-            "write failure after first target file",
-            first_target.clone(),
-        ),
-        (
-            "write failure after second target file",
-            second_target.clone(),
-        ),
-    ] {
+    for case in ["commit failure preserves original one-file batch"] {
+        let plan = fresh_one_file_failure_plan("failure-recovery-commit");
+        let target = plan.target_files[0].target_path.clone();
         let report = execute_safe_batch_write_plan(
             &plan,
             &SafeBatchExecutionOptions {
@@ -343,6 +404,8 @@ fn failure_and_recovery_matrix_covers_backup_write_verify_and_restore_paths() {
         }));
     }
 
+    let plan = fresh_one_file_failure_plan("failure-recovery-verification");
+    let first_setting = plan.eligible_changes[0].setting_id.clone();
     let verification_failure = execute_safe_batch_write_plan(
         &plan,
         &SafeBatchExecutionOptions {
@@ -361,26 +424,26 @@ fn failure_and_recovery_matrix_covers_backup_write_verify_and_restore_paths() {
         "report": execution_report_json(&verification_failure)
     }));
 
-    for (case, options) in [
-        (
-            "restore failure after write failure",
+    for case in [
+        "restore failure after write failure",
+        "restore failure after verification failure",
+    ] {
+        let plan = fresh_one_file_failure_plan(&format!("failure-{case}"));
+        let options = if case.contains("write failure") {
             SafeBatchExecutionOptions {
                 backup_timestamp: "deep-restore-write-failure".to_string(),
-                fail_after_writing_target: Some(first_target),
+                fail_after_writing_target: Some(plan.target_files[0].target_path.clone()),
                 force_restore_failure: true,
                 ..SafeBatchExecutionOptions::default()
-            },
-        ),
-        (
-            "restore failure after verification failure",
+            }
+        } else {
             SafeBatchExecutionOptions {
                 backup_timestamp: "deep-restore-verification-failure".to_string(),
-                force_verification_failure_for: Some(first_setting),
+                force_verification_failure_for: Some(plan.eligible_changes[0].setting_id.clone()),
                 force_restore_failure: true,
                 ..SafeBatchExecutionOptions::default()
-            },
-        ),
-    ] {
+            }
+        };
         let report = execute_safe_batch_write_plan(&plan, &options);
         assert_eq!(report.status, SafeBatchWriteStatus::UnrecoveredFailure);
         assert!(report.recovery_attempted);
@@ -398,7 +461,8 @@ fn failure_and_recovery_matrix_covers_backup_write_verify_and_restore_paths() {
         "generatedAt": "2026-06-18T00:00:00-07:00",
         "startingCommit": "6af51b1969c5e6870e7b2a55e58e5991ee860d6e",
         "cases": cases,
-        "multiFileRollbackRestoresEveryTouchedFile": true,
+        "sameFileRollbackRestoresTheOneCommittedTarget": true,
+        "multiFileBatchesRejectedBeforeWrite": true,
         "restoreVerificationChecksBytesAndScalarValues": true,
         "failureReportedClearly": true
     });
@@ -441,7 +505,12 @@ fn ui_integration_report_covers_safe_batch_copy_and_blocked_text() {
 }
 
 #[test]
+#[ignore = "read-only real-config audit; run with HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1"]
 fn real_config_readonly_audit_reports_current_safe_batch_blockers_without_writes() {
+    if std::env::var("HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT").as_deref() != Ok("1") {
+        eprintln!("skipping: HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT is not set");
+        return;
+    }
     let report = real_config_readonly_audit();
     assert_eq!(report["realUserConfigEdited"], false);
     assert_eq!(report["realBackupsCreated"], false);
