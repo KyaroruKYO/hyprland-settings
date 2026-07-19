@@ -1,5 +1,9 @@
 # UX Simplification Plan (v0.2.x, local-only prototype)
 
+> Historical planning artifact. It records the design target at that point in
+> development; it is not the current implementation/status source. See
+> `README.md` and `PROJECT-STATUS.md`.
+
 Companion to `docs/UX-HYPRMOD-REFERENCE-AUDIT.md`. Goal: the app should
 feel settings-first like HyprMod — grouped sidebar, clean cards, short
 labels and descriptions, quiet status — with every proof/activation/debug

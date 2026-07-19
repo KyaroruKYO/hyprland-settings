@@ -1,63 +1,60 @@
 # Production Save Integration
 
-Every path that can write the active Hyprland config is now gated on
-**Safe Live Save Mode**: the save proceeds only after a live, read-only
-verification that `misc:disable_autoreload` is `true` at runtime. If the
-mode is inactive (or its state cannot be read), the save fails closed with
-an actionable message — no file is touched.
+> Current unreleased branch behavior after the write-stabilization work. Earlier
+> reports linked below remain historical evidence for the state in which they
+> were generated.
 
-## Why
+Every active-config Save is gated on **Safe Live Save Mode**. The gate reads
+`misc:disable_autoreload` and fails closed unless it is active. The application
+uses guarded, reversible runtime mutation for previews, but never invokes
+`hyprctl reload`.
 
-Hyprland auto-reloads on config writes by default. Before this integration,
-a scalar save while autoreload was active would immediately reload the
-compositor — the exact write+reload loop the product decision rejected.
-The app's flow is: preview live (runtime, reversible, no file) → enable
-Safe Live Save Mode (runtime-only, no file, no reload) → save once.
+## Current Save Routes
 
-## The gate
-
-`safe_live_save_mode::require_safe_live_save_mode(runner)` is the single
-gate. It reads `misc.disable_autoreload` from the runtime and:
-
-- `ActiveViaRuntime` (`true`) → the save may proceed.
-- `Inactive` → error: enabling the mode first is required.
-- `Unknown` (unreadable) → error; fails closed.
-
-There is deliberately no bypass parameter.
-
-## Gated paths
-
-| Save path | Route |
+| User action | Current route and semantics |
 |---|---|
-| Scalar preview "Save" button | `gated_scalar_save_live` |
-| Scalar detail-pane "Apply reviewed change" | `gated_scalar_save_live` |
-| Structured-family "Save previewed value" | `gated_family_save_live` |
+| Scalar detail action | **Stage reviewed change** adds an in-memory pending entry; it does not write. |
+| Pending **Save all atomically** | Preflights every entry, requires one target file, stages all edits in memory, and performs one hardened atomic replacement. |
+| Structured-family Save | Proven `hl.animation` and `hl.curve` record shapes use gated persistence; all other structured families remain blocked. |
+| Safe Live Save Mode “Save as default” | Uses the hardened scalar write path and records success only after durable verification. |
 
-`production_save::gated_scalar_save_live` verifies the mode live, then
-delegates to the existing `apply_setting_change` backup/write/reread flow
-exactly once. The gate itself lives in `safe_live_save_mode`, which stays
-runtime-only and is source-guarded against ever writing a file; the gated
-save lives in its own `production_save` module.
-`gated_family_save` performs its own gate call as Gate 2 of its sequence
-(see [STRUCTURED-FAMILY-GATED-PERSISTENCE.md](STRUCTURED-FAMILY-GATED-PERSISTENCE.md)).
+The pending batch rejects multi-file operations before any backup or write. A
+failed preflight, commit, verification, or restore retains every pending entry.
+Runtime-preview sessions are marked saved only after a durable write receipt is
+available.
 
-UI code cannot call `apply_setting_change` directly anymore — a source
-guard test (`persistence_sources_stay_guarded`) asserts `window.rs`
-contains no direct call, and UI code never constructs runners (the `_live`
-wrappers own the `HyprctlRuntimePreviewRunner`).
+## Write Guarantees
 
-Non-UI write paths are unaffected in reach: `safe_batch_write` remains a
-library/test path against temp configs; the active-config pilot remains an
-env-gated ignored test with its own fifteen gates and restore.
+Active-config writes now share these requirements:
 
-## Evidence
+- an exact-byte and filesystem-identity precondition captured when planning;
+- a fresh source-graph check immediately before execution where source-aware
+  resolution applies;
+- regular-file, owner, mode, canonical-parent, device, and inode validation;
+- an exclusive, unpredictable temporary file in the target directory;
+- file synchronization, Linux atomic exchange, parent-directory
+  synchronization, and post-commit byte/metadata verification;
+- an exclusive `0600` backup beneath an application-owned `0700` XDG state
+  directory;
+- exact-byte restore through the same hardened path if post-write semantic
+  verification fails.
 
-- Unit tests: `save_is_blocked_without_safe_live_save_mode` proves the
-  fail-closed behavior against a mock runner.
-- Live flow proof (2026-07-12): with autoreload active, the gated family
-  save was blocked with the enable-first message; after enabling the mode,
-  real saves proceeded and no reload fired.
-- Safety flags: `activeConfigWrittenDuringNormalTests: false`,
-  `hyprctlReloadRan: false`.
+Any on-disk drift aborts without merging or overwriting external changes. The
+user must reread the setting and prepare a fresh edit.
 
-Report: `data/reports/production-save-integration.v0.55.2.json`.
+ACLs, extended attributes, and historical timestamps are not promised to be
+preserved. Existing mode and ownership are verified and preserved; an ownership
+assumption the process cannot satisfy fails closed.
+
+## Boundaries
+
+- UI code does not call `apply_setting_change` directly.
+- UI code does not construct free-form `hyprctl` commands.
+- High-risk scalar rows and unsupported structured-family records remain
+  blocked.
+- Normal tests use fixtures and temporary directories. Real-config audits are
+  ignored and require `HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1`.
+
+The earlier integration evidence is retained in
+`data/reports/production-save-integration.v0.55.2.json`. Current stabilization
+truth is in `docs/SAVE-WRITE-STABILIZATION.md` and the completion report.

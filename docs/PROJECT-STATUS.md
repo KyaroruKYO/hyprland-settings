@@ -1,143 +1,68 @@
 # Project Status
 
+Status date: 2026-07-18. This file describes the unreleased `structured-family-editors-unified` branch after write stabilization. The published `v0.2.0` release remains at `0ffaeb3` and does not include all behavior described here.
+
 ## Current Counts
 
-- Official scalar settings modeled: 341
-- Readable rows: 341
-- Writable rows: 341
-- Blocked rows: 0
+| Surface | Current branch |
+| --- | ---: |
+| Scalar rows modeled/readable | 341 |
+| Scalar rows editable | 290 |
+| Guarded live-preview rows | 135 |
+| Supervised dead-man rows | 38 |
+| Save-only rows | 117 |
+| High-risk rows blocked | 51 |
+| Structured families classified | 7 |
+| Structured families with proven production persistence | 2 |
+| Structured families blocked from production persistence | 5 |
 
-This is the current proven config-write model for Hyprland `0.55.2`.
+The two persisted families are `hl.animation` and `hl.curve`, limited to proven modify-existing record shapes. `hl.monitor`, `hl.bind`, `hl.gesture`, `hl.device`, and `hl.permission` remain blocked.
 
-## Proof Model
+## Stabilization Result
 
-The current proof model is based on Rust source, generated reports, fixture tests, parser tests, and high-risk gate tests. It proves that all 341 official scalar settings are represented by the unified row-driven pipeline and are writable through either the normal config-write path or the gated high-risk config-write path.
+- Save-state transitions occur only after durable, reread-verified receipts.
+- Failed scalar and structured preview saves keep pending state and recovery controls.
+- Exact target bytes, SHA-256, inode/device, ownership, mode, parent identity, record shape, occurrence count, and source graph form the write precondition.
+- Drift aborts without an automatic overwrite or merge.
+- Active writes use the shared hardened Linux atomic-exchange primitive.
+- Backups use the XDG state location, exclusive creation, directory mode `0700`, file mode `0600`, synchronization, and byte/hash verification.
+- Verification failures restore exact bytes and verified mode/ownership; restore refuses intervening edits.
+- One-file pending batches stage all rows and commit once. Multi-file batches reject before writing.
+- The normal test suite is hermetic; real-machine audits and report regeneration require explicit gates.
 
-Live runtime mutation and Hyprland reload proof are not claimed.
+## Runtime And Save Behavior
 
-## High-risk Gate Summary
+Runtime preview is real, guarded, and reversible. It uses fixed-shape mutating `hyprctl eval` operations for approved preview surfaces, with readback and Revert/Cancel recovery. The app never runs `hyprctl reload`.
 
-High-risk rows remain writable only through recovery and confirmation gates. The gate model requires persisted recovery plan validation, backup proof, rollback proof, parser reread proof, confirmation token proof, timeout/no-confirmation rollback behavior, and UI warning or advanced placement.
+Production scalar persistence exists behind Safe Live Save Mode and write gates. The active branch also persists proven Animation and Curve record shapes. No additional row or family was promoted during stabilization.
 
-High-risk rows must not bypass the production gate or become ordinary low-risk writes.
+## Honest Limitations
 
-## cursor.default_monitor Oracle Summary
+- Cross-file save batches are not crash-atomic and are therefore rejected before writing.
+- ACLs, extended attributes, and timestamps are not preserved as guarantees.
+- The hardened commit requires Linux `renameat2(RENAME_EXCHANGE)` support and fails closed when unavailable.
+- Ownership must already be reproducible by the current process; the writer does not elevate privileges.
+- The 51 high-risk rows still require their dedicated production recovery gates.
+- Five structured families, profiles/modes, broad source/include activation, duplicate auto-resolution, and style editing remain blocked.
+- The data model remains pinned to Hyprland `0.55.2`; the live compositor may be `0.55.4`, but no migration is activated.
 
-`cursor.default_monitor` is writable as a gated high-risk cursor/input row. It uses `src/monitor_name_oracle.rs` and `ScalarWriteValueKind::MonitorName`.
+## Validation Boundary
 
-The monitor-name oracle accepts names only from a current non-mutating snapshot and rejects empty, missing, stale, unsafe, path-like, command-like, malformed, and duplicate-problematic input. Tests use fixture and mock snapshots; the optional `hyprctl monitors` adapter is read-only and tested through fixture output only.
+Normal tests use only test-owned files and mock runtimes. Live runtime proofs and active-config write proofs remain ignored/env-gated and were not run during this stabilization sprint. The user's active config was not written.
 
-## Complete
+Final evidence: two normal and one isolated HOME/XDG full-suite runs each
+reported 1,154 passed, zero failed, and 25 ignored tests with no status, diff,
+or report churn. The safe-env GTK matrix completed 28 screenshot and AT-SPI
+runs without a config write, backup, reload, or runtime mutation.
 
-- All 341 official scalar rows are modeled.
-- All 341 rows are readable.
-- All 341 rows are writable through the app's config-write or gated high-risk write model.
-- Current aggregate reports agree on 341 readable / 341 writable / 0 blocked.
-- `SAFE_WRITABLE_ROWS.len()` is 341.
-- `cursor.default_monitor` is included and uses monitor-name oracle validation.
-- High-risk rows require production gate proof.
-- Screen-shader remains behind its production gate.
+## Next Review
 
-## Not Claimed
+Run an independent review of the stabilized write, restore, and pending-state paths before approving any new feature, release, or live-write proof work.
 
-- Live runtime mutation proof for every setting.
-- Hyprland reload/eval proof for every setting.
-- Crash/debug proof against the active compositor.
-- Stable packaged release status.
-- Hyprland upstream endorsement.
+## Historical Status
 
-## Next Recommended Work
+Earlier planning and completion narratives are historical. They remain available in versioned reports under `data/reports/`, dedicated documents under `docs/`, and the pre-stabilization handoff at:
 
-On `main`, the v0.1.0 safe release scope remains complete for guarded normal-scalar safe-batch use on the v0.55.2 model.
-
-Current active work is on `structured-family-editors-unified`: build unified review-only structured-family editor scaffolding for `hl.monitor`, `hl.bind`, `hl.animation`, `hl.curve`, `hl.gesture`, `hl.device`, and `hl.permission`. This work adds shared projections, stable disabled UI cards, fixture parse/render/reread proof, family-specific validators, temp-fixture write plans, path guards, temp render/reread proof, review-only per-record editor forms, in-memory record draft models, disabled live GTK draft-field binding, fixture-only draft-to-rendered-record planning, fixture-only rendered-record render/reread proof, fixture-only rendered-record diff/review summaries, fixture-only approval/confirmation models, fixture-only staged apply plans, fixture-only staged apply dry-run reports, fixture-only staged apply rollback/recovery reviews, a final fixture-only executor-readiness audit, a requirements-only real-write activation audit, an Option B production activation planning-scope audit, a planning-only production activation design document, a planning-only internal safe-write architecture plan, a planning-only executor architecture implementation plan, an inert executor implementation scaffold, and an inert executor wiring-readiness plan while keeping structured-family writes blocked by default, executor wiring unapproved, real write scope unapproved, GUI real-write controls unapproved, staged apply unexecuted, dry-run unexecuted, rollback unexecuted, recovery unexecuted, backup creation disabled, restore execution disabled, executor wiring absent, GUI real-write controls disabled, production activation unapproved, activation subset unselected, first real config write unapproved, and draft persistence forbidden. The scaffold compiles, rejects by default, and remains unreachable from current UI, `write_flow`, and `apply_setting_change`. The wiring-readiness layer defines eight universal wiring boundaries, records boundary-level wiring candidates as unwired and unapproved, and is proven by source-level regression guards to add no executor call path, no `write_flow` or `apply_setting_change` reachability, no UI reachability, no filesystem mutation, no command runner, and no approval flag flips. Building on that, the controlled real-write implementation is now complete: a controlled write-target policy (test-owned fixture, copied config tree, and temporary config targets writable; active real config and unknown targets rejected, including symlink and path escapes) plus a controlled write executor that is internally wired to the parse/render/projection pipeline and proven through real temp-directory file writes — byte-exact backup, family-record write preserving non-family lines, post-write parser/projection reread verification, automatic restoration on verification failure, rollback with byte-exact and reread verification, write receipts, and audit records — round-tripping all seven families against copied temp targets, with fail-closed proof for missing approval, forbidden active-config approval, missing backup/restore/verification plans, unsafe staged apply plans, and every escape/refusal mode. The controlled executor is unreachable from live UI, `main`, and the scalar write flow. The executor was subsequently hardened (symlink-through-target-file escape rejected; all target writes and restores atomic via temp-file-plus-rename), and a gated active-config pilot now exists: a fifteen-gate preflight with typed confirmation, rehearsal-freshness drift detection, mandatory restoration, and content-hash receipts, unreachable from UI/`main`/`write_flow` and executable only through an ignored env-gated test. The copied active-config rehearsal is proven against the real config content with the source untouched. The live pilot is blocked by the autoreload gate: `misc:disable_autoreload` is `false`, so an active-config write would live-reload the compositor, and runtime mutation is not approved. A review-only GUI status card with a permanently insensitive Apply control is proven in the GTK evidence matrix. Active real config writes, GUI live Apply controls, `hyprctl reload`, and runtime mutation remain disabled and unapproved. The structured-family area is blocked by active real config write approval pending an explicit first active real config write pilot decision.
-
-On the `future-capability-marathon` branch, missing/default insertion is now production-enabled only for reviewed single-root normal-scalar safe-batch targets. Source/include insertion target selection has disabled UI, fixture target-selection proof, selected-target dry-run planner, disabled preview UI, temp-fixture guarded executor proof, copied-config-tree proof, default-disabled production gate review, explicit approval-flow integration, a report-backed disabled Config-page approval card, activation decision review, activation path review, activation control review, activation form/state-machine review, real disabled GTK activation form fields, in-memory activation draft state, still-disabled activation draft-edit review, a live GTK draft-edit bridge that updates memory-only draft state and recomputes review-only validation, a default-disabled draft persistence boundary that forbids saving drafts by default, a default-disabled production activation safety gate, copied-fixture production activation safety proof, a final production activation decision review, designed-but-disabled approval UX plus live dry-run policy review, designed-but-disabled production flag/executor-wiring opt-in requirements, and a final production activation cap. Duplicate production work has the same activation, proof, UX/policy, opt-in requirements, and cap layers. The source/include and duplicate cap decision is `BranchCappedForNonProductionRunway`: future production activation must begin in a separate explicitly approved phase and cannot be inferred from existing proof. The source/include and duplicate final decisions explicitly keep final approval, production flag opt-in, executor wiring opt-in, and live production dry-run policy missing/required; copied-fixture proof cannot approve production, set flags, wire executors, or authorize live dry-runs. The approval UX, live dry-run policy, opt-in requirements, and cap reviews require future explicit user action, typed confirmation, report-backed proof, rollback readiness, separate production flag and executor-wiring steps, no-real-config/no-reload/no-runtime-mutation boundaries, and activation-time revalidation while staying disabled. Structured `hl.bind` and profile/mode paths have copied-config-tree executor proof with byte/symlink restoration plus default-disabled production gate review, explicit approval-flow integration, and report-backed disabled Config-page approval cards. Runtime/reload has a guarded dry-run executor, default-disabled production gate, explicit approval-flow integration, runtime socket diagnosis, read-only live evidence, a proven low-risk `general:gaps_in` live-restore proof using `hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'`, an approved-but-default-disabled runtime approval review consuming that proof, and a disabled detail UI surface that displays the proof without any runtime handler; sandbox socket access is still blocked by `EPERM`, but all runtime proof ran outside the sandbox. High-risk/display recovery has a guarded no-op readiness executor, default-disabled production gate, explicit approval-flow integration, runtime read-only evidence, runtime approval review evidence, low-risk runtime restore proof as readiness input, and a report-backed disabled approval card that states that runtime proof is insufficient for high-risk activation while listing recovery/dead-man/restore/backup/snapshot blockers. Hyprland 0.55.4 migration has local package metadata evidence (`hyprland 0.55.4-1`), runtime version evidence, plus a default-disabled activation gate, explicit approval-flow integration, and a report-backed disabled migration approval card, but remains advisory only because no trusted local 0.55.4 export bundle was found. GTK safe-env screenshot-level assertions cover disabled approval, activation decision, activation path, activation control, activation form, activation draft, activation draft-edit, live draft-edit, persistence-boundary, production activation safety-gate, safety-proof, final-decision, approval UX, live dry-run policy, opt-in requirements, and cap cards plus activation form field labels through screenshot capture plus AT-SPI accessibility-tree text. Source/include insertion expansion, duplicate production writes, high-risk/display writes, structured-family writes, real profile/mode switching, runtime/reload production mutation, draft persistence opt-in, and Hyprland 0.55.4 migration remain blocked or disabled unless a separate explicitly approved production phase or trusted data exists.
-
-Current future-capability tracker:
-
-- Core app shell / UI / navigation: 99-99%
-- Config discovery / source-aware model: 94-96%
-- 341-row read/write model: 90-95%
-- Safe normal-scalar writes: 95-97%
-- Release packaging/tag/artifacts: 85-95%
-- Missing/default insertion: 99-100%
-- Duplicate resolution: 95-95%
-- High-risk/display recovery: 62-70%
-- Structured-family editors/writes: production Save complete for the proven surface (pilot passed; gated persistence live-proven for hl.animation global speed and hl.curve default Y0; remaining growth is record-picker breadth)
-- Profile/mode switching: 65-73%
-- Runtime/reload integration: 98-99% (proof marathon complete: 38 of 78 dead-man rows armed by passed live proofs — everything provable on this machine; remaining arming needs touch hardware or secondary-device proofs)
-- Hyprland 0.55.4 migration: audit complete — zero drift against the trusted 0.55.4 export; compatibility pinned by a regression test
-
-Future-capability source/include and duplicate production-activation runway work remains stopped; future production activation requires a separate explicitly approved phase.
-
-Current next exact work item: the 2026-07-13 completion marathon closed the optional-breadth items — the family record picker generalized gated persistence to proven record shapes (live shape proofs on `fade` and `quick`, zero residue; live save flow proofs with byte-exact flow-proof restores; disabled records save-only by live-proof finding; inherited/internal records blocked; no creation/deletion), `misc:disable_autoreload = true` can be saved as the default through the gated scalar Save (user-chosen, live-flow-proven), the 0.55.4 export refresh is a repeatable read-only workflow that reran with zero drift, and a release decision was recorded as ready pending user approval (no tag, no merge, no artifacts). Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows — deferred, devices unavailable), the user release decision, and further record shapes behind new live proofs.
-
-Update 2026-07-13 (RC + record-shape expansion marathon, user-approved): the animation `enabled` and `bezier` record shapes were proven live (zero residue, both enabled directions; existing curves only) and wired end to end — the picked-record save is now the combined `AnimationRecordFields` request gated on all three animation shape receipts, disabled records are preview-supported, style stays not-editable (no trusted value evidence) and gestures stay blocked (no readback listing). v0.2.0-rc.1 was prepared locally (version bump, validated metadata, changelog, release notes, guarded build-only artifact script, `dist/v0.2.0-rc.1/` artifacts, RC docs, pinning tests) with no tag, no merge, and nothing published; `v0.1.0`/`dist/v0.1.0` checksum-verified untouched. Remaining: user decisions on the RC and final v0.2.0; hardware-gated proofs; style/gesture shapes pending trusted evidence.
-
-## Default-Disabled Production Activation Decision Review - 2026-06-20
-
-- Added source/include and duplicate production activation decision reviews that consume report-backed approval card data.
-- Both decisions can reach ApprovedButDefaultDisabled only while production flags remain false.
-- Added disabled Config-page decision cards and GTK screenshot plus AT-SPI assertions for both cards.
-- No production source/include insertion, duplicate write, runtime mutation, reload, or real config mutation was enabled.
-
-## Default-Disabled Production Activation Path Review - 2026-06-20
-
-- Added source/include and duplicate production activation path reviews that consume ApprovedButDefaultDisabled decisions.
-- Added explicit future request and safety-plan requirements: production activation request, user approval, production flag, backup, restore, reread, post-restore verification, dry-run summary, touched-file list, and final confirmation.
-- Added disabled Config-page activation path cards and GTK screenshot plus AT-SPI assertions for both cards.
-- Production source/include insertion and duplicate replacement remain disabled; no real config, runtime mutation, reload, or executor path was enabled.
-
-## 2026-06-20 - Activation Control Status
-
-Source/include and duplicate now have final default-disabled activation control reviews. Each validates complete request and safety-plan inputs for review only, displays executor wiring as `Unwired`, and keeps production behavior disabled. No real config, runtime, reload, AGS/Waybar, release tag, or dist artifact was modified.
-
-## 2026-06-20 - Activation Form Status
-
-Source/include and duplicate now have review-only activation form/state-machine projections. Each form can generate request and safety-plan data, validate through the final activation control as `ValidatedButExecutorUnwired`, display executor wiring as `Unwired`, and keep production behavior disabled. No real config, runtime, reload, AGS/Waybar, release tag, or dist artifact was modified.
-
-## 2026-06-20 - Activation Form Field Status
-
-Source/include and duplicate activation form data now renders through real disabled GTK form fields. Scope/reason/token/category use read-only insensitive entries, acknowledgement states use insensitive check buttons, and safety-plan data uses read-only insensitive text views. The form state machine and final activation control remain review-only; executors stay `Unwired`, production flags stay false, and no real config, runtime, reload, AGS/Waybar, release tag, or dist artifact was modified.
-
-The GTK matrix was run for the form field UI at `/tmp/hyprland-settings-gtk-automation/20260620_134347`; the run preserved safety boundaries, but live AT-SPI field-label proof was blocked because the accessibility bus socket was unavailable in that run.
-
-## 2026-06-20 - Activation Draft Status
-
-Source/include and duplicate now have in-memory activation draft plumbing. Drafts can be created from existing form state, updated/reset in memory, converted back into form state, and validated through the existing form/control reviews as review-only. The Config page displays disabled draft cards for both categories with `In-memory only`, `Executor wiring: Unwired`, and production-disabled copy. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler. Production flags remain false, executors remain `Unwired`, no disk persistence was added, and no real config, runtime, reload, AGS/Waybar, release tag, dist artifact, or 0.55.4 migration state was modified.
-
-## 2026-06-20 - Activation Draft Edit Status
-
-Source/include and duplicate now have still-disabled activation draft-edit plumbing. Draft editing is disabled by default in the live UI, but model tests can enter in-memory-only edit mode, update draft request and safety-plan fields, recompute validation through the existing form/control pipeline, reset back to defaults, and prove disk persistence remains absent. The Config page displays disabled draft-edit cards for both categories with editing mode, dirty state, validation, `In-memory only`, `Executor wiring: Unwired`, and production-disabled copy. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler.
-
-The GTK matrix was run for the draft-edit UI at `/tmp/hyprland-settings-gtk-automation/20260620_154855`; screenshot plus AT-SPI accessibility-tree assertions passed for the source/include and duplicate draft-edit cards.
-
-## 2026-06-20 - Remaining Dependency Scan
-
-The remaining dependency scan classifies core UI, config discovery, 341-row coverage, safe normal-scalar writes, and release packaging as effectively capped for this safe-release branch. Missing/default insertion, duplicate resolution, structured-family writes, profile/mode switching, and runtime/reload integration are blocked by production activation. High-risk/display recovery is blocked by high-risk recovery proof. Hyprland 0.55.4 migration is blocked by missing official export data.
-
-## 2026-06-20 - Production Activation Safety Proof
-
-Source/include and duplicate production activation safety proof now runs against copied fixtures only. The proof satisfies byte-exact backup, pre-write snapshot, target identity, dry-run write plan, diff preview, post-write reread, restore, post-restore verification, and rollback checks without touching real config. No-auto-apply and persisted-draft auto-apply proof are satisfied by default-disabled report-backed UI/control evidence and the persistence boundary. Final approval, production flag decision, executor wiring decision, and live production dry-run remain unresolved; source/include insertion and duplicate writes remain disabled, executors remain `Unwired`, and draft persistence remains forbidden by default.
-
-## 2026-06-20 - Production Activation Final Decisions
-
-Source/include and duplicate now have default-disabled final decision reviews. The reviews recognize copied-fixture proof as partial evidence while keeping final approval, production flag opt-in, executor wiring opt-in, and live production dry-run policy missing/required. Copied-fixture proof, draft edit state, and persistence-boundary state cannot approve production, set flags, wire executors, or authorize live dry-runs. Production flags remain false, executors remain `Unwired`, no disk persistence was added, no real config was touched, and no runtime mutation or reload was run.
-
-Source/include and duplicate now have designed-but-disabled approval UX and live dry-run policy reviews. The reviews require future explicit user action, typed confirmation, production flag opt-in, executor wiring opt-in, rollback readiness, and no-real-config/no-reload/no-runtime-mutation live dry-run boundaries. Approval controls and live dry-run controls remain unavailable, production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, and no real config/runtime/reload path was added.
-
-Source/include and duplicate now have designed-but-disabled production flag and executor-wiring opt-in requirements reviews. Production flag opt-in and executor wiring must be separate future steps; neither can auto-enable the other, run writes, reload Hyprland, mutate runtime, or touch real config. Explicit user action, typed confirmation, report-backed proof, rollback-ready state, and no-auto-apply proof are required. Production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, and no persistence, real config, runtime, reload, or executor path was added.
-
-## 2026-06-20 - Production Activation Cap
-
-Source/include and duplicate are now capped for non-production runway work. The cap status is `BranchCappedForNonProductionRunway`, and the explicit stop answer is yes: `future-capability-marathon` should stop here for source/include and duplicate production-activation runway work. Future production activation must begin in a separate explicitly approved phase, require a fresh user decision, production flag opt-in, executor-wiring opt-in, rollback/no-auto-apply proof preservation, real-config risk re-check, and activation-time revalidation. The cap cannot set flags, wire executors, run writes, authorize live dry-run, persist drafts, mutate runtime, reload Hyprland, or touch real config.
-
-The closeout audit confirms the cap is the final source/include and duplicate state on `future-capability-marathon`. Active follow-up work must not ask Codex to keep extending this runway; it should choose a different project area or explicitly start a separate production activation phase.
-
-## 2026-07-12 - Save Persistence Migration Marathon
-
-- Every Save path is now gated on Safe Live Save Mode: scalar UI saves route through `gated_scalar_save_live` (live gate verification, then the existing backup/write/reread apply flow); direct `apply_setting_change` calls are eliminated from UI code and guard-tested. Saves fail closed with an enable-first message while autoreload is active.
-- Structured-family gated persistence shipped (`gated_family_save`): the two live-proven records (hl.animation global speed, hl.curve default Y0) persist through value validation, receipt gate, live safe-mode gate, active-config identity gate, byte-exact backup, one atomic write, and reread verification — restore only on verification failure, never after success. Save buttons live in both family preview controls. The env-gated live flow proof passed for both targets (gate-blocked proof, real writes, reread verification, byte-exact flow cleanup); no reload fired.
-- Hyprland 0.55.4 migration audit complete: `hyprctl -j descriptions` from the official 0.55.4 binary is the trusted source (captured to `data/exports/hyprland-0.55.4/`); zero option drift (341 = 341, 0 added, 0 removed), zero numeric-bounds drift (78 compared), 47 cosmetic description diffs; a regression test pins the compatibility on every `cargo test` run. The version-skew risk is closed by evidence.
-- Normal `cargo test` still never touches the active config or runtime; `hyprctl reload` was never run; the pilot still restores.
+```sh
+git show d4d3489:docs/CURRENT-PROJECT-HANDOFF.md
+```

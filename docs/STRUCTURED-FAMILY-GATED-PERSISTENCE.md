@@ -1,5 +1,11 @@
 # Structured-Family Gated Persistence
 
+> Historical rollout detail. On the current unreleased branch, the proven
+> `hl.animation` and `hl.curve` persistence paths use the shared drift-safe,
+> metadata-aware atomic write and XDG-state backup primitives documented in
+> `SAVE-WRITE-STABILIZATION.md`. The family scope described here remains
+> unchanged.
+
 The first real user-facing Save for structured families: previewed values
 for the two live-proven records can now persist to the active config using
 the proven pilot write shape — backup → one atomic write → reread

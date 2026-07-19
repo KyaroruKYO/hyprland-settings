@@ -1,5 +1,10 @@
 # Family Record Picker — Gated Persistence
 
+> Historical rollout detail. The current branch retains this proven-record
+> scope but routes active-config persistence through the hardened write,
+> backup, drift-detection, and receipt ordering described in
+> `SAVE-WRITE-STABILIZATION.md`.
+
 Machine-readable result: `data/reports/family-record-picker-gated-persistence.v0.55.2.json`.
 
 ## What this is

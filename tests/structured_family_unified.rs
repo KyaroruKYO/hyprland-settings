@@ -3251,9 +3251,8 @@ fn structured_family_kinds_cover_required_ids_and_widget_names() {
         let family = structured_family_kind_from_id(family_id).expect("family id should map");
         assert_eq!(family.family_id(), family_id);
         assert_eq!(family.card_widget_name(), widget_name);
-        assert_eq!(
+        assert!(
             family.review_button_label().starts_with("Review "),
-            true,
             "review controls are review-only labels"
         );
     }
@@ -3867,37 +3866,36 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "production_save_complete_for_proven_surface"
+        "stabilized_proven_surface_no_expansion"
     );
     assert_eq!(structured["canContinueNow"], false);
     let structured_status = structured["currentStatus"]
         .as_str()
         .expect("currentStatus should be text");
-    assert!(structured_status.contains("executor wired for controlled targets true"));
-    assert!(structured_status.contains("executor wired for active config false"));
-    assert!(structured_status.contains("active real config writes approved false"));
-    assert!(structured_status.contains("first real config write approved false"));
+    assert!(structured_status.contains("hl.animation"));
+    assert!(structured_status.contains("hl.curve"));
+    assert!(structured_status.contains("five families blocked"));
     assert_eq!(
         structured["safeNextWork"],
-        "animation enabled and bezier shapes are proven and wired; style needs trusted value evidence plus a live proof; gesture needs a readback mechanism and hardware; hardware-gated proofs remain deferred; v0.2.0 is released and published"
+        "review proven structured-family write/restore boundaries"
     );
     assert!(structured["mustNotDo"]
         .as_str()
         .expect("mustNotDo should be text")
-        .contains("do not write the active real Hyprland config"));
+        .contains("do not promote monitor"));
 
     let missing = areas
         .iter()
         .find(|area| area["areaName"].as_str() == Some("Missing/default insertion"))
         .expect("missing/default area should exist");
-    assert_eq!(missing["classification"], "capped");
+    assert_eq!(missing["classification"], "stabilized_supported_scope");
     assert_eq!(missing["canContinueNow"], false);
 
     let duplicate = areas
         .iter()
         .find(|area| area["areaName"].as_str() == Some("Duplicate resolution"))
         .expect("duplicate area should exist");
-    assert_eq!(duplicate["classification"], "capped");
+    assert_eq!(duplicate["classification"], "blocked");
     assert_eq!(duplicate["canContinueNow"], false);
 
     let handoff: serde_json::Value = serde_json::from_str(
@@ -3907,7 +3905,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices are available; a UX simplification/readability pass; style editing only if trusted valid-value evidence appears. v0.2.0 is released and published."
+        "Run an independent review of the stabilized write, restore, and pending-state paths before considering feature or release work."
     );
     // Structured-family writes are now enabled, but only through the gated
     // save path for the two proven records; the scope note must say so.
@@ -3918,7 +3916,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     assert!(handoff["safetyBoundaries"]["structuredFamilyWriteScope"]
         .as_str()
         .expect("write scope should be text")
-        .contains("ONLY via gated_family_save"));
+        .contains("ONLY via gated proven modify-existing"));
 }
 
 #[test]

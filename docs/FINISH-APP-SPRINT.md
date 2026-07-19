@@ -1,5 +1,9 @@
 # Finish-App Sprint
 
+> Historical sprint record. It describes the repository at that sprint's
+> checkpoint, not the current unreleased post-v0.2.0 implementation. See
+> `CURRENT-PROJECT-HANDOFF.md` and `PROJECT-STATUS.md` for current truth.
+
 This sprint pushed the structured-family write track as far as the safety gates allow, cleaned commit attribution, hardened the executor, added the active-config pilot, and integrated a review-only GUI status surface.
 
 ## Completed

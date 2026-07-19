@@ -1586,6 +1586,9 @@ def main() -> int:
         "navigationSucceeded": False,
         "navigationMessage": None,
         "applyRefused": True,
+        "stageReviewedChangeFound": False,
+        "legacyImmediateApplyLabelAbsent": True,
+        "saveAllAtomicallyFound": False,
         "textAfterNavigation": [],
         "foundTerms": [],
         "foundTermsAfterNavigation": [],
@@ -1787,6 +1790,9 @@ def main() -> int:
                 result["textAfterNavigation"] = after
                 result["foundTermsAfterNavigation"] = found_terms(after)
         all_text = "\n".join(result["text"] + result["textAfterNavigation"]).lower()
+        result["stageReviewedChangeFound"] = "stage reviewed change" in all_text
+        result["legacyImmediateApplyLabelAbsent"] = "apply reviewed change" not in all_text
+        result["saveAllAtomicallyFound"] = "save all atomically" in all_text
         approval_assertions = approval_card_assertions(result["text"] + result["textAfterNavigation"])
         activation_assertions = activation_decision_assertions(
             result["text"] + result["textAfterNavigation"]

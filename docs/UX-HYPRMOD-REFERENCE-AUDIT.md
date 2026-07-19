@@ -1,5 +1,9 @@
 # UX Reference Audit — HyprMod 0.4.0 (2026-07-13)
 
+> Historical UX research artifact. Statements about prototype/release status
+> apply to that audit date. See `README.md` and `PROJECT-STATUS.md` for current
+> release and implementation status.
+
 Reference: `/home/kyo/Downloads/hyprmod-0.4.0.tar.gz` (HyprMod 0.4.0,
 Python + GTK4/libadwaita, **GPL-3.0**, © Ivo Šmerek), inspected unpacked in
 a scratch directory.

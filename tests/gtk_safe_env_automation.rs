@@ -40,6 +40,10 @@ fn gtk_automation_scripts_exist_and_are_safe_env_by_default() {
     assert!(launcher.contains("\"applyClicked\": false"));
     assert!(launcher.contains("\"realConfigEdited\": false"));
     assert!(launcher.contains("\"realBackupsCreated\": false"));
+    assert!(launcher.contains("\"screenshotAttempted\""));
+    assert!(launcher.contains("\"screenshotSucceeded\""));
+    assert!(launcher.contains("hyprctl -j clients"));
+    assert!(launcher.contains("grim -g \"$geometry\""));
     assert!(!launcher.contains("hyprctl reload"));
     assert!(!launcher.contains("pkill -x ags"));
     assert!(!launcher.contains("pkill -x waybar"));
@@ -465,6 +469,20 @@ fn gtk_evidence_matrix_covers_source_include_and_nested_source_scenarios() {
 }
 
 #[test]
+fn gtk_evidence_matrix_keeps_generated_reports_out_of_the_tracked_tree_by_default() {
+    let matrix = fs::read_to_string("tools/live_scenario_harness/run_gtk_evidence_matrix.sh")
+        .expect("GTK matrix should read");
+    assert!(matrix.contains("HYPRLAND_SETTINGS_GTK_REPORTS_DIR:-$evidence_root/reports"));
+    assert!(!matrix.contains("\"$repo_root/data/reports\""));
+
+    let collector = fs::read_to_string("tools/live_scenario_harness/collect_accessibility_tree.py")
+        .expect("AT-SPI collector should read");
+    assert!(collector.contains("stageReviewedChangeFound"));
+    assert!(collector.contains("legacyImmediateApplyLabelAbsent"));
+    assert!(collector.contains("saveAllAtomicallyFound"));
+}
+
+#[test]
 fn gtk_reports_use_explicit_proof_level_labels() {
     let summary: Value = serde_json::from_str(
         &fs::read_to_string("data/reports/gtk-safe-env-automation-summary.v0.55.2.json")
@@ -810,17 +828,20 @@ fn autonomous_safe_scope_continuation_report_marks_green_lane_complete() {
 #[test]
 fn public_metadata_matches_safe_scope_and_does_not_overclaim() {
     let readme = fs::read_to_string("README.md").expect("README should read");
-    assert!(readme.contains("guarded safe-batch config writes"));
     assert!(readme.contains("Hyprland `0.55.2`"));
-    assert!(readme.contains("Production Apply remains narrower"));
-    assert!(readme.contains("It does not add missing config lines yet."));
-    assert!(readme.contains("It does not auto-resolve duplicate settings."));
-    assert!(readme.contains("It does not switch profiles"));
-    assert!(readme.contains("It does not migrate this v0.55.2 data/model to Hyprland 0.55.4."));
+    assert!(readme.contains("unreleased post-v0.2.0 work"));
+    assert!(readme.contains("290 scalar rows exposed as editable"));
+    assert!(readme.contains("51 high-risk scalar rows deliberately blocked"));
+    assert!(readme.contains("Eligible missing/default insertions require a fresh proof"));
+    assert!(readme.contains("does not auto-resolve duplicate settings"));
+    assert!(readme.contains("`Save all atomically`"));
+    assert!(readme.contains("Rows targeting multiple files are rejected before any write"));
+    assert!(readme.contains("Hyprland Settings never runs `hyprctl reload`"));
+    assert!(readme.contains("`hl.animation` and `hl.curve`"));
 
     let cargo = fs::read_to_string("Cargo.toml").expect("Cargo.toml should read");
     assert!(cargo.contains("name = \"hyprland-settings\""));
-    assert!(cargo.contains("description = \"GTK4/libadwaita Hyprland settings app with guarded safe-batch config writes\""));
+    assert!(cargo.contains("description = \"GTK4/libadwaita Hyprland settings app with guarded drift-safe atomic writes\""));
 
     let desktop =
         fs::read_to_string("data/applications/io.github.kyarorukyo.hyprlandsettings.desktop")
@@ -828,14 +849,16 @@ fn public_metadata_matches_safe_scope_and_does_not_overclaim() {
     assert!(desktop.contains("Name=Hyprland Settings"));
     assert!(desktop.contains("Exec=hyprland-settings"));
     assert!(desktop.contains("Icon=io.github.kyarorukyo.hyprlandsettings"));
-    assert!(desktop.contains("guarded safe-batch"));
+    assert!(desktop.contains("guarded drift-safe saves"));
 
     let metainfo =
         fs::read_to_string("data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml")
             .expect("metainfo should read");
     assert!(metainfo.contains("<id>io.github.kyarorukyo.hyprlandsettings</id>"));
     assert!(metainfo.contains("https://github.com/KyaroruKYO/hyprland-settings"));
-    assert!(metainfo.contains("guarded safe-batch writes"));
+    assert!(metainfo.contains("drift-safe atomic saves"));
+    assert!(metainfo.contains("exposes 290 of 341 scalar rows"));
+    assert!(metainfo.contains("persists proven existing Animation and Bezier Curve records"));
     assert!(metainfo.contains("The bundled metadata targets Hyprland 0.55.2."));
     assert!(!metainfo.contains("The current release is read-only."));
     assert!(!metainfo.contains("does not read live Hyprland config files"));

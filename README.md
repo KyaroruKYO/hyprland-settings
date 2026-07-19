@@ -1,61 +1,78 @@
 # Hyprland Settings
 
-Hyprland Settings is a Rust + GTK4/libadwaita settings app for Hyprland. It presents official Hyprland scalar settings with source-backed metadata, validation, and guarded safe-batch config writes for eligible normal scalar settings.
+Hyprland Settings is a Rust + GTK4/libadwaita application for reviewing and changing Hyprland configuration with explicit validation, recovery, and runtime-safety gates. The bundled data model targets Hyprland `0.55.2`.
 
-The current metadata and proof reports target Hyprland `0.55.2`.
+## Release And Branch Status
 
-## Current Status
+`v0.2.0` is published from commit `0ffaeb3`. The active `structured-family-editors-unified` branch contains substantial **unreleased post-v0.2.0 work**. The counts and behavior below describe that active branch, not the published binary.
 
-Hyprland Settings currently models all 341 official scalar Hyprland settings for Hyprland `0.55.2`.
+## Current Active-Branch Surface
 
-- 341 official scalar settings modeled
-- 341 readable
-- 341 writable
-- 0 blocked
-- Safe-batch writes are guarded by exact target-line checks, backup, reread verification, and recovery
-- High-risk, display/render-risk, generated, script-managed, symlink/current-profile, duplicate, missing/default, structured-family, runtime, and profile/mode targets remain blocked from the safe-batch path
-- Live runtime mutation/reload proof is not claimed
+- 341 official scalar rows modeled and readable.
+- 290 scalar rows exposed as editable: 135 guarded live-preview rows, 38 supervised dead-man rows, and 117 save-only rows.
+- 51 high-risk scalar rows deliberately blocked by production gates.
+- Seven structured families classified.
+- Active-config persistence exists only for proven existing-record shapes in `hl.animation` and `hl.curve`.
+- `hl.monitor`, `hl.bind`, `hl.gesture`, `hl.device`, and `hl.permission` remain blocked from production persistence.
 
-The proven claim is the current v0.55.2 app/export model: all 341 official scalar settings are modeled as readable and writable in the metadata pipeline. Production Apply remains narrower: it can write only eligible normal scalar settings through the guarded safe-batch path, and it blocks settings that need separate safety design. The project does not claim that all 341 settings have been safely live-mutated against an active Hyprland compositor.
+The metadata pipeline classifies all 341 rows, but that does not mean every row is currently editable or safe to apply. Production behavior is limited by the counts and gates above.
 
-## Safety Model
+## Save And Runtime Safety
 
-Normal scalar settings use source-backed validators and fixture write/reread proof before they are eligible for safe-batch writing.
+Runtime preview uses guarded, reversible runtime mutation through fixed-shape Hyprland configuration expressions. Supervised rows retain Revert/Cancel recovery until a durable config-save receipt succeeds. Hyprland Settings never runs `hyprctl reload`.
 
-High-risk and display/render-risk settings remain blocked from the safe-batch path until separate family-specific proof exists. Future gated paths would require proof such as:
+Production scalar Save exists behind Safe Live Save Mode and the row's write gates. A save now:
 
-- explicit high-risk approval metadata
-- persisted recovery plan validation
-- backup proof
-- rollback and parser reread proof
-- confirmation token proof
-- timeout or no-confirmation rollback behavior
-- UI warning or advanced placement
-- production gate acceptance
+1. rechecks the complete source graph and exact target-file precondition;
+2. rejects byte, inode, metadata, target, occurrence, or source mapping drift;
+3. creates an exclusive verified backup under the application XDG state directory;
+4. stages and validates the complete candidate;
+5. commits through one synchronized atomic exchange;
+6. rereads and verifies the result;
+7. restores exact original bytes on post-write verification failure;
+8. marks UI/runtime state saved only after the durable receipt succeeds.
 
-`cursor.default_monitor` uses a runtime monitor-name oracle instead of generic freeform string validation. It accepts only monitor names proven by a current non-mutating oracle snapshot and rejects empty, missing, stale, unsafe, path-like, command-like, and malformed values.
+The user-facing drift result is fail-closed: nothing is written, pending state remains, and the user must reread before saving again.
 
-`decoration.screen_shader` remains blocked from the normal safe-batch path and needs display/render-specific recovery proof before broader production write support. Advisory shader helper work is not treated as write-safety proof.
+Eligible missing/default insertions require a fresh proof that the setting is
+still absent. Duplicate occurrence changes are detected as conflicts; the app
+does not auto-resolve duplicate settings.
 
-## What It Does
+## Pending Batch Semantics
 
-- Browses exported Hyprland setting metadata.
-- Shows current scalar-row read/write coverage.
-- Shows safety classifications and high-risk warning metadata.
-- Validates pending values with source-backed or parser-backed validators.
-- Uses guarded safe-batch config writes for eligible normal scalar settings.
-- Blocks generated, script-managed, symlink/current-profile, duplicate, missing/default, structured-family, runtime, profile/mode, high-risk, and display/render-risk targets.
+`Save all atomically` preflights all pending scalar rows before creating a backup or writing.
 
-## What It Does Not Claim
+- Rows targeting one file are combined into one staged document and one atomic target replacement.
+- Rows targeting multiple files are rejected before any write. The app does not claim cross-file crash atomicity.
+- Any validation, drift, staging, backup, commit, or verification failure retains every pending row.
+- Pending rows clear only after the whole supported one-file batch succeeds.
 
-- It does not claim live runtime mutation proof for every setting.
-- It does not claim reload/eval testing against the active compositor.
-- It does not run crash/debug proof against the active compositor.
-- It does not add missing config lines yet.
-- It does not auto-resolve duplicate settings.
-- It does not switch profiles, change symlinks, reload Hyprland, or run mutating `hyprctl`.
-- It does not migrate this v0.55.2 data/model to Hyprland 0.55.4.
-- It is not an official Hyprland project and does not claim Hyprland upstream endorsement.
+The detail pane stages reviewed changes into this batch; it does not perform an alternate immediate write.
+
+## Backup And Filesystem Guarantees
+
+Active-config backups use `$XDG_STATE_HOME/hyprland-settings/backups`, falling back to `~/.local/state/hyprland-settings/backups`. The backup directory is owned by the current user with mode `0700`; backup files are unpredictable, exclusive, mode `0600`, synchronized, and byte/hash verified.
+
+Target replacement rejects symlinks and non-regular files, checks parent and target identity, preserves mode and same-owner/group assumptions, synchronizes file and parent directory state, and verifies final bytes and metadata. Linux `renameat2(RENAME_EXCHANGE)` is required for the commit-boundary race check.
+
+ACLs, extended attributes, and timestamps are not preserved as an implementation guarantee. A target whose ownership cannot be reproduced safely is rejected.
+
+## Structured Families
+
+The app can save proven modify-existing record shapes for Animation and Bezier Curve records. Those paths use the same Safe Live Save Mode, target identity, backup, drift, atomic exchange, reread, and recovery guarantees. Record creation/deletion, style editing, and the other five structured families are not enabled.
+
+## Hermetic Tests
+
+The normal `cargo test` suite uses fixtures, temporary directories, mock runners, and deterministic report comparisons. It does not read the real Hyprland config, invoke the live compositor, mutate runtime, write active config, or regenerate tracked reports.
+
+Real-machine audits and live proofs are ignored and require explicit environment gates. Tracked report regeneration separately requires `HYPRLAND_SETTINGS_REGENERATE_REPORTS=1`.
+
+See:
+
+- `docs/SAVE-WRITE-STABILIZATION.md`
+- `docs/PENDING-SAVE-TRANSACTION-SEMANTICS.md`
+- `docs/HERMETIC-TEST-STABILIZATION.md`
+- `docs/CURRENT-PROJECT-HANDOFF.md`
 
 ## Run From Source
 
@@ -63,13 +80,13 @@ High-risk and display/render-risk settings remain blocked from the safe-batch pa
 cargo run --bin hyprland-settings
 ```
 
-Run with an explicit metadata path:
+With an explicit metadata export:
 
 ```sh
 cargo run --bin hyprland-settings -- data/exports/hyprland-0.55.2
 ```
 
-Build and run the release binary:
+Build the current branch:
 
 ```sh
 cargo build --release
@@ -78,45 +95,16 @@ cargo build --release
 
 ## Validation
 
-The current validation set includes:
-
 ```sh
 cargo fmt --check
 cargo check
 cargo test
+cargo clippy --all-targets
+jq empty data/reports/*.json
+git diff --check
 cargo build --release
-desktop-file-validate data/applications/io.github.kyarorukyo.hyprlandsettings.desktop
-appstreamcli validate --no-net data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml || true
 ```
 
-The desktop and AppStream validators are optional local tools. The AppStream check may report non-blocking warnings until release metadata is finalized.
+## Project Boundary
 
-## Dependencies
-
-Runtime dependencies:
-
-- `gtk4`
-- `libadwaita`
-- `glib2`
-
-Build dependencies:
-
-- `rust`
-- `cargo`
-- `pkgconf`
-
-## Current Limitations
-
-- Packaging and release artifacts are not finalized.
-- Missing/default insertion is intentionally blocked.
-- Duplicate auto-resolution is intentionally blocked.
-- High-risk/display-render writes are intentionally blocked from the normal safe-batch path.
-- Structured-family writes and profile/mode switching are intentionally blocked.
-- Live runtime mutation/reload proof remains a separate future safety milestone.
-- The app's current proof model is guarded normal-scalar safe-batch config writing, not broad live compositor mutation coverage.
-
-## Metadata Provenance
-
-The bundled metadata targets Hyprland `0.55.2`. It is export-backed and validated before display.
-
-AGS was used as a prototype/spec/export source during the transition to Rust. The Rust app does not require AGS at runtime, and no live user config is included in the metadata bundle.
+Hyprland Settings is not an official Hyprland project. It does not claim upstream endorsement, universal live-mutation proof, automatic duplicate resolution, profile switching, broad source/include activation, or production support for data newer than the pinned `0.55.2` model.

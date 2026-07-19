@@ -1,5 +1,10 @@
 # Structured-Family Active Config Write Pilot
 
+> Historical pilot record. The pilot was an evidence stage and is not the sole
+> current active-config path. Current production-save scope and hardened write
+> guarantees are documented in `PRODUCTION-SAVE-INTEGRATION.md` and
+> `SAVE-WRITE-STABILIZATION.md`.
+
 The first active real config write pilot is implemented, heavily gated, rehearsed — and currently blocked by one environmental gate.
 
 ## What exists

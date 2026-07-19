@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased - post-v0.2.0 stabilization
+
+- Fixed Save-state ordering so pending/runtime recovery state becomes saved only after durable write and reread verification succeeds.
+- Added exact on-disk bytes, inode, metadata, record/occurrence, and source-graph drift preconditions to active scalar and proven structured-family writes.
+- Consolidated active writes on a synchronized same-directory atomic-exchange primitive with commit-boundary race detection and automatic swap-back.
+- Moved active backups to the application XDG state directory with exclusive creation, restrictive modes, synchronization, integrity verification, and guarded restore.
+- Made one-file pending batches commit one staged document; multi-file batches now reject before writing instead of allowing prefix commits.
+- Made normal tests hermetic and moved real-machine audits/report regeneration behind explicit gates.
+- Reconciled current documentation with the published v0.2.0 release and unreleased branch behavior.
+
 ## 0.2.0 (2026-07-13)
 
 Final release of the 0.2.0 line. Identical scope to 0.2.0-rc.1 below, plus

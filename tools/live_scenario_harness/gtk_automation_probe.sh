@@ -27,6 +27,9 @@ forced_kill="false"
 launch_succeeded="false"
 accessibility_attempted="false"
 accessibility_succeeded="false"
+screenshot_attempted="false"
+screenshot_succeeded="false"
+read_only_hyprctl_used="false"
 app_build_attempted="false"
 app_build_succeeded="false"
 app_binary_rebuilt_before_probe="false"
@@ -57,6 +60,10 @@ cleanup() {
   "appLaunchSucceeded": $launch_succeeded,
   "accessibilityInspectionAttempted": $accessibility_attempted,
   "accessibilityInspectionSucceeded": $accessibility_succeeded,
+  "screenshotAttempted": $screenshot_attempted,
+  "screenshotSucceeded": $screenshot_succeeded,
+  "screenshotPath": "${evidence_dir}/window.png",
+  "readOnlyHyprctlUsed": $read_only_hyprctl_used,
   "closeAttempted": true,
   "closeSucceeded": $graceful_close,
   "forcedKillUsed": $forced_kill,
@@ -102,6 +109,25 @@ fi
 accessibility_attempted="true"
 if tools/live_scenario_harness/collect_accessibility_tree.py "$evidence_dir/accessibility.json" >/dev/null 2>"$evidence_dir/accessibility.err"; then
   accessibility_succeeded="true"
+fi
+
+if command -v grim >/dev/null 2>&1 && command -v hyprctl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+  screenshot_attempted="true"
+  read_only_hyprctl_used="true"
+  geometry="$(
+    hyprctl -j clients 2>/dev/null | jq -r '
+      [.[] | select(
+        (.class // "") == "hyprland-settings"
+        or (.initialClass // "") == "hyprland-settings"
+        or (.title // "") == "Hyprland Settings"
+      )]
+      | last
+      | if . then "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])" else empty end
+    '
+  )" || geometry=""
+  if [ -n "$geometry" ] && grim -g "$geometry" "$evidence_dir/window.png" 2>"$evidence_dir/screenshot.err"; then
+    screenshot_succeeded="true"
+  fi
 fi
 
 tools/live_scenario_harness/close_app_window.sh "$app_pid" "$evidence_dir" || true

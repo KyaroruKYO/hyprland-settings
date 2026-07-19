@@ -21,12 +21,14 @@ The shared Unix replacement primitive:
 3. applies the target mode and safely preserves the expected owner/group;
 4. writes all bytes, flushes, and calls `sync_all`;
 5. revalidates the target precondition immediately before commit;
-6. atomically renames the temporary file over the target;
-7. synchronizes the parent directory;
-8. rereads and verifies exact final bytes and required metadata;
-9. removes the temporary file on every pre-commit failure.
+6. atomically exchanges the candidate and target with Linux `renameat2(RENAME_EXCHANGE)`;
+7. verifies that the displaced path is still the exact reviewed inode, metadata, and bytes;
+8. exchanges back on drift or post-commit verification failure;
+9. synchronizes the parent directory, rereads final bytes/metadata, and removes the displaced original only after success.
 
 ACLs, extended attributes, and non-Unix platforms are outside this implementation contract unless explicitly implemented and tested. Active config writes fail closed when ownership cannot be preserved safely.
+
+The active scalar, pending-batch, Safe Live Save Mode, proven structured-family, and active-pilot paths all use this shared primitive. Older helpers that still use direct file writes are fixture-, dry-run-, report-, or temp-only proof code and remain unreachable from active-config production paths. They are not evidence for weaker active writes.
 
 ## Secure backups
 

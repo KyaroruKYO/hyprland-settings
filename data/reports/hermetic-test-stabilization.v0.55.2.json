@@ -1,0 +1,28 @@
+{
+  "artifactKind": "hermetic-test-stabilization",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "d4d3489fb62a09a6b2afcaef72e87d88e7836352",
+  "stabilizedSourceCommit": "39e5477",
+  "hermeticTestStatus": "complete; repeated and isolated full suites passed without worktree or report churn",
+  "normalTestsReadRealConfig": false,
+  "normalTestsRunHyprctl": false,
+  "normalTestsWriteActiveConfig": false,
+  "normalTestsMutateRuntime": false,
+  "normalTestsRewriteTrackedReports": false,
+  "realConfigAuditGate": "HYPRLAND_SETTINGS_RUN_REAL_CONFIG_AUDIT=1",
+  "reportRegenerationGate": "HYPRLAND_SETTINGS_REGENERATE_REPORTS=1",
+  "normalTestInputs": [
+    "committed fixtures",
+    "temporary directories",
+    "explicit temporary HOME/XDG roots",
+    "mock runtime runners",
+    "deterministic report comparison"
+  ],
+  "cargoTestRunOne": "passed: 1154 passed, 0 failed, 25 ignored; tracked status, diff, and report hashes unchanged",
+  "cargoTestRunTwo": "passed: 1154 passed, 0 failed, 25 ignored; tracked status, diff, and report hashes unchanged",
+  "temporaryHomeTest": "passed: 1154 passed, 0 failed, 25 ignored with temporary HOME and XDG roots, Hyprland session variables removed, and a failing hyprctl trap",
+  "hyprctlTrapInvoked": false,
+  "trackedReportChecksumsUnchanged": true,
+  "gitStatusAfterTests": "unchanged across all three full-suite runs"
+}

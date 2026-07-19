@@ -1,0 +1,30 @@
+{
+  "artifactKind": "save-state-transaction-stabilization",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "d4d3489fb62a09a6b2afcaef72e87d88e7836352",
+  "stabilizedSourceCommit": "39e5477",
+  "saveStateOrderingStatus": "complete",
+  "markSavedAfterDurableSuccess": true,
+  "failedSavePendingStatePreserved": true,
+  "failedSaveRuntimeRecoveryPreserved": true,
+  "individualLivePreviewSave": "persist_and_mark_saved requires a durable receipt before Saved",
+  "deadManSave": "batch preflights controller transition and marks Saved after batch receipt",
+  "saveOnlyScalarSave": "staged until one-file batch commit succeeds",
+  "structuredFamilySave": "active preview controller consumes only a durable family receipt",
+  "safeLiveSaveModePersistence": "uses the drift-protected gated scalar save",
+  "detailPaneBehavior": "stages reviewed change; no alternate direct write",
+  "batchTransactionPolicy": "one-file atomic exchange; multi-file rejected before writing",
+  "partialCommitPossible": false,
+  "allPendingRetainedOnFailure": true,
+  "allPendingClearedAfterSuccessOnly": true,
+  "tests": [
+    "tests/runtime_preview_ui.rs",
+    "tests/family_record_picker.rs",
+    "tests/safe_batch_write.rs",
+    "tests/save_write_stabilization.rs"
+  ],
+  "activeConfigWritten": false,
+  "runtimeMutated": false,
+  "hyprctlReloadRan": false
+}

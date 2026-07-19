@@ -9,8 +9,8 @@
     <name>KYO</name>
   </developer>
   <description>
-    <p>Hyprland Settings is a GTK/libadwaita application for browsing official Hyprland setting metadata, reviewing the active config layout, and applying guarded safe-batch writes for eligible normal scalar settings.</p>
-    <p>The app backs up files before writing, checks the result after writing, and keeps high-risk, display/render-risk, generated, script-managed, symlink/current-profile, duplicate, missing/default, structured-family, runtime, and profile/mode targets blocked until separate safety designs are ready.</p>
+    <p>Hyprland Settings is a GTK/libadwaita application for browsing official Hyprland setting metadata, reviewing the active config layout, using guarded reversible runtime previews, and applying drift-safe atomic saves for supported settings.</p>
+    <p>The current implementation exposes 290 of 341 scalar rows, supports fresh-absence insertion for eligible missing settings, and persists proven existing Animation and Bezier Curve records. It keeps 51 high-risk scalar rows, duplicate auto-resolution, five other structured families, and profile/mode activation blocked.</p>
     <p>The bundled metadata targets Hyprland 0.55.2. This app is not an official Hyprland project.</p>
   </description>
   <launchable type="desktop-id">io.github.kyarorukyo.hyprlandsettings.desktop</launchable>

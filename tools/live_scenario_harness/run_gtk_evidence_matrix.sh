@@ -5,8 +5,9 @@ repo_root="/home/kyo/Projects/hyprland-settings"
 evidence_root="${1:-/tmp/hyprland-settings-gtk-automation/$(date +%Y%m%d_%H%M%S)}"
 scenario_root="$evidence_root/scenarios"
 run_root="$evidence_root/runs"
+reports_dir="${HYPRLAND_SETTINGS_GTK_REPORTS_DIR:-$evidence_root/reports}"
 
-mkdir -p "$scenario_root" "$run_root"
+mkdir -p "$scenario_root" "$run_root" "$reports_dir"
 
 write_conf() {
   local scenario="$1"
@@ -104,6 +105,6 @@ run_probe high_risk_display_risk DisplayRenderRiskDetail
 "$repo_root/tools/live_scenario_harness/summarize_gtk_evidence.py" \
   "$evidence_root" \
   "$evidence_root/gtk-evidence-summary.json" \
-  "$repo_root/data/reports"
+  "$reports_dir"
 
 printf '%s\n' "$evidence_root"
